@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Data Understanding &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data-understanding';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data Preparation" href="data-preparation.html" />
+    <link rel="prev" title="Business Understanding" href="business-understanding.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/pp.jpg" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/pp.jpg" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Perkenalan
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelling.html">Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fdata-understanding.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/data-understanding.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Understanding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-petallength">Korelasi antara sepallength dan petallength</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-petalwidth">Korelasi antara sepallength dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepalwidth-dan-petallength">Korelasi antara sepalwidth dan petallength</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepalwidth-dan-petalwidth">Korelasi antara sepalwidth dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistik-deskriptif">statistik deskriptif</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-understanding">
+<h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Permalink to this heading">#</a></h1>
+<section id="tugas-pertama">
+<h2>Tugas Pertama<a class="headerlink" href="#tugas-pertama" title="Permalink to this heading">#</a></h2>
+<section id="korelasi-antara-sepallength-dan-sepalwidth">
+<h3>Korelasi antara sepallength dan sepalwidth<a class="headerlink" href="#korelasi-antara-sepallength-dan-sepalwidth" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar1" src="_images/selesewi.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara sepal_length pada sumbu horizontal dan sepal_width pada sumbu vertikal secara keseluruhan terlihat cukup lemah dan menyebar. Berbeda dengan pola linear yang kuat, titik-titik data pada grafik ini tidak membentuk garis lurus yang rapat dari kiri bawah ke kanan atas, yang berarti bertambah besarnya nilai sepal_length tidak selalu berbanding lurus dengan bertambahnya nilai sepal_width. Meskipun korelasi keseluruhannya lemah, kita bisa melihat adanya pengelompokan atau cluster data yang sangat jelas dan tidak menyebabkan ambigu. Di area kiri atas, terdapat sekumpulan titik data yang didominasi warna kuning dan hijau muda, menunjukkan nilai sepal_width yang tinggi berkisar antara 3.4 hingga 4.4, namun memiliki sepal_length yang cenderung pendek yakni di bawah 5.5. Sementara itu, di bagian tengah hingga kanan bawah terdapat kumpulan data yang jauh lebih menyebar dengan dominasi warna biru dan hijau tua, yang merepresentasikan nilai sepal_width lebih rendah antara 2.0 hingga 3.4 tetapi membentang dengan sepal_length yang jauh lebih panjang hingga melebihi angka 7.5. Pemisahan cluster yang sangat kontras ini kemungkinan besar merepresentasikan spesies bunga iris yang berbeda, di mana kelompok kiri atas dengan sepal lebar namun pendek biasanya merupakan karakteristik khas dari spesies Iris setosa yang terpisah jelas dari spesies lainnya. Visualisasi ini juga dibuat semakin informatif melalui penggunaan warna yang memperjelas rentang kategori nilai sepal_width sesuai dengan legenda di sudut kanan bawah, serta pemanfaatan ukuran titik lingkaran yang tampak semakin membesar seiring dengan bertambahnya posisi titik ke arah kanan.</p>
+</section>
+<section id="korelasi-antara-petallengt-dan-petalwidth">
+<h3>Korelasi antara petallengt dan petalwidth<a class="headerlink" href="#korelasi-antara-petallengt-dan-petalwidth" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar2" src="_images/pelepewi.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara petal_length pada sumbu horizontal dan petal_width pada sumbu vertikal sangat kuat dan positif. Hal ini dikarenakan titik-titik data membentuk pola garis yang sangat jelas membentang dari arah kiri bawah ke kanan atas, menunjukkan bahwa semakin besar nilai petal_length, maka secara konsisten akan diikuti dengan semakin besarnya pula nilai petal_width. Artinya, kedua variabel tersebut sangat rapat membentuk pola linear yang berbanding lurus. Dari sebaran data ini juga terlihat sangat jelas terdapat dua cluster utama yang terpisah cukup jauh dan sama sekali tidak menyebabkan ambigu. Di area pojok kiri bawah, terdapat sebuah cluster yang sangat terisolasi dengan nilai petal_length yang pendek (berkisar 1 hingga 2) dan petal_width yang sempit (berada di bawah angka 0.7), yang didominasi oleh titik berwarna hijau muda dan kuning. Sementara itu, kelompok data kedua membentang dari area tengah terus naik hingga ke kanan atas, memiliki nilai panjang dan lebar petal yang jauh lebih besar serta didominasi oleh warna biru hingga hijau tua. Pemisahan ruang kosong yang sangat tegas antara cluster kecil di kiri bawah dengan kelompok besar di atasnya ini kemungkinan besar merepresentasikan spesies bunga iris yang berbeda secara morfologi dan sangat mudah untuk diklasifikasikan. Sama seperti sebelumnya, visualisasi ini juga dilengkapi dengan variasi ukuran titik dan rentang warna yang memberikan informasi tambahan mengenai dimensi data lainnya sesuai dengan legenda di sudut kanan bawah.</p>
+</section>
+<section id="korelasi-antara-sepallength-dan-petallength">
+<h3>Korelasi antara sepallength dan petallength<a class="headerlink" href="#korelasi-antara-sepallength-dan-petallength" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar3" src="_images/selepele.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara sepal_length pada sumbu horizontal dan petal_length pada sumbu vertikal bernilai positif dan terbilang cukup kuat. Hal ini terlihat dari titik-titik data yang membentuk pola diagonal melintang dari arah kiri bawah menuju kanan atas, yang mengindikasikan bahwa pertambahan panjang pada sepal secara umum berbanding lurus dengan pertambahan panjang pada petal. Dari persebaran data tersebut, kita kembali disuguhkan dengan pemandangan dua cluster utama yang terpisah dengan sangat tegas dan sama sekali tidak menyebabkan ambigu. Di area paling bawah, terdapat sebuah kelompok data mendatar yang memiliki sepal_length bervariasi antara kisaran 4.0 hingga hampir 6.0, namun memiliki petal_length yang stagnan dan sangat pendek di kisaran angka 1 hingga 2. Menariknya, cluster bawah ini sangat didominasi oleh titik-titik berwarna kuning dan hijau muda, yang menurut legenda di sudut kanan bawah menandakan dimensi data pelengkapnya bernilai tinggi. Sebaliknya, kelompok data yang lain tersebar membentang menanjak dari area tengah hingga memuncak di kanan atas, merepresentasikan karakteristik bunga dengan ukuran sepal dan petal yang jauh lebih panjang, yang umumnya diwarnai oleh gradasi biru hingga hijau tua. Jarak kosong yang memisahkan kelompok bawah yang mendatar dengan kelompok atas yang menanjak ini kembali menjadi indikator kuat yang merepresentasikan perbedaan spesies bunga iris yang sangat spesifik. Visualisasi ini pun tetap konsisten memanfaatkan variasi warna dan ukuran lingkaran untuk memberikan kedalaman informasi tambahan dalam satu pandangan mata secara komprehensif.</p>
+</section>
+<section id="korelasi-antara-sepallength-dan-petalwidth">
+<h3>Korelasi antara sepallength dan petalwidth<a class="headerlink" href="#korelasi-antara-sepallength-dan-petalwidth" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar4" src="_images/selepewi.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara sepal_length pada sumbu horizontal dan petal_width pada sumbu vertikal bernilai positif dan terlihat cukup kuat. Hal ini terlihat dari titik-titik data yang membentuk pola pergerakan menanjak dari arah kiri bawah menuju kanan atas, yang mengindikasikan bahwa semakin bertambahnya panjang sepal, maka cenderung akan diikuti pula dengan peningkatan ukuran lebar pada petal. Dari persebaran data tersebut, kita kembali dapat melihat dengan jelas adanya dua cluster utama yang terpisah secara tegas dan tidak menyebabkan ambigu. Di area paling bawah, terdapat sebuah kelompok data yang menggerombol dengan nilai petal_width yang sangat sempit di bawah angka 0.7, serta sepal_length yang berada di kisaran 4.3 hingga 5.8. Menariknya, cluster bagian bawah ini kembali didominasi oleh titik-titik berwarna kuning dan hijau muda, yang merujuk pada legenda di sudut kanan bawah sebagai penanda bahwa dimensi data pelengkapnya (sepal_width) bernilai cukup tinggi. Sementara itu, kelompok data yang kedua tersebar jauh lebih luas dan menanjak dari area tengah hingga memuncak di kanan atas, merepresentasikan karakteristik bunga dengan ukuran panjang sepal dan lebar petal yang jauh lebih besar, serta umumnya diwarnai oleh gradasi biru hingga hijau tua yang menandakan ukuran sepal_width lebih rendah hingga menengah. Jarak kosong yang memisahkan kelompok bawah dengan kelompok atas yang menanjak ini kembali menjadi bukti visual yang sangat kuat untuk merepresentasikan perbedaan spesies bunga iris yang spesifik. Visualisasi scatter plot ini pun tetap konsisten dalam memanfaatkan variasi warna dan ukuran lingkaran untuk menyajikan kedalaman informasi dari berbagai variabel sekaligus secara komprehensif dalam satu tampilan.</p>
+</section>
+<section id="korelasi-antara-sepalwidth-dan-petallength">
+<h3>Korelasi antara sepalwidth dan petallength<a class="headerlink" href="#korelasi-antara-sepalwidth-dan-petallength" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar5" src="_images/sewipele.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara sepal_width pada sumbu horizontal dan petal_length pada sumbu vertikal terlihat cenderung menyebar dan terpisah, bahkan bisa dibilang memiliki korelasi negatif yang lemah secara keseluruhan jika ditarik garis lurus. Hal ini terlihat dari titik-titik data yang sama sekali tidak membentuk pola garis linear yang rapi, melainkan terpecah ke dalam ruang yang berbeda. Dari persebaran data tersebut, kita kembali dapat melihat dengan sangat jelas adanya dua cluster utama yang terpisah secara tegas dan tidak menyebabkan ambigu. Di area kanan bawah, terdapat sebuah kelompok data mendatar yang menggerombol padat dengan nilai petal_length yang sangat pendek di kisaran angka 1 hingga 2, namun memiliki sepal_width yang terbilang lebar yakni membentang dari kisaran 3.0 hingga melebihi 4.0. Menariknya, cluster bagian bawah ini sangat didominasi oleh titik-titik berwarna hijau muda dan kuning, yang merujuk pada legenda di sudut kanan bawah memang merepresentasikan tingginya rentang nilai pada kelompok tersebut. Sementara itu, kelompok data yang lain tersebar jauh lebih luas dari area kiri tengah hingga melambung ke atas, merepresentasikan karakteristik bunga dengan ukuran panjang petal yang jauh lebih besar mulai dari angka 3 hingga mendekati 7, namun dengan ukuran sepal_width yang cenderung lebih sempit hingga menengah di kisaran 2.0 hingga 3.4. Kelompok yang melayang di atas ini umumnya diwarnai oleh gradasi biru hingga hijau tua. Ruang kosong vertikal yang sangat kentara dalam memisahkan kelompok bawah yang terisolasi dengan kelompok atas yang menyebar luas ini kembali menjadi bukti visual yang kuat untuk merepresentasikan perbedaan spesies bunga iris yang spesifik secara morfologi. Visualisasi scatter plot ini tetap konsisten menyajikan pengelompokan yang tegas dengan memanfaatkan variasi warna dan ukuran titik untuk memperjelas rentang nilai data secara komprehensif dalam satu tampilan.</p>
+</section>
+<section id="korelasi-antara-sepalwidth-dan-petalwidth">
+<h3>Korelasi antara sepalwidth dan petalwidth<a class="headerlink" href="#korelasi-antara-sepalwidth-dan-petalwidth" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar6" src="_images/sewipewi.png" />
+Dari gambar di atas menunjukkan bahwa korelasi antara sepal_width pada sumbu horizontal dan petal_width pada sumbu vertikal secara keseluruhan terlihat menyebar dan terpisah, tidak membentuk korelasi linear yang kuat. Hal ini terlihat dari titik-titik data yang terpecah ke dalam area yang berbeda dan tidak membentuk satu pola garis yang utuh. Dari persebaran data tersebut, kita kembali dapat melihat dengan sangat jelas adanya dua cluster utama yang terpisah secara tegas dan sama sekali tidak menyebabkan ambigu. Di area kanan bawah, terdapat sebuah kelompok data mendatar yang menggerombol padat dengan nilai petal_width yang sangat sempit di kisaran angka 0.1 hingga 0.6, namun memiliki sepal_width yang terbilang lebar yakni membentang dari kisaran 3.0 hingga melebihi 4.0. Menariknya, cluster bagian bawah ini sangat didominasi oleh titik-titik berwarna hijau muda dan kuning, yang merujuk pada legenda di sudut kanan bawah merepresentasikan tingginya rentang nilai pada kelompok tersebut. Sementara itu, kelompok data yang lain tersebar jauh lebih luas menempati area kiri tengah hingga melambung ke atas, merepresentasikan karakteristik bunga dengan ukuran lebar petal yang jauh lebih besar mulai dari angka 1.0 hingga mendekati 2.5, namun dengan rentang ukuran sepal_width yang bervariasi dari sempit hingga menengah di kisaran 2.0 hingga mendekati 3.5. Kelompok yang berada di atas ini didominasi oleh gradasi warna biru hingga hijau tua. Ruang kosong mendatar yang sangat kentara dalam memisahkan kelompok bawah yang terisolasi dengan kelompok atas yang menyebar luas ini menjadi bukti visual terakhir yang sangat kuat untuk merepresentasikan perbedaan spesies bunga iris yang spesifik secara morfologi. Visualisasi scatter plot ini tetap konsisten menyajikan pengelompokan yang tegas dengan memanfaatkan variasi warna dan ukuran titik untuk memperjelas rentang nilai data secara komprehensif dalam satu pandangan.</p>
+</section>
+<section id="statistik-deskriptif">
+<h3>statistik deskriptif<a class="headerlink" href="#statistik-deskriptif" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar7" src="_images/statistik.jpg" />
+Dari gambar tabel statistik, diperoleh ringkasan numerik komprehensif yang memvalidasi temuan-temuan visual dari seluruh grafik scatter plot sebelumnya. Tabel ini merangkum empat fitur numerik utama beserta satu kolom kategorikal spesies yang tidak memiliki data kosong sama sekali atau nol persen missing value, menandakan bahwa dataset ini sangat bersih dan ideal untuk keperluan pemodelan. Berdasarkan rentang nilainya, sepal_length menjadi dimensi fisik dengan rentang terbesar yang nilainya membentang dari 4.3 hingga puncaknya di 7.9 dengan rata-rata 5.84, sementara sepal_width memiliki persebaran yang lebih terpusat antara 2.0 hingga 4.4. Temuan paling krusial yang secara matematis membuktikan analisis pengelompokan atau cluster sebelumnya terletak pada distribusi variabel petal_length dan petal_width. Meskipun petal_length memiliki rentang yang sangat lebar dari 1.0 hingga 6.9 dengan nilai tengah atau median di angka 4.35, nilai modus atau angka yang paling sering muncul justru sangat rendah di angka 1.5. Pola yang sama persis juga terjadi pada petal_width, di mana rata-ratanya adalah sekitar 1.19 tetapi modusnya menumpuk di angka yang sangat kecil yakni 0.2, dan tercatat pula bahwa spesies yang menjadi modus adalah Iris-setosa. Nilai modus yang bertumpuk di batas bawah inilah yang menjadi bukti statistik tak terbantahkan dari keberadaan kelompok data yang selalu terlihat terisolasi di pojok bawah pada grafik-grafik sebelumnya, mengonfirmasi bahwa spesies Iris-setosa memang memiliki ukuran kelopak atau petal yang secara konsisten dan seragam berukuran jauh lebih kecil dibandingkan dengan spesies bunga iris lainnya di dalam dataset tersebut.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="business-understanding.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Business Understanding</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data-preparation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Preparation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-petallength">Korelasi antara sepallength dan petallength</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-petalwidth">Korelasi antara sepallength dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepalwidth-dan-petallength">Korelasi antara sepalwidth dan petallength</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepalwidth-dan-petalwidth">Korelasi antara sepalwidth dan petalwidth</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistik-deskriptif">statistik deskriptif</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
