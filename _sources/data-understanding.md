@@ -35,3 +35,86 @@ Dari gambar tabel Column Statistics tersebut, ditampilkan ringkasan data numerik
 Eksekusi kode pemrograman Python di Google Colab diatas pada dasarnya merupakan pembuktian matematis secara manual yang selaras sempurna dengan hasil ringkasan perangkat lunak Orange pada tugas Anda sebelumnya. Angka-angka statistik deskriptif yang dihasilkan dari baris skrip untuk atribut sepal_length secara presisi memvalidasi dan mengonfirmasi tabel Column Statistics yang telah kita bedah bersama. Sebagai buktinya, output terminal Colab menunjukkan nilai rata-rata sepal_length sebesar 5.84, nilai minimum 4.3, nilai maksimum 7.9, serta nilai tengah atau median di angka 5.8, yang mana seluruh metrik matematis ini sama persis tanpa ada perbedaan sedikit pun dengan deretan angka yang tercetak pada antarmuka tabel Orange tersebut. Bahkan, perhitungan fungsi statistik dari pustaka SciPy yang menghasilkan nilai modus 5.0 dengan frekuensi kemunculan sepuluh kali juga sepenuhnya akurat mengikuti angka modus yang tertera di perangkat lunak penambangan data tersebut. Lebih jauh lagi, jika kita menengok kembali rentetan grafik scatter plot yang paling awal Anda unggah, hasil perhitungan metrik sebaran dengan rentang nilai dari 4.3 hingga 7.9 serta standar deviasi 0.83 ini memberikan landasan kuantitatif yang solid mengenai mengapa sumbu sepal_length selalu terlihat paling panjang membentang dan menyebar luas dibandingkan dimensi atribut lainnya saat divisualisasikan dalam bentuk titik-titik koordinat. Dengan kata lain, skrip pemrograman berbasis library Pandas dan SciPy yang Anda jalankan ini bertindak sebagai fondasi eksplorasi data tingkat dasar untuk mereplikasi sekaligus menguji secara komputasional kebenaran dari apa yang telah dirangkum secara otomatis dan divisualisasikan secara apik oleh perangkat lunak Orange dalam keseluruhan tugas penambangan data Anda
 [Kunjungi collab saya](https://colab.research.google.com/drive/1VZh2A2EH4b9HDbm6SVZ1K33Rw7D1FdBn?usp=sharing)
 
+
+## Tugas Kedua
+
+### penjelasan mengukur Jarak dengan tipe data campuran
+
+### Latar Belakang
+Dalam penerapan di dunia nyata, data yang dianalisis umumnya terdiri atas beragam tipe atribut yang digabungkan dalam satu dataset. Misalnya, terdapat atribut nominal seperti warna atau kategori produk, atribut biner simetris seperti jenis kelamin, atribut biner asimetris seperti hasil pemeriksaan medis (Y/T), atribut numerik berbentuk interval atau rasio seperti suhu dan pendapatan, serta atribut ordinal yang menunjukkan tingkatan, seperti level kepuasan atau tingkat pendidikan.
+
+Perbedaan karakteristik dan skala pengukuran pada tiap tipe data tersebut menyebabkan kita tidak bisa menggunakan satu formula jarak yang sama untuk semuanya. Setiap jenis atribut memerlukan cara perhitungan yang disesuaikan dengan sifat datanya agar hasilnya relevan.
+
+Untuk mengatasi hal tersebut, digunakan pendekatan jarak campuran dengan mekanisme pembobotan. Prosesnya dilakukan dengan menghitung jarak masing-masing atribut berdasarkan tipenya, kemudian mengintegrasikan seluruh hasil tersebut ke dalam satu perhitungan akhir yang memperhatikan bobot dan validitas setiap atribut. Melalui pendekatan ini, kontribusi setiap jenis data menjadi lebih proporsional, sehingga nilai jarak yang dihasilkan mampu menggambarkan kondisi data secara lebih tepat dan realistis.
+
+
+### Rumus mengukur jarak data campuran
+
+![Gambar9](t2f1.png)
+
+Keterangan:
+
+simbol	penjelasan
+d(i,j)	Jarak antara objek i dan j
+p	umlah total atribut
+δ ij (f)​	Indikator: 1 jika atribut ke-f valid untuk dibandingkan, 0 jika tidak (misal: data missing)
+d ij (f)​	Jarak untuk atribut ke-f saja
+
+### Cara Menghitung d(f)ij per Tipe Atribut
+#### 1. Atribut Nominal atau Binary
+
+ij(f) = 0, jika xif = xjf (nilai sama)
+
+
+dij(f) = 1, jika xif ≠ xjf (nilai berbeda)
+
+
+cara penghitungannya Menggunakan metode simple matching.
+
+
+#### 2. Atribut Numerik
+
+Lakukan normalisasi terlebih dahulu agar skala seragam, misalnya dengan:
+![Gambar10](t2f2.png)
+Mean Absolute Deviation: lebih robust terhadap outlier
+
+
+Setelah dinormalisasi, hitung jarak dengan metode numerik (Euclidean, Manhattan, dll).
+
+#### Atribut Ordinal
+
+Langkah-langkah:
+
+
+Ganti nilai dengan ranking r i f​ (misal: rendah=1, sedang=2, tinggi=3)
+
+![Gambar11](t2f3.png)
+Hitung jarak menggunakan metode numerik pada nilai z i f​
+
+
+#### analisi mengunakan orange data mining untuk data yang campuran
+
+
+contoh data saya untuk menganalisis penghitungan jarak di orange
+![Gambar12](t2f4.png)
+Widget Distances digunakan untuk menghitung matriks dissimilarity (jarak) antar objek dalam dataset. arameter Compare diset ke Rows yang berarti perhitungan jarak dilakukan antar objek/data point (baris dalam dataset), bukan antar atribut. Hal ini sesuai dengan konsep matriks dissimilarity, dimana matriks segitiga dihasilkan dari perhitungan jarak antar n titik data. Metric jarak yang dipilih adalah Manhattan (normalized) karena data yang saya pakai memiliki data campuran
+![Gambar13](t2f5.png)
+Gambar tersebut menampilkan Matriks Dissimilarity (Distance Matrix) yang dihasilkan melalui widget Distance Matrix pada Orange Data Mining. matriks ini berbentuk segitiga (single mode) yang memuat data jarak antar n titik data. Struktur matriks ini bersifat simetris, dimana jarak antara objek i ke objek j sama dengan jarak objek j ke objek i atau d(i,j) = d(j,i), dan memiliki nilai diagonal nol yang menunjukkan jarak objek terhadap dirinya sendiri. nilai dissimilarity dalam matriks ini merupakan ukuran numerik dari perbedaan dua objek data. Interpretasi nilai jarak mengikuti prinsip dimana nilai yang sangat rendah menunjukkan benda yang lebih mirip, sedangkan nilai yang tinggi menunjukkan perbedaan yang besar. Hal ini terlihat jelas pada data pelanggan dalam matriks. Sebagai contoh, jarak antara customer 7590-VHVEG dan 5575-GNVDE adalah 2,074, yang menunjukkan tingkat perbedaan sedang. Namun, customer 7590-VHVEG memiliki nilai jarak yang lebih kecil yaitu 0,554 terhadap customer 3668-QPYBK, yang mengindikasikan bahwa kedua customer tersebut memiliki karakteristik yang sangat mirip. Sebaliknya, perbedaan yang signifikan terlihat pada pasangan customer 8091-TTVAX dan 3668-QPYBK yang memiliki nilai jarak sebesar 4,519. Nilai yang besar ini menandakan bahwa kedua objek tersebut sangat berbeda secara karakteristik. Secara keseluruhan, matriks ini memenuhi sifat-sifat jarak yaitu positive definiteness (nilai > 0 untuk objek berbeda), symmetry, dan triangle inequality. Hasil matriks dissimilarity ini menjadi dasar utama untuk tahapan selanjutnya yaitu Hierarchical Clustering dalam mengelompokkan pelanggan berdasarkan kemiripan karakteristiknya.
+
+![Gambar14](t2f6.png)
+![Gambar15](t2f7.png)
+Berdasarkan dendrogram, hierarchical clustering dilakukan dengan metode linkage Ward dan menghasilkan 4 cluster optimal. Pemotongan dendrogram dilakukan pada ketinggian tertentu sehingga diperoleh:
+
+Cluster 1: sejumlah X customer, Cluster 2: sejumlah X customer, Cluster 3: sejumlah X customer, Cluster 4: sejumlah X customer,
+
+Metode Ward linkage dipilih karena mampu menghasilkan cluster yang lebih kompak dengan meminimalkan varians dalam setiap cluster.
+
+#### implementasikan data iris untuk mengukur jara di orange
+![Gambar16](t2f8.png)
+gambar diatas merupakan sebagian data mentah dari iris untuk diimplementasikan dalam menghitung jarak
+![Gambar17](t2f9.png)
+gambar di atas merupakan hasil dari menghitung jarak pada data iris dimana prosesnya sama dengan yang tadi
+![Gambar18](t2f10.png)
+gambar di atas merupakan visualiasi pengukuran jarak pada orange, tetapi sementara saya menggunakan widget csv file impor untuk mengimpor data iris bukan menggunakan sql table karena widget tersebut masih ada erornya atau tidak bisa di pakai dan belum menemukan solusinya
+
+
