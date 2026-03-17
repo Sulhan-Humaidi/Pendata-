@@ -475,7 +475,7 @@ $$x' = \frac{x}{10^j}$$
     print(df_decimal.to_string(index=False))
 ```
 
-```
+` ` 
     Data Asli:
     Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
     Aris 3.50            5000         85            10
@@ -529,4 +529,4 @@ $$x' = \frac{x}{10^j}$$
     Heru 0.320            0.40       0.80          0.12
     Intan 0.375            0.75       0.90          0.06
     Juna 0.255            0.18       0.60          0.35
-```
+` `
