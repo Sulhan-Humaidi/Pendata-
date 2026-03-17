@@ -243,7 +243,7 @@ $$\hat{y} = \frac{7727.822}{115.3848} \approx 66.97$$
 
 ### penyelesaian missing values menggunakan WKNN (code)
 
-` ` `import math
+```import math
 
 # 1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10
 train_data = [
@@ -284,7 +284,7 @@ for t in top5:
     print(f"{t['nama']:6} (nilai={t['nilai']}) | d={t['jarak']:.4f} | w={w:.4f} | w*v={w*t['nilai']:.2f}")
 
 print("\n=== HASIL AKHIR ===")
-print(f"Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}")` ` `
+print(f"Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}")```
 ` ` `
 === PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
 Ke Bagas  -> Jarak = 0.1289 | Nilai_Tugas = 65
