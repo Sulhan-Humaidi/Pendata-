@@ -178,9 +178,6 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
-
-
-
 <li class="toctree-l1"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling.html">Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
@@ -379,7 +376,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -436,12 +432,6 @@ document.write(`
 </ul>
 </li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -885,25 +875,28 @@ $<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.1034)^2 + (0
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nilai_Tugas Gita = </span><span class="si">{</span><span class="n">sum_wv</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">sum_w</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">sum_wv</span><span class="o">/</span><span class="n">sum_w</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
-Ke Bagas  -&gt; Jarak = 0.1289 | Nilai_Tugas = 65
-Ke Elisa  -&gt; Jarak = 0.2067 | Nilai_Tugas = 75
-Ke Juna   -&gt; Jarak = 0.2643 | Nilai_Tugas = 60
-Ke Heru   -&gt; Jarak = 0.3100 | Nilai_Tugas = 78
-Ke Dimas  -&gt; Jarak = 0.3775 | Nilai_Tugas = 55
-Ke Aris   -&gt; Jarak = 0.5650 | Nilai_Tugas = 80
-Ke Farhan -&gt; Jarak = 0.7232 | Nilai_Tugas = 85
-Ke Intan  -&gt; Jarak = 0.9672 | Nilai_Tugas = 88
-Ke Chika  -&gt; Jarak = 1.0702 | Nilai_Tugas = 92</p>
-<p>=== PERHITUNGAN BOBOT WKNN (K=5) ===
-Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w<em>v=504.42
-Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w</em>v=362.83
-Juna   (nilai=60) | d=0.2643 | w=3.7837 | w<em>v=227.02
-Heru   (nilai=78) | d=0.3100 | w=3.2262 | w</em>v=251.64
-Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68</p>
-<p>=== HASIL AKHIR ===
-Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
-<code class="docutils literal notranslate"> </code> `</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```    === PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
+    Ke Bagas  -&gt; Jarak = 0.1289 | Nilai_Tugas = 65
+    Ke Elisa  -&gt; Jarak = 0.2067 | Nilai_Tugas = 75
+    Ke Juna   -&gt; Jarak = 0.2643 | Nilai_Tugas = 60
+    Ke Heru   -&gt; Jarak = 0.3100 | Nilai_Tugas = 78
+    Ke Dimas  -&gt; Jarak = 0.3775 | Nilai_Tugas = 55
+    Ke Aris   -&gt; Jarak = 0.5650 | Nilai_Tugas = 80
+    Ke Farhan -&gt; Jarak = 0.7232 | Nilai_Tugas = 85
+    Ke Intan  -&gt; Jarak = 0.9672 | Nilai_Tugas = 88
+    Ke Chika  -&gt; Jarak = 1.0702 | Nilai_Tugas = 92
+
+    === PERHITUNGAN BOBOT WKNN (K=5) ===
+    Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w*v=504.42
+    Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w*v=362.83
+    Juna   (nilai=60) | d=0.2643 | w=3.7837 | w*v=227.02
+    Heru   (nilai=78) | d=0.3100 | w=3.2262 | w*v=251.64
+    Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68
+
+    === HASIL AKHIR ===
+    Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
+</pre></div>
+</div>
 </section>
 </section>
 <section id="teknik-normalisasi-data">
@@ -1253,111 +1246,114 @@ $<span class="math notranslate nohighlight">\(Penghasilan'_{Aris} = 5000 / 10000
 </tbody>
 </table>
 </div>
-<p><code class="docutils literal notranslate"> </code> `
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler</p>
-<p>data = {
-‘Nama’:           [‘Aris’,’Bagas’,’Chika’,’Dimas’,’Elisa’,’Farhan’,’Gita’,’Heru’,’Intan’,’Juna’],
-‘IPK’:            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
-‘Penghasilan_OT’: [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
-‘Nilai_UAS’:      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
-‘Jarak_Kampus’:   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
-}
-df    = pd.DataFrame(data)
-fitur = [‘IPK’, ‘Penghasilan_OT’, ‘Nilai_UAS’, ‘Jarak_Kampus’]</p>
-<p>print(“Data Asli:”)
-print(df.to_string(index=False))</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span><span class="p">,</span> <span class="n">StandardScaler</span>
+
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Nama&#39;</span><span class="p">:</span>           <span class="p">[</span><span class="s1">&#39;Aris&#39;</span><span class="p">,</span><span class="s1">&#39;Bagas&#39;</span><span class="p">,</span><span class="s1">&#39;Chika&#39;</span><span class="p">,</span><span class="s1">&#39;Dimas&#39;</span><span class="p">,</span><span class="s1">&#39;Elisa&#39;</span><span class="p">,</span><span class="s1">&#39;Farhan&#39;</span><span class="p">,</span><span class="s1">&#39;Gita&#39;</span><span class="p">,</span><span class="s1">&#39;Heru&#39;</span><span class="p">,</span><span class="s1">&#39;Intan&#39;</span><span class="p">,</span><span class="s1">&#39;Juna&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;IPK&#39;</span><span class="p">:</span>            <span class="p">[</span><span class="mf">3.50</span><span class="p">,</span> <span class="mf">2.75</span><span class="p">,</span> <span class="mf">3.85</span><span class="p">,</span> <span class="mf">2.40</span><span class="p">,</span> <span class="mf">3.10</span><span class="p">,</span> <span class="mf">3.60</span><span class="p">,</span> <span class="mf">2.90</span><span class="p">,</span> <span class="mf">3.20</span><span class="p">,</span> <span class="mf">3.75</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">],</span>
+        <span class="s1">&#39;Penghasilan_OT&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">3500</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">7500</span><span class="p">,</span> <span class="mi">1800</span><span class="p">],</span>
+        <span class="s1">&#39;Nilai_UAS&#39;</span><span class="p">:</span>      <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+        <span class="s1">&#39;Jarak_Kampus&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">35</span><span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">df</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">fitur</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IPK&#39;</span><span class="p">,</span> <span class="s1">&#39;Penghasilan_OT&#39;</span><span class="p">,</span> <span class="s1">&#39;Nilai_UAS&#39;</span><span class="p">,</span> <span class="s1">&#39;Jarak_Kampus&#39;</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data Asli:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+    <span class="c1"># 1. Min-Max Scaling (Sklearn)</span>
+    <span class="n">minmax_scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="n">X_minmax</span> <span class="o">=</span> <span class="n">minmax_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">fitur</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">1. Hasil Min-Max Scaling:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X_minmax</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="c1"># 2. Z-Score / Standardization (Sklearn)</span>
+    <span class="n">standard_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">X_standard</span> <span class="o">=</span> <span class="n">standard_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">fitur</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">2. Hasil Z-Score (Standardization):&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">X_standard</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="c1"># 3. Decimal Scaling (Custom Function)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decimal_scaling</span><span class="p">(</span><span class="n">df_input</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Melakukan decimal scaling pada setiap kolom numerik.</span>
+<span class="sd">        Nilai dibagi dengan 10^j, di mana j adalah jumlah digit</span>
+<span class="sd">        dari nilai absolut terbesar pada kolom tersebut.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">df_input</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="n">max_abs</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="c1"># Menghitung jumlah digit dari angka bulat terbesar</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_abs</span><span class="p">)))</span>          
+            <span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">j</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Kolom &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39;: nilai maks = </span><span class="si">{</span><span class="n">max_abs</span><span class="si">}</span><span class="s2">, j = </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, dibagi </span><span class="si">{</span><span class="mi">10</span><span class="o">**</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">3. Decimal Scaling (Fungsi Manual):&quot;</span><span class="p">)</span>
+    <span class="n">df_decimal</span> <span class="o">=</span> <span class="n">decimal_scaling</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">fitur</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df_decimal</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">Data</span> <span class="n">Asli</span><span class="p">:</span>
+    <span class="n">Nama</span>  <span class="n">IPK</span>  <span class="n">Penghasilan_OT</span>  <span class="n">Nilai_UAS</span>  <span class="n">Jarak_Kampus</span>
+    <span class="n">Aris</span> <span class="mf">3.50</span>            <span class="mi">5000</span>         <span class="mi">85</span>            <span class="mi">10</span>
+    <span class="n">Bagas</span> <span class="mf">2.75</span>            <span class="mi">2000</span>         <span class="mi">65</span>            <span class="mi">25</span>
+    <span class="n">Chika</span> <span class="mf">3.85</span>            <span class="mi">8000</span>         <span class="mi">92</span>             <span class="mi">5</span>
+    <span class="n">Dimas</span> <span class="mf">2.40</span>            <span class="mi">1500</span>         <span class="mi">55</span>            <span class="mi">40</span>
+    <span class="n">Elisa</span> <span class="mf">3.10</span>            <span class="mi">3500</span>         <span class="mi">78</span>            <span class="mi">15</span>
+    <span class="n">Farhan</span> <span class="mf">3.60</span>            <span class="mi">6000</span>         <span class="mi">88</span>             <span class="mi">8</span>
+    <span class="n">Gita</span> <span class="mf">2.90</span>            <span class="mi">2500</span>         <span class="mi">70</span>            <span class="mi">30</span>
+    <span class="n">Heru</span> <span class="mf">3.20</span>            <span class="mi">4000</span>         <span class="mi">80</span>            <span class="mi">12</span>
+    <span class="n">Intan</span> <span class="mf">3.75</span>            <span class="mi">7500</span>         <span class="mi">90</span>             <span class="mi">6</span>
+    <span class="n">Juna</span> <span class="mf">2.55</span>            <span class="mi">1800</span>         <span class="mi">60</span>            <span class="mi">35</span>
+
+    <span class="mf">1.</span> <span class="n">Hasil</span> <span class="n">Min</span><span class="o">-</span><span class="n">Max</span> <span class="n">Scaling</span><span class="p">:</span>
+    <span class="p">[[</span><span class="mf">0.7586</span> <span class="mf">0.5385</span> <span class="mf">0.8108</span> <span class="mf">0.1429</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.2414</span> <span class="mf">0.0769</span> <span class="mf">0.2703</span> <span class="mf">0.5714</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">1.</span>     <span class="mf">1.</span>     <span class="mf">1.</span>     <span class="mf">0.</span>    <span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.</span>     <span class="mf">0.</span>     <span class="mf">0.</span>     <span class="mf">1.</span>    <span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.4828</span> <span class="mf">0.3077</span> <span class="mf">0.6216</span> <span class="mf">0.2857</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.8276</span> <span class="mf">0.6923</span> <span class="mf">0.8919</span> <span class="mf">0.0857</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.3448</span> <span class="mf">0.1538</span> <span class="mf">0.4054</span> <span class="mf">0.7143</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.5517</span> <span class="mf">0.3846</span> <span class="mf">0.6757</span> <span class="mf">0.2</span>   <span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.931</span>  <span class="mf">0.9231</span> <span class="mf">0.9459</span> <span class="mf">0.0286</span><span class="p">]</span>
+    <span class="p">[</span><span class="mf">0.1034</span> <span class="mf">0.0462</span> <span class="mf">0.1351</span> <span class="mf">0.8571</span><span class="p">]]</span>
+
+    <span class="mf">2.</span> <span class="n">Hasil</span> <span class="n">Z</span><span class="o">-</span><span class="n">Score</span> <span class="p">(</span><span class="n">Standardization</span><span class="p">):</span>
+    <span class="p">[[</span> <span class="mf">0.7053</span>  <span class="mf">0.3648</span>  <span class="mf">0.6988</span> <span class="o">-</span><span class="mf">0.7059</span><span class="p">]</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.8505</span> <span class="o">-</span><span class="mf">0.9699</span> <span class="o">-</span><span class="mf">0.9076</span>  <span class="mf">0.5253</span><span class="p">]</span>
+    <span class="p">[</span> <span class="mf">1.4313</span>  <span class="mf">1.6996</span>  <span class="mf">1.261</span>  <span class="o">-</span><span class="mf">1.1163</span><span class="p">]</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.5765</span> <span class="o">-</span><span class="mf">1.1924</span> <span class="o">-</span><span class="mf">1.7108</span>  <span class="mf">1.7565</span><span class="p">]</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.1245</span> <span class="o">-</span><span class="mf">0.3025</span>  <span class="mf">0.1365</span> <span class="o">-</span><span class="mf">0.2955</span><span class="p">]</span>
+    <span class="p">[</span> <span class="mf">0.9127</span>  <span class="mf">0.8098</span>  <span class="mf">0.9397</span> <span class="o">-</span><span class="mf">0.87</span>  <span class="p">]</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">0.5393</span> <span class="o">-</span><span class="mf">0.7475</span> <span class="o">-</span><span class="mf">0.506</span>   <span class="mf">0.9357</span><span class="p">]</span>
+    <span class="p">[</span> <span class="mf">0.083</span>  <span class="o">-</span><span class="mf">0.0801</span>  <span class="mf">0.2972</span> <span class="o">-</span><span class="mf">0.5417</span><span class="p">]</span>
+    <span class="p">[</span> <span class="mf">1.2239</span>  <span class="mf">1.4771</span>  <span class="mf">1.1004</span> <span class="o">-</span><span class="mf">1.0342</span><span class="p">]</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.2654</span> <span class="o">-</span><span class="mf">1.0589</span> <span class="o">-</span><span class="mf">1.3092</span>  <span class="mf">1.3461</span><span class="p">]]</span>
+
+    <span class="mf">3.</span> <span class="n">Decimal</span> <span class="n">Scaling</span> <span class="p">(</span><span class="n">Fungsi</span> <span class="n">Manual</span><span class="p">):</span>
+    <span class="n">Kolom</span> <span class="s1">&#39;IPK&#39;</span><span class="p">:</span> <span class="n">nilai</span> <span class="n">maks</span> <span class="o">=</span> <span class="mf">3.85</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dibagi</span> <span class="mi">10</span>
+    <span class="n">Kolom</span> <span class="s1">&#39;Penghasilan_OT&#39;</span><span class="p">:</span> <span class="n">nilai</span> <span class="n">maks</span> <span class="o">=</span> <span class="mi">8000</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dibagi</span> <span class="mi">10000</span>
+    <span class="n">Kolom</span> <span class="s1">&#39;Nilai_UAS&#39;</span><span class="p">:</span> <span class="n">nilai</span> <span class="n">maks</span> <span class="o">=</span> <span class="mi">92</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dibagi</span> <span class="mi">100</span>
+    <span class="n">Kolom</span> <span class="s1">&#39;Jarak_Kampus&#39;</span><span class="p">:</span> <span class="n">nilai</span> <span class="n">maks</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dibagi</span> <span class="mi">100</span>
+    <span class="n">Nama</span>   <span class="n">IPK</span>  <span class="n">Penghasilan_OT</span>  <span class="n">Nilai_UAS</span>  <span class="n">Jarak_Kampus</span>
+    <span class="n">Aris</span> <span class="mf">0.350</span>            <span class="mf">0.50</span>       <span class="mf">0.85</span>          <span class="mf">0.10</span>
+    <span class="n">Bagas</span> <span class="mf">0.275</span>            <span class="mf">0.20</span>       <span class="mf">0.65</span>          <span class="mf">0.25</span>
+    <span class="n">Chika</span> <span class="mf">0.385</span>            <span class="mf">0.80</span>       <span class="mf">0.92</span>          <span class="mf">0.05</span>
+    <span class="n">Dimas</span> <span class="mf">0.240</span>            <span class="mf">0.15</span>       <span class="mf">0.55</span>          <span class="mf">0.40</span>
+    <span class="n">Elisa</span> <span class="mf">0.310</span>            <span class="mf">0.35</span>       <span class="mf">0.78</span>          <span class="mf">0.15</span>
+    <span class="n">Farhan</span> <span class="mf">0.360</span>            <span class="mf">0.60</span>       <span class="mf">0.88</span>          <span class="mf">0.08</span>
+    <span class="n">Gita</span> <span class="mf">0.290</span>            <span class="mf">0.25</span>       <span class="mf">0.70</span>          <span class="mf">0.30</span>
+    <span class="n">Heru</span> <span class="mf">0.320</span>            <span class="mf">0.40</span>       <span class="mf">0.80</span>          <span class="mf">0.12</span>
+    <span class="n">Intan</span> <span class="mf">0.375</span>            <span class="mf">0.75</span>       <span class="mf">0.90</span>          <span class="mf">0.06</span>
+    <span class="n">Juna</span> <span class="mf">0.255</span>            <span class="mf">0.18</span>       <span class="mf">0.60</span>          <span class="mf">0.35</span>
+</pre></div>
+</div>
 </section>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="min-max-scaling-sklearn">
-<h1>1. Min-Max Scaling (Sklearn)<a class="headerlink" href="#min-max-scaling-sklearn" title="Permalink to this heading">#</a></h1>
-<p>minmax_scaler = MinMaxScaler()
-X_minmax = minmax_scaler.fit_transform(df[fitur])
-print(“\n1. Hasil Min-Max Scaling:”)
-print(X_minmax.round(4))</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="z-score-standardization-sklearn">
-<h1>2. Z-Score / Standardization (Sklearn)<a class="headerlink" href="#z-score-standardization-sklearn" title="Permalink to this heading">#</a></h1>
-<p>standard_scaler = StandardScaler()
-X_standard = standard_scaler.fit_transform(df[fitur])
-print(“\n2. Hasil Z-Score (Standardization):”)
-print(X_standard.round(4))</p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="decimal-scaling-custom-function">
-<h1>3. Decimal Scaling (Custom Function)<a class="headerlink" href="#decimal-scaling-custom-function" title="Permalink to this heading">#</a></h1>
-<p>def decimal_scaling(df_input, cols):
-“””
-Melakukan decimal scaling pada setiap kolom numerik.
-Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
-dari nilai absolut terbesar pada kolom tersebut.
-“””
-result = df_input.copy()
-for col in cols:
-max_abs = result[col].abs().max()
-# Menghitung jumlah digit dari angka bulat terbesar
-j = len(str(int(max_abs)))<br />
-result[col] = (result[col] / (10 ** j)).round(4)
-print(f”  Kolom ‘{col}’: nilai maks = {max_abs}, j = {j}, dibagi {10**j}”)
-return result</p>
-<p>print(“\n3. Decimal Scaling (Fungsi Manual):”)
-df_decimal = decimal_scaling(df, fitur)
-print(df_decimal.to_string(index=False))<code class="docutils literal notranslate"> </code> `</p>
-<p><code class="docutils literal notranslate"> </code> `
-Data Asli:
-Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
-Aris 3.50            5000         85            10
-Bagas 2.75            2000         65            25
-Chika 3.85            8000         92             5
-Dimas 2.40            1500         55            40
-Elisa 3.10            3500         78            15
-Farhan 3.60            6000         88             8
-Gita 2.90            2500         70            30
-Heru 3.20            4000         80            12
-Intan 3.75            7500         90             6
-Juna 2.55            1800         60            35</p>
-<ol class="arabic simple">
-<li><p>Hasil Min-Max Scaling:
-[[0.7586 0.5385 0.8108 0.1429]
-[0.2414 0.0769 0.2703 0.5714]
-[1.     1.     1.     0.    ]
-[0.     0.     0.     1.    ]
-[0.4828 0.3077 0.6216 0.2857]
-[0.8276 0.6923 0.8919 0.0857]
-[0.3448 0.1538 0.4054 0.7143]
-[0.5517 0.3846 0.6757 0.2   ]
-[0.931  0.9231 0.9459 0.0286]
-[0.1034 0.0462 0.1351 0.8571]]</p></li>
-<li><p>Hasil Z-Score (Standardization):
-[[ 0.7053  0.3648  0.6988 -0.7059]
-[-0.8505 -0.9699 -0.9076  0.5253]
-[ 1.4313  1.6996  1.261  -1.1163]
-[-1.5765 -1.1924 -1.7108  1.7565]
-[-0.1245 -0.3025  0.1365 -0.2955]
-[ 0.9127  0.8098  0.9397 -0.87  ]
-[-0.5393 -0.7475 -0.506   0.9357]
-[ 0.083  -0.0801  0.2972 -0.5417]
-[ 1.2239  1.4771  1.1004 -1.0342]
-[-1.2654 -1.0589 -1.3092  1.3461]]</p></li>
-<li><p>Decimal Scaling (Fungsi Manual):
-Kolom ‘IPK’: nilai maks = 3.85, j = 1, dibagi 10
-Kolom ‘Penghasilan_OT’: nilai maks = 8000, j = 4, dibagi 10000
-Kolom ‘Nilai_UAS’: nilai maks = 92, j = 2, dibagi 100
-Kolom ‘Jarak_Kampus’: nilai maks = 40, j = 2, dibagi 100
-Nama   IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
-Aris 0.350            0.50       0.85          0.10
-Bagas 0.275            0.20       0.65          0.25
-Chika 0.385            0.80       0.92          0.05
-Dimas 0.240            0.15       0.55          0.40
-Elisa 0.310            0.35       0.78          0.15
-Farhan 0.360            0.60       0.88          0.08
-Gita 0.290            0.25       0.70          0.30
-Heru 0.320            0.40       0.80          0.12
-Intan 0.375            0.75       0.90          0.06
-Juna 0.255            0.18       0.60          0.35
-<code class="docutils literal notranslate"> </code> `</p></li>
-</ol>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1424,7 +1420,6 @@ Juna 0.255            0.18       0.60          0.35
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -1481,12 +1476,6 @@ Juna 0.255            0.18       0.60          0.35
 </ul>
 </li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>
