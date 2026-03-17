@@ -178,6 +178,9 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
+
+
+
 <li class="toctree-l1"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling.html">Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
@@ -376,6 +379,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -432,6 +436,12 @@ document.write(`
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -831,51 +841,51 @@ $<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.1034)^2 + (0
 </section>
 <section id="penyelesaian-missing-values-menggunakan-wknn-code">
 <h3>penyelesaian missing values menggunakan WKNN (code)<a class="headerlink" href="#penyelesaian-missing-values-menggunakan-wknn-code" title="Permalink to this heading">#</a></h3>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import math
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
-# 1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10
-train_data = [
-    {&quot;nama&quot;: &quot;Aris&quot;,   &quot;ipk&quot;: 0.7586, &quot;po&quot;: 0.5385, &quot;nilai&quot;: 80},
-    {&quot;nama&quot;: &quot;Bagas&quot;,  &quot;ipk&quot;: 0.2414, &quot;po&quot;: 0.0769, &quot;nilai&quot;: 65},
-    {&quot;nama&quot;: &quot;Chika&quot;,  &quot;ipk&quot;: 1.0000, &quot;po&quot;: 1.0000, &quot;nilai&quot;: 92},
-    {&quot;nama&quot;: &quot;Dimas&quot;,  &quot;ipk&quot;: 0.0000, &quot;po&quot;: 0.0000, &quot;nilai&quot;: 55},
-    {&quot;nama&quot;: &quot;Elisa&quot;,  &quot;ipk&quot;: 0.4828, &quot;po&quot;: 0.3077, &quot;nilai&quot;: 75},
-    {&quot;nama&quot;: &quot;Farhan&quot;, &quot;ipk&quot;: 0.8276, &quot;po&quot;: 0.6923, &quot;nilai&quot;: 85},
-    {&quot;nama&quot;: &quot;Heru&quot;,   &quot;ipk&quot;: 0.5517, &quot;po&quot;: 0.3846, &quot;nilai&quot;: 78},
-    {&quot;nama&quot;: &quot;Intan&quot;,  &quot;ipk&quot;: 0.9310, &quot;po&quot;: 0.9231, &quot;nilai&quot;: 88},
-    {&quot;nama&quot;: &quot;Juna&quot;,   &quot;ipk&quot;: 0.1034, &quot;po&quot;: 0.0462, &quot;nilai&quot;: 60},
-]
+    <span class="c1"># 1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Aris&quot;</span><span class="p">,</span>   <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.7586</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.5385</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Bagas&quot;</span><span class="p">,</span>  <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.2414</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.0769</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">65</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Chika&quot;</span><span class="p">,</span>  <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">1.0000</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">92</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Dimas&quot;</span><span class="p">,</span>  <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.0000</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.0000</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">55</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Elisa&quot;</span><span class="p">,</span>  <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.4828</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.3077</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Farhan&quot;</span><span class="p">,</span> <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.8276</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.6923</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">85</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Heru&quot;</span><span class="p">,</span>   <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.5517</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.3846</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">78</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Intan&quot;</span><span class="p">,</span>  <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.9310</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.9231</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">88</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="s2">&quot;Juna&quot;</span><span class="p">,</span>   <span class="s2">&quot;ipk&quot;</span><span class="p">:</span> <span class="mf">0.1034</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">:</span> <span class="mf">0.0462</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
+    <span class="p">]</span>
 
-# 2. Data target: Gita (yang dicari)
-target_ipk = 0.3448
-target_po  = 0.1538
+    <span class="c1"># 2. Data target: Gita (yang dicari)</span>
+    <span class="n">target_ipk</span> <span class="o">=</span> <span class="mf">0.3448</span>
+    <span class="n">target_po</span>  <span class="o">=</span> <span class="mf">0.1538</span>
 
-print(&quot;=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===&quot;)
-hasil_jarak = []
-for d in train_data:
-    jarak = math.sqrt((d[&quot;ipk&quot;] - target_ipk)**2 + (d[&quot;po&quot;] - target_po)**2)
-    hasil_jarak.append({&quot;nama&quot;: d[&quot;nama&quot;], &quot;jarak&quot;: jarak, &quot;nilai&quot;: d[&quot;nilai&quot;]})
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===&quot;</span><span class="p">)</span>
+    <span class="n">hasil_jarak</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">:</span>
+        <span class="n">jarak</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;ipk&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">target_ipk</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;po&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">target_po</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">hasil_jarak</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;nama&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nama&quot;</span><span class="p">],</span> <span class="s2">&quot;jarak&quot;</span><span class="p">:</span> <span class="n">jarak</span><span class="p">,</span> <span class="s2">&quot;nilai&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;nilai&quot;</span><span class="p">]})</span>
 
-hasil_jarak.sort(key=lambda x: x[&quot;jarak&quot;])
-for h in hasil_jarak:
-    print(f&quot;Ke {h[&#39;nama&#39;]:6} -&gt; Jarak = {h[&#39;jarak&#39;]:.4f} | Nilai_Tugas = {h[&#39;nilai&#39;]}&quot;)
+    <span class="n">hasil_jarak</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;jarak&quot;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">hasil_jarak</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ke </span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;nama&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">6</span><span class="si">}</span><span class="s2"> -&gt; Jarak = </span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;jarak&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | Nilai_Tugas = </span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;nilai&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(&quot;\n=== PERHITUNGAN BOBOT WKNN (K=5) ===&quot;)
-K = 5
-top5 = hasil_jarak[:K]
-sum_w = 0.0
-sum_wv = 0.0
-for t in top5:
-    w = 1 / t[&quot;jarak&quot;]
-    sum_w += w
-    sum_wv += w * t[&quot;nilai&quot;]
-    print(f&quot;{t[&#39;nama&#39;]:6} (nilai={t[&#39;nilai&#39;]}) | d={t[&#39;jarak&#39;]:.4f} | w={w:.4f} | w*v={w*t[&#39;nilai&#39;]:.2f}&quot;)
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== PERHITUNGAN BOBOT WKNN (K=5) ===&quot;</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">top5</span> <span class="o">=</span> <span class="n">hasil_jarak</span><span class="p">[:</span><span class="n">K</span><span class="p">]</span>
+    <span class="n">sum_w</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sum_wv</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">top5</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;jarak&quot;</span><span class="p">]</span>
+        <span class="n">sum_w</span> <span class="o">+=</span> <span class="n">w</span>
+        <span class="n">sum_wv</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;nilai&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;nama&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">6</span><span class="si">}</span><span class="s2"> (nilai=</span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;nilai&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">) | d=</span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;jarak&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | w=</span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | w*v=</span><span class="si">{</span><span class="n">w</span><span class="o">*</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;nilai&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-print(&quot;\n=== HASIL AKHIR ===&quot;)
-print(f&quot;Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}&quot;)
-
-
-=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== HASIL AKHIR ===&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nilai_Tugas Gita = </span><span class="si">{</span><span class="n">sum_wv</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">sum_w</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">sum_wv</span><span class="o">/</span><span class="n">sum_w</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
 Ke Bagas  -&gt; Jarak = 0.1289 | Nilai_Tugas = 65
 Ke Elisa  -&gt; Jarak = 0.2067 | Nilai_Tugas = 75
 Ke Juna   -&gt; Jarak = 0.2643 | Nilai_Tugas = 60
@@ -884,19 +894,16 @@ Ke Dimas  -&gt; Jarak = 0.3775 | Nilai_Tugas = 55
 Ke Aris   -&gt; Jarak = 0.5650 | Nilai_Tugas = 80
 Ke Farhan -&gt; Jarak = 0.7232 | Nilai_Tugas = 85
 Ke Intan  -&gt; Jarak = 0.9672 | Nilai_Tugas = 88
-Ke Chika  -&gt; Jarak = 1.0702 | Nilai_Tugas = 92
-
-=== PERHITUNGAN BOBOT WKNN (K=5) ===
-Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w*v=504.42
-Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w*v=362.83
-Juna   (nilai=60) | d=0.2643 | w=3.7837 | w*v=227.02
-Heru   (nilai=78) | d=0.3100 | w=3.2262 | w*v=251.64
-Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68
-
-=== HASIL AKHIR ===
+Ke Chika  -&gt; Jarak = 1.0702 | Nilai_Tugas = 92</p>
+<p>=== PERHITUNGAN BOBOT WKNN (K=5) ===
+Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w<em>v=504.42
+Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w</em>v=362.83
+Juna   (nilai=60) | d=0.2643 | w=3.7837 | w<em>v=227.02
+Heru   (nilai=78) | d=0.3100 | w=3.2262 | w</em>v=251.64
+Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68</p>
+<p>=== HASIL AKHIR ===
 Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
-</pre></div>
-</div>
+<code class="docutils literal notranslate"> </code> `</p>
 </section>
 </section>
 <section id="teknik-normalisasi-data">
@@ -1246,58 +1253,58 @@ $<span class="math notranslate nohighlight">\(Penghasilan'_{Aris} = 5000 / 10000
 </tbody>
 </table>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>` ` `
+<p><code class="docutils literal notranslate"> </code> `
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-
-
-data = {
-    &#39;Nama&#39;:           [&#39;Aris&#39;,&#39;Bagas&#39;,&#39;Chika&#39;,&#39;Dimas&#39;,&#39;Elisa&#39;,&#39;Farhan&#39;,&#39;Gita&#39;,&#39;Heru&#39;,&#39;Intan&#39;,&#39;Juna&#39;],
-    &#39;IPK&#39;:            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
-    &#39;Penghasilan_OT&#39;: [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
-    &#39;Nilai_UAS&#39;:      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
-    &#39;Jarak_Kampus&#39;:   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
+from sklearn.preprocessing import MinMaxScaler, StandardScaler</p>
+<p>data = {
+‘Nama’:           [‘Aris’,’Bagas’,’Chika’,’Dimas’,’Elisa’,’Farhan’,’Gita’,’Heru’,’Intan’,’Juna’],
+‘IPK’:            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
+‘Penghasilan_OT’: [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
+‘Nilai_UAS’:      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
+‘Jarak_Kampus’:   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
 }
 df    = pd.DataFrame(data)
-fitur = [&#39;IPK&#39;, &#39;Penghasilan_OT&#39;, &#39;Nilai_UAS&#39;, &#39;Jarak_Kampus&#39;]
-
-print(&quot;Data Asli:&quot;)
-print(df.to_string(index=False))
-
-# 1. Min-Max Scaling (Sklearn)
-minmax_scaler = MinMaxScaler()
+fitur = [‘IPK’, ‘Penghasilan_OT’, ‘Nilai_UAS’, ‘Jarak_Kampus’]</p>
+<p>print(“Data Asli:”)
+print(df.to_string(index=False))</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="min-max-scaling-sklearn">
+<h1>1. Min-Max Scaling (Sklearn)<a class="headerlink" href="#min-max-scaling-sklearn" title="Permalink to this heading">#</a></h1>
+<p>minmax_scaler = MinMaxScaler()
 X_minmax = minmax_scaler.fit_transform(df[fitur])
-print(&quot;\n1. Hasil Min-Max Scaling:&quot;)
-print(X_minmax.round(4))
-
-# 2. Z-Score / Standardization (Sklearn)
-standard_scaler = StandardScaler()
+print(“\n1. Hasil Min-Max Scaling:”)
+print(X_minmax.round(4))</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="z-score-standardization-sklearn">
+<h1>2. Z-Score / Standardization (Sklearn)<a class="headerlink" href="#z-score-standardization-sklearn" title="Permalink to this heading">#</a></h1>
+<p>standard_scaler = StandardScaler()
 X_standard = standard_scaler.fit_transform(df[fitur])
-print(&quot;\n2. Hasil Z-Score (Standardization):&quot;)
-print(X_standard.round(4))
-
-# 3. Decimal Scaling (Custom Function)
-def decimal_scaling(df_input, cols):
-    &quot;&quot;&quot;
-    Melakukan decimal scaling pada setiap kolom numerik.
-    Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
-    dari nilai absolut terbesar pada kolom tersebut.
-    &quot;&quot;&quot;
-    result = df_input.copy()
-    for col in cols:
-        max_abs = result[col].abs().max()
-        # Menghitung jumlah digit dari angka bulat terbesar
-        j = len(str(int(max_abs)))          
-        result[col] = (result[col] / (10 ** j)).round(4)
-        print(f&quot;  Kolom &#39;{col}&#39;: nilai maks = {max_abs}, j = {j}, dibagi {10**j}&quot;)
-    return result
-
-print(&quot;\n3. Decimal Scaling (Fungsi Manual):&quot;)
+print(“\n2. Hasil Z-Score (Standardization):”)
+print(X_standard.round(4))</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="decimal-scaling-custom-function">
+<h1>3. Decimal Scaling (Custom Function)<a class="headerlink" href="#decimal-scaling-custom-function" title="Permalink to this heading">#</a></h1>
+<p>def decimal_scaling(df_input, cols):
+“””
+Melakukan decimal scaling pada setiap kolom numerik.
+Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
+dari nilai absolut terbesar pada kolom tersebut.
+“””
+result = df_input.copy()
+for col in cols:
+max_abs = result[col].abs().max()
+# Menghitung jumlah digit dari angka bulat terbesar
+j = len(str(int(max_abs)))<br />
+result[col] = (result[col] / (10 ** j)).round(4)
+print(f”  Kolom ‘{col}’: nilai maks = {max_abs}, j = {j}, dibagi {10**j}”)
+return result</p>
+<p>print(“\n3. Decimal Scaling (Fungsi Manual):”)
 df_decimal = decimal_scaling(df, fitur)
-print(df_decimal.to_string(index=False))` ` `
-
-    ` ` `
+print(df_decimal.to_string(index=False))<code class="docutils literal notranslate"> </code> `</p>
+<p><code class="docutils literal notranslate"> </code> `
 Data Asli:
 Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
 Aris 3.50            5000         85            10
@@ -1309,9 +1316,9 @@ Farhan 3.60            6000         88             8
 Gita 2.90            2500         70            30
 Heru 3.20            4000         80            12
 Intan 3.75            7500         90             6
-Juna 2.55            1800         60            35
-
-1. Hasil Min-Max Scaling:
+Juna 2.55            1800         60            35</p>
+<ol class="arabic simple">
+<li><p>Hasil Min-Max Scaling:
 [[0.7586 0.5385 0.8108 0.1429]
 [0.2414 0.0769 0.2703 0.5714]
 [1.     1.     1.     0.    ]
@@ -1321,9 +1328,8 @@ Juna 2.55            1800         60            35
 [0.3448 0.1538 0.4054 0.7143]
 [0.5517 0.3846 0.6757 0.2   ]
 [0.931  0.9231 0.9459 0.0286]
-[0.1034 0.0462 0.1351 0.8571]]
-
-2. Hasil Z-Score (Standardization):
+[0.1034 0.0462 0.1351 0.8571]]</p></li>
+<li><p>Hasil Z-Score (Standardization):
 [[ 0.7053  0.3648  0.6988 -0.7059]
 [-0.8505 -0.9699 -0.9076  0.5253]
 [ 1.4313  1.6996  1.261  -1.1163]
@@ -1333,13 +1339,12 @@ Juna 2.55            1800         60            35
 [-0.5393 -0.7475 -0.506   0.9357]
 [ 0.083  -0.0801  0.2972 -0.5417]
 [ 1.2239  1.4771  1.1004 -1.0342]
-[-1.2654 -1.0589 -1.3092  1.3461]]
-
-3. Decimal Scaling (Fungsi Manual):
-Kolom &#39;IPK&#39;: nilai maks = 3.85, j = 1, dibagi 10
-Kolom &#39;Penghasilan_OT&#39;: nilai maks = 8000, j = 4, dibagi 10000
-Kolom &#39;Nilai_UAS&#39;: nilai maks = 92, j = 2, dibagi 100
-Kolom &#39;Jarak_Kampus&#39;: nilai maks = 40, j = 2, dibagi 100
+[-1.2654 -1.0589 -1.3092  1.3461]]</p></li>
+<li><p>Decimal Scaling (Fungsi Manual):
+Kolom ‘IPK’: nilai maks = 3.85, j = 1, dibagi 10
+Kolom ‘Penghasilan_OT’: nilai maks = 8000, j = 4, dibagi 10000
+Kolom ‘Nilai_UAS’: nilai maks = 92, j = 2, dibagi 100
+Kolom ‘Jarak_Kampus’: nilai maks = 40, j = 2, dibagi 100
 Nama   IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
 Aris 0.350            0.50       0.85          0.10
 Bagas 0.275            0.20       0.65          0.25
@@ -1351,11 +1356,8 @@ Gita 0.290            0.25       0.70          0.30
 Heru 0.320            0.40       0.80          0.12
 Intan 0.375            0.75       0.90          0.06
 Juna 0.255            0.18       0.60          0.35
-` ` `
-</pre></div>
-</div>
-</section>
-</section>
+<code class="docutils literal notranslate"> </code> `</p></li>
+</ol>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1422,6 +1424,7 @@ Juna 0.255            0.18       0.60          0.35
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -1478,6 +1481,12 @@ Juna 0.255            0.18       0.60          0.35
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
