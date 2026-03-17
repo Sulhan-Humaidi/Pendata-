@@ -136,9 +136,9 @@ gambar di atas merupakan visualiasi pengukuran jarak pada orange, tetapi sementa
 
 Keterangan:
 
-    Data Asli (Kiri): Data sebelum normalisasi
+Data Asli (Kiri): Data sebelum normalisasi
 
-    Data Normalisasi (Kanan): Data setelah dinormalisasi menggunakan Min-Max Normalization (skala 0-1)
+Data Normalisasi (Kanan): Data setelah dinormalisasi menggunakan Min-Max Normalization (skala 0-1)
 
 ## penyelesaian missing values menggunakan WKNN (manual)
 
@@ -243,70 +243,71 @@ $$\hat{y} = \frac{7727.822}{115.3848} \approx 66.97$$
 
 ### penyelesaian missing values menggunakan WKNN (code)
 
-```import math
+    import math
 
-# 1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10
-train_data = [
-    {"nama": "Aris",   "ipk": 0.7586, "po": 0.5385, "nilai": 80},
-    {"nama": "Bagas",  "ipk": 0.2414, "po": 0.0769, "nilai": 65},
-    {"nama": "Chika",  "ipk": 1.0000, "po": 1.0000, "nilai": 92},
-    {"nama": "Dimas",  "ipk": 0.0000, "po": 0.0000, "nilai": 55},
-    {"nama": "Elisa",  "ipk": 0.4828, "po": 0.3077, "nilai": 75},
-    {"nama": "Farhan", "ipk": 0.8276, "po": 0.6923, "nilai": 85},
-    {"nama": "Heru",   "ipk": 0.5517, "po": 0.3846, "nilai": 78},
-    {"nama": "Intan",  "ipk": 0.9310, "po": 0.9231, "nilai": 88},
-    {"nama": "Juna",   "ipk": 0.1034, "po": 0.0462, "nilai": 60},
-]
+    # 1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10
+    train_data = [
+        {"nama": "Aris",   "ipk": 0.7586, "po": 0.5385, "nilai": 80},
+        {"nama": "Bagas",  "ipk": 0.2414, "po": 0.0769, "nilai": 65},
+        {"nama": "Chika",  "ipk": 1.0000, "po": 1.0000, "nilai": 92},
+        {"nama": "Dimas",  "ipk": 0.0000, "po": 0.0000, "nilai": 55},
+        {"nama": "Elisa",  "ipk": 0.4828, "po": 0.3077, "nilai": 75},
+        {"nama": "Farhan", "ipk": 0.8276, "po": 0.6923, "nilai": 85},
+        {"nama": "Heru",   "ipk": 0.5517, "po": 0.3846, "nilai": 78},
+        {"nama": "Intan",  "ipk": 0.9310, "po": 0.9231, "nilai": 88},
+        {"nama": "Juna",   "ipk": 0.1034, "po": 0.0462, "nilai": 60},
+    ]
 
-# 2. Data target: Gita (yang dicari)
-target_ipk = 0.3448
-target_po  = 0.1538
+    # 2. Data target: Gita (yang dicari)
+    target_ipk = 0.3448
+    target_po  = 0.1538
 
-print("=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===")
-hasil_jarak = []
-for d in train_data:
-    jarak = math.sqrt((d["ipk"] - target_ipk)**2 + (d["po"] - target_po)**2)
-    hasil_jarak.append({"nama": d["nama"], "jarak": jarak, "nilai": d["nilai"]})
+    print("=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===")
+    hasil_jarak = []
+    for d in train_data:
+        jarak = math.sqrt((d["ipk"] - target_ipk)**2 + (d["po"] - target_po)**2)
+        hasil_jarak.append({"nama": d["nama"], "jarak": jarak, "nilai": d["nilai"]})
 
-hasil_jarak.sort(key=lambda x: x["jarak"])
-for h in hasil_jarak:
-    print(f"Ke {h['nama']:6} -> Jarak = {h['jarak']:.4f} | Nilai_Tugas = {h['nilai']}")
+    hasil_jarak.sort(key=lambda x: x["jarak"])
+    for h in hasil_jarak:
+        print(f"Ke {h['nama']:6} -> Jarak = {h['jarak']:.4f} | Nilai_Tugas = {h['nilai']}")
 
-print("\n=== PERHITUNGAN BOBOT WKNN (K=5) ===")
-K = 5
-top5 = hasil_jarak[:K]
-sum_w = 0.0
-sum_wv = 0.0
-for t in top5:
-    w = 1 / t["jarak"]
-    sum_w += w
-    sum_wv += w * t["nilai"]
-    print(f"{t['nama']:6} (nilai={t['nilai']}) | d={t['jarak']:.4f} | w={w:.4f} | w*v={w*t['nilai']:.2f}")
+    print("\n=== PERHITUNGAN BOBOT WKNN (K=5) ===")
+    K = 5
+    top5 = hasil_jarak[:K]
+    sum_w = 0.0
+    sum_wv = 0.0
+    for t in top5:
+        w = 1 / t["jarak"]
+        sum_w += w
+        sum_wv += w * t["nilai"]
+        print(f"{t['nama']:6} (nilai={t['nilai']}) | d={t['jarak']:.4f} | w={w:.4f} | w*v={w*t['nilai']:.2f}")
 
-print("\n=== HASIL AKHIR ===")
-print(f"Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}")```
-` ` `
-=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
-Ke Bagas  -> Jarak = 0.1289 | Nilai_Tugas = 65
-Ke Elisa  -> Jarak = 0.2067 | Nilai_Tugas = 75
-Ke Juna   -> Jarak = 0.2643 | Nilai_Tugas = 60
-Ke Heru   -> Jarak = 0.3100 | Nilai_Tugas = 78
-Ke Dimas  -> Jarak = 0.3775 | Nilai_Tugas = 55
-Ke Aris   -> Jarak = 0.5650 | Nilai_Tugas = 80
-Ke Farhan -> Jarak = 0.7232 | Nilai_Tugas = 85
-Ke Intan  -> Jarak = 0.9672 | Nilai_Tugas = 88
-Ke Chika  -> Jarak = 1.0702 | Nilai_Tugas = 92
+    print("\n=== HASIL AKHIR ===")
+    print(f"Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}")
 
-=== PERHITUNGAN BOBOT WKNN (K=5) ===
-Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w*v=504.42
-Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w*v=362.83
-Juna   (nilai=60) | d=0.2643 | w=3.7837 | w*v=227.02
-Heru   (nilai=78) | d=0.3100 | w=3.2262 | w*v=251.64
-Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68
 
-=== HASIL AKHIR ===
-Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
-` ` `
+    === PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
+    Ke Bagas  -> Jarak = 0.1289 | Nilai_Tugas = 65
+    Ke Elisa  -> Jarak = 0.2067 | Nilai_Tugas = 75
+    Ke Juna   -> Jarak = 0.2643 | Nilai_Tugas = 60
+    Ke Heru   -> Jarak = 0.3100 | Nilai_Tugas = 78
+    Ke Dimas  -> Jarak = 0.3775 | Nilai_Tugas = 55
+    Ke Aris   -> Jarak = 0.5650 | Nilai_Tugas = 80
+    Ke Farhan -> Jarak = 0.7232 | Nilai_Tugas = 85
+    Ke Intan  -> Jarak = 0.9672 | Nilai_Tugas = 88
+    Ke Chika  -> Jarak = 1.0702 | Nilai_Tugas = 92
+
+    === PERHITUNGAN BOBOT WKNN (K=5) ===
+    Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w*v=504.42
+    Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w*v=362.83
+    Juna   (nilai=60) | d=0.2643 | w=3.7837 | w*v=227.02
+    Heru   (nilai=78) | d=0.3100 | w=3.2262 | w*v=251.64
+    Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68
+
+    === HASIL AKHIR ===
+    Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
+
 ## Teknik Normalisasi Data
 
 ### 1. Min-Max Normalization
@@ -420,109 +421,109 @@ $$x' = \frac{x}{10^j}$$
 | Intan | 0.3750 | 0.7500 | 0.90 | 0.06 |
 | Juna | 0.2550 | 0.1800 | 0.60 | 0.35 |
 
-` ` `
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+    ` ` `
+    import pandas as pd
+    import numpy as np
+    from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
-data = {
-    'Nama':           ['Aris','Bagas','Chika','Dimas','Elisa','Farhan','Gita','Heru','Intan','Juna'],
-    'IPK':            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
-    'Penghasilan_OT': [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
-    'Nilai_UAS':      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
-    'Jarak_Kampus':   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
-}
-df    = pd.DataFrame(data)
-fitur = ['IPK', 'Penghasilan_OT', 'Nilai_UAS', 'Jarak_Kampus']
+    data = {
+        'Nama':           ['Aris','Bagas','Chika','Dimas','Elisa','Farhan','Gita','Heru','Intan','Juna'],
+        'IPK':            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
+        'Penghasilan_OT': [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
+        'Nilai_UAS':      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
+        'Jarak_Kampus':   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
+    }
+    df    = pd.DataFrame(data)
+    fitur = ['IPK', 'Penghasilan_OT', 'Nilai_UAS', 'Jarak_Kampus']
 
-print("Data Asli:")
-print(df.to_string(index=False))
+    print("Data Asli:")
+    print(df.to_string(index=False))
 
-# 1. Min-Max Scaling (Sklearn)
-minmax_scaler = MinMaxScaler()
-X_minmax = minmax_scaler.fit_transform(df[fitur])
-print("\n1. Hasil Min-Max Scaling:")
-print(X_minmax.round(4))
+    # 1. Min-Max Scaling (Sklearn)
+    minmax_scaler = MinMaxScaler()
+    X_minmax = minmax_scaler.fit_transform(df[fitur])
+    print("\n1. Hasil Min-Max Scaling:")
+    print(X_minmax.round(4))
 
-# 2. Z-Score / Standardization (Sklearn)
-standard_scaler = StandardScaler()
-X_standard = standard_scaler.fit_transform(df[fitur])
-print("\n2. Hasil Z-Score (Standardization):")
-print(X_standard.round(4))
+    # 2. Z-Score / Standardization (Sklearn)
+    standard_scaler = StandardScaler()
+    X_standard = standard_scaler.fit_transform(df[fitur])
+    print("\n2. Hasil Z-Score (Standardization):")
+    print(X_standard.round(4))
 
-# 3. Decimal Scaling (Custom Function)
-def decimal_scaling(df_input, cols):
-    """
-    Melakukan decimal scaling pada setiap kolom numerik.
-    Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
-    dari nilai absolut terbesar pada kolom tersebut.
-    """
-    result = df_input.copy()
-    for col in cols:
-        max_abs = result[col].abs().max()
-        # Menghitung jumlah digit dari angka bulat terbesar
-        j = len(str(int(max_abs)))          
-        result[col] = (result[col] / (10 ** j)).round(4)
-        print(f"  Kolom '{col}': nilai maks = {max_abs}, j = {j}, dibagi {10**j}")
-    return result
+    # 3. Decimal Scaling (Custom Function)
+    def decimal_scaling(df_input, cols):
+        """
+        Melakukan decimal scaling pada setiap kolom numerik.
+        Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
+        dari nilai absolut terbesar pada kolom tersebut.
+        """
+        result = df_input.copy()
+        for col in cols:
+            max_abs = result[col].abs().max()
+            # Menghitung jumlah digit dari angka bulat terbesar
+            j = len(str(int(max_abs)))          
+            result[col] = (result[col] / (10 ** j)).round(4)
+            print(f"  Kolom '{col}': nilai maks = {max_abs}, j = {j}, dibagi {10**j}")
+        return result
 
-print("\n3. Decimal Scaling (Fungsi Manual):")
-df_decimal = decimal_scaling(df, fitur)
-print(df_decimal.to_string(index=False))` ` `
+    print("\n3. Decimal Scaling (Fungsi Manual):")
+    df_decimal = decimal_scaling(df, fitur)
+    print(df_decimal.to_string(index=False))` ` `
 
-` ` `
-Data Asli:
- Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
- Aris 3.50            5000         85            10
- Bagas 2.75            2000         65            25
-Chika 3.85            8000         92             5
- Dimas 2.40            1500         55            40
- Elisa 3.10            3500         78            15
-Farhan 3.60            6000         88             8
- Gita 2.90            2500         70            30
- Heru 3.20            4000         80            12
-Intan 3.75            7500         90             6
- Juna 2.55            1800         60            35
+        ` ` `
+    Data Asli:
+    Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
+    Aris 3.50            5000         85            10
+    Bagas 2.75            2000         65            25
+    Chika 3.85            8000         92             5
+    Dimas 2.40            1500         55            40
+    Elisa 3.10            3500         78            15
+    Farhan 3.60            6000         88             8
+    Gita 2.90            2500         70            30
+    Heru 3.20            4000         80            12
+    Intan 3.75            7500         90             6
+    Juna 2.55            1800         60            35
 
-1. Hasil Min-Max Scaling:
-[[0.7586 0.5385 0.8108 0.1429]
- [0.2414 0.0769 0.2703 0.5714]
- [1.     1.     1.     0.    ]
- [0.     0.     0.     1.    ]
- [0.4828 0.3077 0.6216 0.2857]
- [0.8276 0.6923 0.8919 0.0857]
- [0.3448 0.1538 0.4054 0.7143]
- [0.5517 0.3846 0.6757 0.2   ]
- [0.931  0.9231 0.9459 0.0286]
- [0.1034 0.0462 0.1351 0.8571]]
+    1. Hasil Min-Max Scaling:
+    [[0.7586 0.5385 0.8108 0.1429]
+    [0.2414 0.0769 0.2703 0.5714]
+    [1.     1.     1.     0.    ]
+    [0.     0.     0.     1.    ]
+    [0.4828 0.3077 0.6216 0.2857]
+    [0.8276 0.6923 0.8919 0.0857]
+    [0.3448 0.1538 0.4054 0.7143]
+    [0.5517 0.3846 0.6757 0.2   ]
+    [0.931  0.9231 0.9459 0.0286]
+    [0.1034 0.0462 0.1351 0.8571]]
 
-2. Hasil Z-Score (Standardization):
-[[ 0.7053  0.3648  0.6988 -0.7059]
- [-0.8505 -0.9699 -0.9076  0.5253]
- [ 1.4313  1.6996  1.261  -1.1163]
- [-1.5765 -1.1924 -1.7108  1.7565]
- [-0.1245 -0.3025  0.1365 -0.2955]
- [ 0.9127  0.8098  0.9397 -0.87  ]
- [-0.5393 -0.7475 -0.506   0.9357]
- [ 0.083  -0.0801  0.2972 -0.5417]
- [ 1.2239  1.4771  1.1004 -1.0342]
- [-1.2654 -1.0589 -1.3092  1.3461]]
+    2. Hasil Z-Score (Standardization):
+    [[ 0.7053  0.3648  0.6988 -0.7059]
+    [-0.8505 -0.9699 -0.9076  0.5253]
+    [ 1.4313  1.6996  1.261  -1.1163]
+    [-1.5765 -1.1924 -1.7108  1.7565]
+    [-0.1245 -0.3025  0.1365 -0.2955]
+    [ 0.9127  0.8098  0.9397 -0.87  ]
+    [-0.5393 -0.7475 -0.506   0.9357]
+    [ 0.083  -0.0801  0.2972 -0.5417]
+    [ 1.2239  1.4771  1.1004 -1.0342]
+    [-1.2654 -1.0589 -1.3092  1.3461]]
 
-3. Decimal Scaling (Fungsi Manual):
-  Kolom 'IPK': nilai maks = 3.85, j = 1, dibagi 10
-  Kolom 'Penghasilan_OT': nilai maks = 8000, j = 4, dibagi 10000
-  Kolom 'Nilai_UAS': nilai maks = 92, j = 2, dibagi 100
-  Kolom 'Jarak_Kampus': nilai maks = 40, j = 2, dibagi 100
- Nama   IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
- Aris 0.350            0.50       0.85          0.10
- Bagas 0.275            0.20       0.65          0.25
-Chika 0.385            0.80       0.92          0.05
- Dimas 0.240            0.15       0.55          0.40
- Elisa 0.310            0.35       0.78          0.15
-Farhan 0.360            0.60       0.88          0.08
- Gita 0.290            0.25       0.70          0.30
- Heru 0.320            0.40       0.80          0.12
-Intan 0.375            0.75       0.90          0.06
- Juna 0.255            0.18       0.60          0.35
-` ` `
+    3. Decimal Scaling (Fungsi Manual):
+    Kolom 'IPK': nilai maks = 3.85, j = 1, dibagi 10
+    Kolom 'Penghasilan_OT': nilai maks = 8000, j = 4, dibagi 10000
+    Kolom 'Nilai_UAS': nilai maks = 92, j = 2, dibagi 100
+    Kolom 'Jarak_Kampus': nilai maks = 40, j = 2, dibagi 100
+    Nama   IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
+    Aris 0.350            0.50       0.85          0.10
+    Bagas 0.275            0.20       0.65          0.25
+    Chika 0.385            0.80       0.92          0.05
+    Dimas 0.240            0.15       0.55          0.40
+    Elisa 0.310            0.35       0.78          0.15
+    Farhan 0.360            0.60       0.88          0.08
+    Gita 0.290            0.25       0.70          0.30
+    Heru 0.320            0.40       0.80          0.12
+    Intan 0.375            0.75       0.90          0.06
+    Juna 0.255            0.18       0.60          0.35
+    ` ` `
