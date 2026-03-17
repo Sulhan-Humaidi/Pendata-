@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'data-understanding';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -176,6 +178,11 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
+
+
+
+
+
 <li class="toctree-l1"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling.html">Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
@@ -374,6 +381,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -399,7 +407,47 @@ document.write(`
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proyek-missing-values-inputation-materi-normalisasi-data">Proyek Missing Values Inputation + Materi Normalisasi data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-data-asli-untuk-mencari-missing-values">Tabel Data Asli untuk mencari missing values</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penyelesaian-missing-values-menggunakan-wknn-manual">penyelesaian missing values menggunakan WKNN (manual)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-hitung-jarak-dan-kemiripan-si">Langkah 1: Hitung Jarak dan Kemiripan (si)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-jarak-euclidean-gita-ke-baris-lain">Perhitungan Jarak Euclidean (Gita ke Baris Lain)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kita-hitung-untuk-5-tetangga-terdekat-gita">Kita hitung untuk 5 tetangga terdekat Gita:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-hitung-estimasi-menggunakan-weighted-average">Langkah 2: Hitung Estimasi Menggunakan Weighted Average</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-akhir">Hasil Akhir</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penyelesaian-missing-values-menggunakan-wknn-code">penyelesaian missing values menggunakan WKNN (code)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-latih-ternormalisasi-min-max-baris-1-6-dan-8-10">1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-target-gita-yang-dicari">2. Data target: Gita (yang dicari)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#teknik-normalisasi-data">Teknik Normalisasi Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-normalization">1. Min-Max Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan">Contoh Perhitungan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-min-max-normalization">Tabel Min-Max Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-new-custom-range">Min-Max New (Custom Range)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-normalization">2. Z-Score Normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Contoh Perhitungan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-z-score-normalization">Tabel Z-Score Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling">3. Decimal Scaling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan-aris">Contoh Perhitungan (Aris)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-decimal-scaling">Tabel Decimal Scaling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -523,6 +571,798 @@ gambar di atas merupakan visualiasi pengukuran jarak pada orange, tetapi sementa
 </section>
 </section>
 </section>
+<section id="proyek-missing-values-inputation-materi-normalisasi-data">
+<h2>Proyek Missing Values Inputation + Materi Normalisasi data<a class="headerlink" href="#proyek-missing-values-inputation-materi-normalisasi-data" title="Permalink to this heading">#</a></h2>
+<section id="tabel-data-asli-untuk-mencari-missing-values">
+<h3>Tabel Data Asli untuk mencari missing values<a class="headerlink" href="#tabel-data-asli-untuk-mencari-missing-values" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>No</p></th>
+<th class="head text-center"><p>Nama</p></th>
+<th class="head text-center"><p>IPK</p></th>
+<th class="head text-center"><p>Penghasilan_OT</p></th>
+<th class="head text-center"><p>Nilai_Tugas</p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p>No</p></th>
+<th class="head text-center"><p>Nama</p></th>
+<th class="head text-center"><p>IPK’</p></th>
+<th class="head text-center"><p>Penghasilan’</p></th>
+<th class="head text-center"><p>Nilai_Tugas</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>Aris</p></td>
+<td class="text-center"><p>3.50</p></td>
+<td class="text-center"><p>5000</p></td>
+<td class="text-center"><p>80</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>1</p></td>
+<td class="text-center"><p>Aris</p></td>
+<td class="text-center"><p>0.7586</p></td>
+<td class="text-center"><p>0.5385</p></td>
+<td class="text-center"><p>80</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>Bagas</p></td>
+<td class="text-center"><p>2.75</p></td>
+<td class="text-center"><p>2000</p></td>
+<td class="text-center"><p>65</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>2</p></td>
+<td class="text-center"><p>Bagas</p></td>
+<td class="text-center"><p>0.2414</p></td>
+<td class="text-center"><p>0.0769</p></td>
+<td class="text-center"><p>65</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>Chika</p></td>
+<td class="text-center"><p>3.85</p></td>
+<td class="text-center"><p>8000</p></td>
+<td class="text-center"><p>92</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>3</p></td>
+<td class="text-center"><p>Chika</p></td>
+<td class="text-center"><p>1.0000</p></td>
+<td class="text-center"><p>1.0000</p></td>
+<td class="text-center"><p>92</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>Dimas</p></td>
+<td class="text-center"><p>2.40</p></td>
+<td class="text-center"><p>1500</p></td>
+<td class="text-center"><p>55</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>4</p></td>
+<td class="text-center"><p>Dimas</p></td>
+<td class="text-center"><p>0.0000</p></td>
+<td class="text-center"><p>0.0000</p></td>
+<td class="text-center"><p>55</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-center"><p>Elisa</p></td>
+<td class="text-center"><p>3.10</p></td>
+<td class="text-center"><p>3500</p></td>
+<td class="text-center"><p>75</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>5</p></td>
+<td class="text-center"><p>Elisa</p></td>
+<td class="text-center"><p>0.4828</p></td>
+<td class="text-center"><p>0.3077</p></td>
+<td class="text-center"><p>75</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>6</p></td>
+<td class="text-center"><p>Farhan</p></td>
+<td class="text-center"><p>3.60</p></td>
+<td class="text-center"><p>6000</p></td>
+<td class="text-center"><p>85</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>6</p></td>
+<td class="text-center"><p>Farhan</p></td>
+<td class="text-center"><p>0.8276</p></td>
+<td class="text-center"><p>0.6923</p></td>
+<td class="text-center"><p>85</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>7</p></td>
+<td class="text-center"><p>Gita</p></td>
+<td class="text-center"><p>2.90</p></td>
+<td class="text-center"><p>2500</p></td>
+<td class="text-center"><p><strong>?</strong></p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>7</p></td>
+<td class="text-center"><p>Gita</p></td>
+<td class="text-center"><p>0.3448</p></td>
+<td class="text-center"><p>0.1538</p></td>
+<td class="text-center"><p><strong>?</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>8</p></td>
+<td class="text-center"><p>Heru</p></td>
+<td class="text-center"><p>3.20</p></td>
+<td class="text-center"><p>4000</p></td>
+<td class="text-center"><p>78</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>8</p></td>
+<td class="text-center"><p>Heru</p></td>
+<td class="text-center"><p>0.5517</p></td>
+<td class="text-center"><p>0.3846</p></td>
+<td class="text-center"><p>78</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>9</p></td>
+<td class="text-center"><p>Intan</p></td>
+<td class="text-center"><p>3.75</p></td>
+<td class="text-center"><p>7500</p></td>
+<td class="text-center"><p>88</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>9</p></td>
+<td class="text-center"><p>Intan</p></td>
+<td class="text-center"><p>0.9310</p></td>
+<td class="text-center"><p>0.9231</p></td>
+<td class="text-center"><p>88</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>10</p></td>
+<td class="text-center"><p>Juna</p></td>
+<td class="text-center"><p>2.55</p></td>
+<td class="text-center"><p>1800</p></td>
+<td class="text-center"><p>60</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p>10</p></td>
+<td class="text-center"><p>Juna</p></td>
+<td class="text-center"><p>0.1034</p></td>
+<td class="text-center"><p>0.0462</p></td>
+<td class="text-center"><p>60</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Keterangan:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Data Asli (Kiri): Data sebelum normalisasi
+
+Data Normalisasi (Kanan): Data setelah dinormalisasi menggunakan Min-Max Normalization (skala 0-1)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="penyelesaian-missing-values-menggunakan-wknn-manual">
+<h2>penyelesaian missing values menggunakan WKNN (manual)<a class="headerlink" href="#penyelesaian-missing-values-menggunakan-wknn-manual" title="Permalink to this heading">#</a></h2>
+<section id="langkah-1-hitung-jarak-dan-kemiripan-si">
+<h3>Langkah 1: Hitung Jarak dan Kemiripan (si)<a class="headerlink" href="#langkah-1-hitung-jarak-dan-kemiripan-si" title="Permalink to this heading">#</a></h3>
+<p>Gunakan rumus jarak Euclidean untuk data multi-dimensi:</p>
+<p>d² = Σ(xi - xj)²
+si = 1/d²</p>
+</section>
+<section id="perhitungan-jarak-euclidean-gita-ke-baris-lain">
+<h3>Perhitungan Jarak Euclidean (Gita ke Baris Lain)<a class="headerlink" href="#perhitungan-jarak-euclidean-gita-ke-baris-lain" title="Permalink to this heading">#</a></h3>
+<p>Data Ternormalisasi <strong>Gita</strong>: IPK’ = 0.3448, Penghasilan’ = 0.1538</p>
+<p><strong>1. Ke Aris (0.7586, 0.5385):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.7586)^2 + (0.1538 - 0.5385)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.4138)^2 + (-0.3847)^2} = \sqrt{0.1712 + 0.1480}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.3192} \approx 0.5650\)</span>$
+<em>Nilai_Tugas = 80</em></p>
+<p><strong>2. Ke Bagas (0.2414, 0.0769):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.2414)^2 + (0.1538 - 0.0769)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(0.1034)^2 + (0.0769)^2} = \sqrt{0.0107 + 0.0059}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.0166} \approx 0.1288\)</span>$
+<em>Nilai_Tugas = 65</em></p>
+<p><strong>3. Ke Chika (1.0000, 1.0000):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 1.0)^2 + (0.1538 - 1.0)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.6552)^2 + (-0.8462)^2} = \sqrt{0.4293 + 0.7161}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{1.1454} \approx 1.0703\)</span>$
+<em>Nilai_Tugas = 92</em></p>
+<p><strong>4. Ke Dimas (0.0000, 0.0000):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.0)^2 + (0.1538 - 0.0)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(0.3448)^2 + (0.1538)^2} = \sqrt{0.1189 + 0.0237}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.1426} \approx 0.3777\)</span>$
+<em>Nilai_Tugas = 55</em></p>
+<p><strong>5. Ke Elisa (0.4828, 0.3077):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.4828)^2 + (0.1538 - 0.3077)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.1380)^2 + (-0.1539)^2} = \sqrt{0.0190 + 0.0237}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.0427} \approx 0.2067\)</span>$
+<em>Nilai_Tugas = 75</em></p>
+<p><strong>6. Ke Farhan (0.8276, 0.6923):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.8276)^2 + (0.1538 - 0.6923)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.4828)^2 + (-0.5385)^2} = \sqrt{0.2331 + 0.2900}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.5231} \approx 0.7233\)</span>$
+<em>Nilai_Tugas = 85</em></p>
+<p><strong>7. Ke Heru (0.5517, 0.3846):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.5517)^2 + (0.1538 - 0.3846)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.2069)^2 + (-0.2308)^2} = \sqrt{0.0428 + 0.0533}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.0961} \approx 0.2802\)</span>$
+<em>Nilai_Tugas = 78</em></p>
+<p><strong>8. Ke Intan (0.9310, 0.9231):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.9310)^2 + (0.1538 - 0.9231)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(-0.5862)^2 + (-0.7693)^2} = \sqrt{0.3436 + 0.5918}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.9354} \approx 0.9672\)</span>$
+<em>Nilai_Tugas = 88</em></p>
+<p><strong>9. Ke Juna (0.1034, 0.0462):</strong>
+$<span class="math notranslate nohighlight">\(d = \sqrt{(0.3448 - 0.1034)^2 + (0.1538 - 0.0462)^2}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{(0.2414)^2 + (0.1076)^2} = \sqrt{0.0583 + 0.0116}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(d = \sqrt{0.0699} \approx 0.2644\)</span>$
+<em>Nilai_Tugas = 60</em></p>
+</section>
+<section id="kita-hitung-untuk-5-tetangga-terdekat-gita">
+<h3>Kita hitung untuk 5 tetangga terdekat Gita:<a class="headerlink" href="#kita-hitung-untuk-5-tetangga-terdekat-gita" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Tetangga</p></th>
+<th class="head text-left"><p>Selisih IPK (<span class="math notranslate nohighlight">\(x_i - x_j\)</span>)</p></th>
+<th class="head text-left"><p>Selisih Penghasilan (<span class="math notranslate nohighlight">\(x_i - x_j\)</span>)</p></th>
+<th class="head text-left"><p>Kuadrat (<span class="math notranslate nohighlight">\(d^2\)</span>)</p></th>
+<th class="head text-left"><p>Kemiripan (<span class="math notranslate nohighlight">\(s_i\)</span>)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Bagas</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.3448 - 0.2414 =\)</span> <span class="math notranslate nohighlight">\(0.1034\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1538 - 0.0769 = 0.0769\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.0107 + 0.0059 =\)</span> <strong><span class="math notranslate nohighlight">\(0.0166\)</span></strong></p></td>
+<td class="text-left"><p><strong><span class="math notranslate nohighlight">\(60.2410\)</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Elisa</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.3448 - 0.4828 =\)</span> <span class="math notranslate nohighlight">\(-0.1380\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1538 - 0.3077 = -0.1539\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.0190 + 0.0237 =\)</span> <strong><span class="math notranslate nohighlight">\(0.0427\)</span></strong></p></td>
+<td class="text-left"><p><strong><span class="math notranslate nohighlight">\(23.4192\)</span></strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Juna</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.3448 - 0.1034 =\)</span> <span class="math notranslate nohighlight">\(0.2414\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1538 - 0.0462 = 0.1076\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.0583 + 0.0116 =\)</span> <strong><span class="math notranslate nohighlight">\(0.0699\)</span></strong></p></td>
+<td class="text-left"><p><strong><span class="math notranslate nohighlight">\(14.3062\)</span></strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Heru</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.3448 - 0.5517 =\)</span> <span class="math notranslate nohighlight">\(-0.2069\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1538 - 0.3846 = -0.2308\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.0428 + 0.0533 =\)</span> <strong><span class="math notranslate nohighlight">\(0.0961\)</span></strong></p></td>
+<td class="text-left"><p><strong><span class="math notranslate nohighlight">\(10.4058\)</span></strong></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Dimas</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.3448 - 0.0000 =\)</span> <span class="math notranslate nohighlight">\(0.3448\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1538 - 0.0000 = 0.1538\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(0.1189 + 0.0237 =\)</span> <strong><span class="math notranslate nohighlight">\(0.1426\)</span></strong></p></td>
+<td class="text-left"><p><strong><span class="math notranslate nohighlight">\(7.0126\)</span></strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="langkah-2-hitung-estimasi-menggunakan-weighted-average">
+<h3>Langkah 2: Hitung Estimasi Menggunakan Weighted Average<a class="headerlink" href="#langkah-2-hitung-estimasi-menggunakan-weighted-average" title="Permalink to this heading">#</a></h3>
+<p>Kita gunakan rumus (2): kali setiap Nilai Tugas (yj) dengan Kemiripan (si), lalu bagi dengan total Kemiripan.</p>
+<p><strong>A. Pembilang (<span class="math notranslate nohighlight">\(\sum s_i \cdot y_{jh}\)</span>):</strong></p>
+<ul class="simple">
+<li><p><strong>Bagas</strong>: <span class="math notranslate nohighlight">\(60.2410 \times 65 = 3915.665\)</span></p></li>
+<li><p><strong>Elisa</strong>: <span class="math notranslate nohighlight">\(23.4192 \times 75 = 1756.440\)</span></p></li>
+<li><p><strong>Juna</strong>: <span class="math notranslate nohighlight">\(14.3062 \times 60 = 858.372\)</span></p></li>
+<li><p><strong>Heru</strong>: <span class="math notranslate nohighlight">\(10.4058 \times 78 = 811.652\)</span></p></li>
+<li><p><strong>Dimas</strong>: <span class="math notranslate nohighlight">\(7.0126 \times 55 = 385.693\)</span></p></li>
+</ul>
+<p><strong>Total Pembilang:</strong>
+<span class="math notranslate nohighlight">\(3915.665 + 1756.440 + 858.372 + 811.652 + 385.693 = \mathbf{7727.822}\)</span></p>
+<p><strong>B. Penyebut (<span class="math notranslate nohighlight">\(\sum s_i\)</span>):</strong>
+<span class="math notranslate nohighlight">\(60.2410 + 23.4192 + 14.3062 + 10.4058 + 7.0126 = \mathbf{115.3848}\)</span></p>
+</section>
+<section id="hasil-akhir">
+<h3>Hasil Akhir<a class="headerlink" href="#hasil-akhir" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\hat{y} = \frac{7727.822}{115.3848} \approx 66.97\]</div>
+<p><strong>Kesimpulan:</strong> Nilai Tugas <strong>Gita</strong> yang hilang diisi dengan <strong>66.97</strong> (dibulatkan menjadi <strong>67</strong>).</p>
+<p><strong>Logikanya:</strong> <strong>Bagas</strong> yang paling dekat mendapat bobot terbesar (<strong>60.24</strong>) dan paling mempengaruhi hasil, sedangkan <strong>Dimas</strong> yang paling jauh mendapat bobot terkecil (<strong>7.01</strong>).</p>
+</section>
+<section id="penyelesaian-missing-values-menggunakan-wknn-code">
+<h3>penyelesaian missing values menggunakan WKNN (code)<a class="headerlink" href="#penyelesaian-missing-values-menggunakan-wknn-code" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"> </code> `import math</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-latih-ternormalisasi-min-max-baris-1-6-dan-8-10">
+<h1>1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10<a class="headerlink" href="#data-latih-ternormalisasi-min-max-baris-1-6-dan-8-10" title="Permalink to this heading">#</a></h1>
+<p>train_data = [
+{“nama”: “Aris”,   “ipk”: 0.7586, “po”: 0.5385, “nilai”: 80},
+{“nama”: “Bagas”,  “ipk”: 0.2414, “po”: 0.0769, “nilai”: 65},
+{“nama”: “Chika”,  “ipk”: 1.0000, “po”: 1.0000, “nilai”: 92},
+{“nama”: “Dimas”,  “ipk”: 0.0000, “po”: 0.0000, “nilai”: 55},
+{“nama”: “Elisa”,  “ipk”: 0.4828, “po”: 0.3077, “nilai”: 75},
+{“nama”: “Farhan”, “ipk”: 0.8276, “po”: 0.6923, “nilai”: 85},
+{“nama”: “Heru”,   “ipk”: 0.5517, “po”: 0.3846, “nilai”: 78},
+{“nama”: “Intan”,  “ipk”: 0.9310, “po”: 0.9231, “nilai”: 88},
+{“nama”: “Juna”,   “ipk”: 0.1034, “po”: 0.0462, “nilai”: 60},
+]</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-target-gita-yang-dicari">
+<h1>2. Data target: Gita (yang dicari)<a class="headerlink" href="#data-target-gita-yang-dicari" title="Permalink to this heading">#</a></h1>
+<p>target_ipk = 0.3448
+target_po  = 0.1538</p>
+<p>print(“=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===”)
+hasil_jarak = []
+for d in train_data:
+jarak = math.sqrt((d[“ipk”] - target_ipk)**2 + (d[“po”] - target_po)**2)
+hasil_jarak.append({“nama”: d[“nama”], “jarak”: jarak, “nilai”: d[“nilai”]})</p>
+<p>hasil_jarak.sort(key=lambda x: x[“jarak”])
+for h in hasil_jarak:
+print(f”Ke {h[‘nama’]:6} -&gt; Jarak = {h[‘jarak’]:.4f} | Nilai_Tugas = {h[‘nilai’]}”)</p>
+<p>print(“\n=== PERHITUNGAN BOBOT WKNN (K=5) ===”)
+K = 5
+top5 = hasil_jarak[:K]
+sum_w = 0.0
+sum_wv = 0.0
+for t in top5:
+w = 1 / t[“jarak”]
+sum_w += w
+sum_wv += w * t[“nilai”]
+print(f”{t[‘nama’]:6} (nilai={t[‘nilai’]}) | d={t[‘jarak’]:.4f} | w={w:.4f} | w<em>v={w</em>t[‘nilai’]:.2f}”)</p>
+<p>print(“\n=== HASIL AKHIR ===”)
+print(f”Nilai_Tugas Gita = {sum_wv:.2f} / {sum_w:.4f} = {sum_wv/sum_w:.2f}”)<code class="docutils literal notranslate"> </code> <code class="docutils literal notranslate"> </code> <code class="docutils literal notranslate"> </code>
+=== PERHITUNGAN JARAK (EUCLIDEAN DISTANCE) ===
+Ke Bagas  -&gt; Jarak = 0.1289 | Nilai_Tugas = 65
+Ke Elisa  -&gt; Jarak = 0.2067 | Nilai_Tugas = 75
+Ke Juna   -&gt; Jarak = 0.2643 | Nilai_Tugas = 60
+Ke Heru   -&gt; Jarak = 0.3100 | Nilai_Tugas = 78
+Ke Dimas  -&gt; Jarak = 0.3775 | Nilai_Tugas = 55
+Ke Aris   -&gt; Jarak = 0.5650 | Nilai_Tugas = 80
+Ke Farhan -&gt; Jarak = 0.7232 | Nilai_Tugas = 85
+Ke Intan  -&gt; Jarak = 0.9672 | Nilai_Tugas = 88
+Ke Chika  -&gt; Jarak = 1.0702 | Nilai_Tugas = 92</p>
+<p>=== PERHITUNGAN BOBOT WKNN (K=5) ===
+Bagas  (nilai=65) | d=0.1289 | w=7.7603 | w<em>v=504.42
+Elisa  (nilai=75) | d=0.2067 | w=4.8377 | w</em>v=362.83
+Juna   (nilai=60) | d=0.2643 | w=3.7837 | w<em>v=227.02
+Heru   (nilai=78) | d=0.3100 | w=3.2262 | w</em>v=251.64
+Dimas  (nilai=55) | d=0.3775 | w=2.6487 | w*v=145.68</p>
+<p>=== HASIL AKHIR ===
+Nilai_Tugas Gita = 1491.59 / 22.2565 = 67.02
+<code class="docutils literal notranslate"> </code> `</p>
+<section id="teknik-normalisasi-data">
+<h2>Teknik Normalisasi Data<a class="headerlink" href="#teknik-normalisasi-data" title="Permalink to this heading">#</a></h2>
+<section id="min-max-normalization">
+<h3>1. Min-Max Normalization<a class="headerlink" href="#min-max-normalization" title="Permalink to this heading">#</a></h3>
+<p>Metode ini digunakan untuk menyesuaikan nilai data agar berada dalam rentang tertentu, biasanya <strong>0 sampai 1</strong>. Teknik ini sering dipakai pada algoritma yang menghitung jarak antar data, misalnya pada <em>K-Means Clustering</em> dan <em>K-Nearest Neighbor</em>.</p>
+<ul class="simple">
+<li><p><strong>Kelebihan:</strong> Hubungan antar nilai data tetap terjaga. Output selalu dalam rentang [0, 1].</p></li>
+<li><p><strong>Kelemahan:</strong> Mudah terpengaruh oleh <em>outlier</em> — jika ada satu data yang nilainya jauh melebihi lainnya, semua data lain akan terkompresi mendekati 0.</p></li>
+</ul>
+<p><strong>Rumus:</strong>
+$<span class="math notranslate nohighlight">\(x' = \frac{x - x_{min}}{x_{max} - x_{min}}\)</span>$</p>
+</section>
+<section id="contoh-perhitungan">
+<h3>Contoh Perhitungan<a class="headerlink" href="#contoh-perhitungan" title="Permalink to this heading">#</a></h3>
+<p>Mengubah nilai data agar berada pada rentang 0 sampai 1. Kolom IPK, mahasiswa <strong>Aris</strong> (IPK = 3.50):</p>
+<ul class="simple">
+<li><p>Nilai minimum IPK (<span class="math notranslate nohighlight">\(x_{min}\)</span>): 2.40 (<strong>Dimas</strong>)</p></li>
+<li><p>Nilai maksimum IPK (<span class="math notranslate nohighlight">\(x_{max}\)</span>): 3.85 (<strong>Chika</strong>)</p></li>
+</ul>
+<p><strong>Hitung Manual (IPK Aris = 3.50):</strong>
+$<span class="math notranslate nohighlight">\(IPK'_{Aris} = \frac{3.50 - 2.40}{3.85 - 2.40} = \frac{1.10}{1.45} \approx 0.7586\)</span>$</p>
+<p>Artinya, IPK Aris berada di posisi <strong>75.86%</strong> dari rentang nilai terendah ke tertinggi. Nilai 0 dimiliki Dimas (terendah) dan nilai 1 dimiliki Chika (tertinggi).</p>
+</section>
+<section id="tabel-min-max-normalization">
+<h3>Tabel Min-Max Normalization<a class="headerlink" href="#tabel-min-max-normalization" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Nama</p></th>
+<th class="head text-left"><p>IPK</p></th>
+<th class="head text-left"><p>Penghasilan_OT</p></th>
+<th class="head text-left"><p>Nilai_UAS</p></th>
+<th class="head text-left"><p>Jarak_Km</p></th>
+<th class="head text-left"><p>IPK’</p></th>
+<th class="head text-left"><p>Penghasilan’</p></th>
+<th class="head text-left"><p>UAS’</p></th>
+<th class="head text-left"><p>Jarak’</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Aris</strong></p></td>
+<td class="text-left"><p><strong>3.50</strong></p></td>
+<td class="text-left"><p><strong>5000</strong></p></td>
+<td class="text-left"><p><strong>85</strong></p></td>
+<td class="text-left"><p><strong>10</strong></p></td>
+<td class="text-left"><p><strong>0.7586</strong></p></td>
+<td class="text-left"><p><strong>0.5385</strong></p></td>
+<td class="text-left"><p><strong>0.8108</strong></p></td>
+<td class="text-left"><p><strong>0.1429</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Bagas</p></td>
+<td class="text-left"><p>2.75</p></td>
+<td class="text-left"><p>2000</p></td>
+<td class="text-left"><p>65</p></td>
+<td class="text-left"><p>25</p></td>
+<td class="text-left"><p>0.2414</p></td>
+<td class="text-left"><p>0.0769</p></td>
+<td class="text-left"><p>0.2703</p></td>
+<td class="text-left"><p>0.5714</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Chika</p></td>
+<td class="text-left"><p>3.85</p></td>
+<td class="text-left"><p>8000</p></td>
+<td class="text-left"><p>92</p></td>
+<td class="text-left"><p>5</p></td>
+<td class="text-left"><p>1.0000</p></td>
+<td class="text-left"><p>1.0000</p></td>
+<td class="text-left"><p>1.0000</p></td>
+<td class="text-left"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Dimas</p></td>
+<td class="text-left"><p>2.40</p></td>
+<td class="text-left"><p>1500</p></td>
+<td class="text-left"><p>55</p></td>
+<td class="text-left"><p>40</p></td>
+<td class="text-left"><p>0.0000</p></td>
+<td class="text-left"><p>0.0000</p></td>
+<td class="text-left"><p>0.0000</p></td>
+<td class="text-left"><p>1.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Elisa</p></td>
+<td class="text-left"><p>3.10</p></td>
+<td class="text-left"><p>3500</p></td>
+<td class="text-left"><p>78</p></td>
+<td class="text-left"><p>15</p></td>
+<td class="text-left"><p>0.4828</p></td>
+<td class="text-left"><p>0.3077</p></td>
+<td class="text-left"><p>0.6216</p></td>
+<td class="text-left"><p>0.2857</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Farhan</p></td>
+<td class="text-left"><p>3.60</p></td>
+<td class="text-left"><p>6000</p></td>
+<td class="text-left"><p>88</p></td>
+<td class="text-left"><p>8</p></td>
+<td class="text-left"><p>0.8276</p></td>
+<td class="text-left"><p>0.6923</p></td>
+<td class="text-left"><p>0.8919</p></td>
+<td class="text-left"><p>0.0857</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Gita</p></td>
+<td class="text-left"><p>2.90</p></td>
+<td class="text-left"><p>2500</p></td>
+<td class="text-left"><p>70</p></td>
+<td class="text-left"><p>30</p></td>
+<td class="text-left"><p>0.3448</p></td>
+<td class="text-left"><p>0.1538</p></td>
+<td class="text-left"><p>0.4054</p></td>
+<td class="text-left"><p>0.7143</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Heru</p></td>
+<td class="text-left"><p>3.20</p></td>
+<td class="text-left"><p>4000</p></td>
+<td class="text-left"><p>80</p></td>
+<td class="text-left"><p>12</p></td>
+<td class="text-left"><p>0.5517</p></td>
+<td class="text-left"><p>0.3846</p></td>
+<td class="text-left"><p>0.6757</p></td>
+<td class="text-left"><p>0.2000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Intan</p></td>
+<td class="text-left"><p>3.75</p></td>
+<td class="text-left"><p>7500</p></td>
+<td class="text-left"><p>90</p></td>
+<td class="text-left"><p>6</p></td>
+<td class="text-left"><p>0.9310</p></td>
+<td class="text-left"><p>0.9231</p></td>
+<td class="text-left"><p>0.9459</p></td>
+<td class="text-left"><p>0.0286</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Juna</p></td>
+<td class="text-left"><p>2.55</p></td>
+<td class="text-left"><p>1800</p></td>
+<td class="text-left"><p>60</p></td>
+<td class="text-left"><p>35</p></td>
+<td class="text-left"><p>0.1034</p></td>
+<td class="text-left"><p>0.0462</p></td>
+<td class="text-left"><p>0.1351</p></td>
+<td class="text-left"><p>0.8571</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="min-max-new-custom-range">
+<h3>Min-Max New (Custom Range)<a class="headerlink" href="#min-max-new-custom-range" title="Permalink to this heading">#</a></h3>
+<p>Min-Max juga bisa digunakan untuk mengubah data ke rentang baru yang kita tentukan sendiri, misalnya 0–10 atau −1 sampai 1.</p>
+<p><strong>Rumus:</strong>
+$<span class="math notranslate nohighlight">\(x' = \frac{x - x_{min}}{x_{max} - x_{min}} \times (New_{max} - New_{min}) + New_{min}\)</span>$</p>
+<p><strong>Contoh (IPK Aris ke rentang 0-10):</strong>
+$<span class="math notranslate nohighlight">\(IPK'_{Aris} = \frac{3.50 - 2.40}{3.85 - 2.40} \times (10 - 0) + 0 \approx 7.586\)</span>$</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="z-score-normalization">
+<h2>2. Z-Score Normalization<a class="headerlink" href="#z-score-normalization" title="Permalink to this heading">#</a></h2>
+<p>Teknik ini mengubah data sehingga nilai rata-rata (mean) menjadi <strong>0</strong> dan standar deviasi menjadi <strong>1</strong>. Metode ini sering digunakan ketika data memiliki skala yang berbeda atau terdapat <em>outlier</em>.</p>
+<ul class="simple">
+<li><p><strong>Kelebihan:</strong> Lebih tahan terhadap <em>outlier</em> dibanding Min-Max karena mempertimbangkan penyebaran data.</p></li>
+<li><p><strong>Kelemahan:</strong> Hasil normalisasi tidak memiliki batas rentang tetap seperti 0 sampai 1.</p></li>
+</ul>
+<p><strong>Rumus:</strong>
+$<span class="math notranslate nohighlight">\(x' = \frac{x - \mu}{\sigma}\)</span><span class="math notranslate nohighlight">\(
+*(Keterangan: \)</span>\mu<span class="math notranslate nohighlight">\( adalah rata-rata dan \)</span>\sigma$ adalah standar deviasi)*</p>
+<section id="id1">
+<h3>Contoh Perhitungan<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Mahasiswa <strong>Aris</strong> (IPK = 3.50):</p>
+<ol class="arabic simple">
+<li><p><strong>Hitung rata-rata (<span class="math notranslate nohighlight">\(\mu\)</span>):</strong> 3.16</p></li>
+<li><p><strong>Hitung standar deviasi (<span class="math notranslate nohighlight">\(\sigma\)</span>):</strong> 0.5082</p></li>
+<li><p><strong>Masukkkan ke rumus:</strong>
+$<span class="math notranslate nohighlight">\(IPK'_{Aris} = \frac{3.50 - 3.16}{0.5082} \approx 0.6691\)</span>$</p></li>
+</ol>
+<p>Nilai positif berarti IPK Aris berada <strong>0.6691</strong> standar deviasi di atas rata-rata.</p>
+</section>
+<section id="tabel-z-score-normalization">
+<h3>Tabel Z-Score Normalization<a class="headerlink" href="#tabel-z-score-normalization" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Nama</p></th>
+<th class="head text-left"><p>IPK’</p></th>
+<th class="head text-left"><p>Penghasilan’</p></th>
+<th class="head text-left"><p>UAS’</p></th>
+<th class="head text-left"><p>Jarak’</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Aris</strong></p></td>
+<td class="text-left"><p><strong>0.6691</strong></p></td>
+<td class="text-left"><p><strong>0.3461</strong></p></td>
+<td class="text-left"><p><strong>0.6629</strong></p></td>
+<td class="text-left"><p><strong>−0.6696</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Bagas</p></td>
+<td class="text-left"><p>−0.8068</p></td>
+<td class="text-left"><p>−0.9202</p></td>
+<td class="text-left"><p>−0.8610</p></td>
+<td class="text-left"><p>0.4983</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Chika</p></td>
+<td class="text-left"><p>1.3579</p></td>
+<td class="text-left"><p>1.6124</p></td>
+<td class="text-left"><p>1.1963</p></td>
+<td class="text-left"><p>−1.0590</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Dimas</p></td>
+<td class="text-left"><p>−1.4956</p></td>
+<td class="text-left"><p>−1.1312</p></td>
+<td class="text-left"><p>−1.6230</p></td>
+<td class="text-left"><p>1.6663</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Elisa</p></td>
+<td class="text-left"><p>−0.1181</p></td>
+<td class="text-left"><p>−0.2870</p></td>
+<td class="text-left"><p>0.1295</p></td>
+<td class="text-left"><p>−0.2803</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Farhan</p></td>
+<td class="text-left"><p>0.8659</p></td>
+<td class="text-left"><p>0.7682</p></td>
+<td class="text-left"><p>0.8915</p></td>
+<td class="text-left"><p>−0.8254</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Gita</p></td>
+<td class="text-left"><p>−0.5117</p></td>
+<td class="text-left"><p>−0.7091</p></td>
+<td class="text-left"><p>−0.4800</p></td>
+<td class="text-left"><p>0.8877</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Heru</p></td>
+<td class="text-left"><p>0.0787</p></td>
+<td class="text-left"><p>−0.0760</p></td>
+<td class="text-left"><p>0.2819</p></td>
+<td class="text-left"><p>−0.5139</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Intan</p></td>
+<td class="text-left"><p>1.1611</p></td>
+<td class="text-left"><p>1.4013</p></td>
+<td class="text-left"><p>1.0439</p></td>
+<td class="text-left"><p>−0.9811</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Juna</p></td>
+<td class="text-left"><p>−1.2004</p></td>
+<td class="text-left"><p>−1.0046</p></td>
+<td class="text-left"><p>−1.2420</p></td>
+<td class="text-left"><p>1.2770</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="decimal-scaling">
+<h2>3. Decimal Scaling<a class="headerlink" href="#decimal-scaling" title="Permalink to this heading">#</a></h2>
+<p>Teknik ini bekerja dengan menggeser titik desimal dari nilai data berdasarkan nilai absolut maksimum di dalam atribut tersebut.</p>
+<ul class="simple">
+<li><p><strong>Kelebihan:</strong> Sederhana dan paling mudah dihitung secara manual.</p></li>
+<li><p><strong>Kelemahan:</strong> Tidak mempertimbangkan distribusi data secara keseluruhan.</p></li>
+</ul>
+<p><strong>Rumus:</strong>
+$<span class="math notranslate nohighlight">\(x' = \frac{x}{10^j}\)</span><span class="math notranslate nohighlight">\(
+*(Keterangan: \)</span>j<span class="math notranslate nohighlight">\( adalah bilangan bulat terkecil sehingga \)</span>|x’| &lt; 1$)*</p>
+<section id="contoh-perhitungan-aris">
+<h3>Contoh Perhitungan (Aris)<a class="headerlink" href="#contoh-perhitungan-aris" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Kolom IPK:</strong> Maks = 3.85 (1 digit bulat) <span class="math notranslate nohighlight">\(\to j = 1 \to\)</span> dibagi <span class="math notranslate nohighlight">\(10^1 = 10\)</span>.
+$<span class="math notranslate nohighlight">\(IPK'_{Aris} = 3.50 / 10 = 0.350\)</span>$</p></li>
+<li><p><strong>Kolom Penghasilan:</strong> Maks = 8000 (4 digit) <span class="math notranslate nohighlight">\(\to j = 4 \to\)</span> dibagi <span class="math notranslate nohighlight">\(10^4 = 10.000\)</span>.
+$<span class="math notranslate nohighlight">\(Penghasilan'_{Aris} = 5000 / 10000 = 0.5000\)</span>$</p></li>
+</ul>
+</section>
+<section id="tabel-decimal-scaling">
+<h3>Tabel Decimal Scaling<a class="headerlink" href="#tabel-decimal-scaling" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Nama</p></th>
+<th class="head text-left"><p>IPK’</p></th>
+<th class="head text-left"><p>Penghasilan’</p></th>
+<th class="head text-left"><p>UAS’</p></th>
+<th class="head text-left"><p>Jarak’</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Aris</strong></p></td>
+<td class="text-left"><p><strong>0.3500</strong></p></td>
+<td class="text-left"><p><strong>0.5000</strong></p></td>
+<td class="text-left"><p><strong>0.85</strong></p></td>
+<td class="text-left"><p><strong>0.10</strong></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Bagas</p></td>
+<td class="text-left"><p>0.2750</p></td>
+<td class="text-left"><p>0.2000</p></td>
+<td class="text-left"><p>0.65</p></td>
+<td class="text-left"><p>0.25</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Chika</p></td>
+<td class="text-left"><p>0.3850</p></td>
+<td class="text-left"><p>0.8000</p></td>
+<td class="text-left"><p>0.92</p></td>
+<td class="text-left"><p>0.05</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Dimas</p></td>
+<td class="text-left"><p>0.2400</p></td>
+<td class="text-left"><p>0.1500</p></td>
+<td class="text-left"><p>0.55</p></td>
+<td class="text-left"><p>0.40</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Elisa</p></td>
+<td class="text-left"><p>0.3100</p></td>
+<td class="text-left"><p>0.3500</p></td>
+<td class="text-left"><p>0.78</p></td>
+<td class="text-left"><p>0.15</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Farhan</p></td>
+<td class="text-left"><p>0.3600</p></td>
+<td class="text-left"><p>0.6000</p></td>
+<td class="text-left"><p>0.88</p></td>
+<td class="text-left"><p>0.08</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Gita</p></td>
+<td class="text-left"><p>0.2900</p></td>
+<td class="text-left"><p>0.2500</p></td>
+<td class="text-left"><p>0.70</p></td>
+<td class="text-left"><p>0.30</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Heru</p></td>
+<td class="text-left"><p>0.3200</p></td>
+<td class="text-left"><p>0.4000</p></td>
+<td class="text-left"><p>0.80</p></td>
+<td class="text-left"><p>0.12</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Intan</p></td>
+<td class="text-left"><p>0.3750</p></td>
+<td class="text-left"><p>0.7500</p></td>
+<td class="text-left"><p>0.90</p></td>
+<td class="text-left"><p>0.06</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Juna</p></td>
+<td class="text-left"><p>0.2550</p></td>
+<td class="text-left"><p>0.1800</p></td>
+<td class="text-left"><p>0.60</p></td>
+<td class="text-left"><p>0.35</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"> </code> `
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, StandardScaler</p>
+<p>data = {
+‘Nama’:           [‘Aris’,’Bagas’,’Chika’,’Dimas’,’Elisa’,’Farhan’,’Gita’,’Heru’,’Intan’,’Juna’],
+‘IPK’:            [3.50, 2.75, 3.85, 2.40, 3.10, 3.60, 2.90, 3.20, 3.75, 2.55],
+‘Penghasilan_OT’: [5000, 2000, 8000, 1500, 3500, 6000, 2500, 4000, 7500, 1800],
+‘Nilai_UAS’:      [85, 65, 92, 55, 78, 88, 70, 80, 90, 60],
+‘Jarak_Kampus’:   [10, 25, 5, 40, 15, 8, 30, 12, 6, 35]
+}
+df    = pd.DataFrame(data)
+fitur = [‘IPK’, ‘Penghasilan_OT’, ‘Nilai_UAS’, ‘Jarak_Kampus’]</p>
+<p>print(“Data Asli:”)
+print(df.to_string(index=False))</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="min-max-scaling-sklearn">
+<h1>1. Min-Max Scaling (Sklearn)<a class="headerlink" href="#min-max-scaling-sklearn" title="Permalink to this heading">#</a></h1>
+<p>minmax_scaler = MinMaxScaler()
+X_minmax = minmax_scaler.fit_transform(df[fitur])
+print(“\n1. Hasil Min-Max Scaling:”)
+print(X_minmax.round(4))</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="z-score-standardization-sklearn">
+<h1>2. Z-Score / Standardization (Sklearn)<a class="headerlink" href="#z-score-standardization-sklearn" title="Permalink to this heading">#</a></h1>
+<p>standard_scaler = StandardScaler()
+X_standard = standard_scaler.fit_transform(df[fitur])
+print(“\n2. Hasil Z-Score (Standardization):”)
+print(X_standard.round(4))</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="decimal-scaling-custom-function">
+<h1>3. Decimal Scaling (Custom Function)<a class="headerlink" href="#decimal-scaling-custom-function" title="Permalink to this heading">#</a></h1>
+<p>def decimal_scaling(df_input, cols):
+“””
+Melakukan decimal scaling pada setiap kolom numerik.
+Nilai dibagi dengan 10^j, di mana j adalah jumlah digit
+dari nilai absolut terbesar pada kolom tersebut.
+“””
+result = df_input.copy()
+for col in cols:
+max_abs = result[col].abs().max()
+# Menghitung jumlah digit dari angka bulat terbesar
+j = len(str(int(max_abs)))<br />
+result[col] = (result[col] / (10 ** j)).round(4)
+print(f”  Kolom ‘{col}’: nilai maks = {max_abs}, j = {j}, dibagi {10**j}”)
+return result</p>
+<p>print(“\n3. Decimal Scaling (Fungsi Manual):”)
+df_decimal = decimal_scaling(df, fitur)
+print(df_decimal.to_string(index=False))<code class="docutils literal notranslate"> </code> `</p>
+<p><code class="docutils literal notranslate"> </code> `
+Data Asli:
+Nama  IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
+Aris 3.50            5000         85            10
+Bagas 2.75            2000         65            25
+Chika 3.85            8000         92             5
+Dimas 2.40            1500         55            40
+Elisa 3.10            3500         78            15
+Farhan 3.60            6000         88             8
+Gita 2.90            2500         70            30
+Heru 3.20            4000         80            12
+Intan 3.75            7500         90             6
+Juna 2.55            1800         60            35</p>
+<ol class="arabic simple">
+<li><p>Hasil Min-Max Scaling:
+[[0.7586 0.5385 0.8108 0.1429]
+[0.2414 0.0769 0.2703 0.5714]
+[1.     1.     1.     0.    ]
+[0.     0.     0.     1.    ]
+[0.4828 0.3077 0.6216 0.2857]
+[0.8276 0.6923 0.8919 0.0857]
+[0.3448 0.1538 0.4054 0.7143]
+[0.5517 0.3846 0.6757 0.2   ]
+[0.931  0.9231 0.9459 0.0286]
+[0.1034 0.0462 0.1351 0.8571]]</p></li>
+<li><p>Hasil Z-Score (Standardization):
+[[ 0.7053  0.3648  0.6988 -0.7059]
+[-0.8505 -0.9699 -0.9076  0.5253]
+[ 1.4313  1.6996  1.261  -1.1163]
+[-1.5765 -1.1924 -1.7108  1.7565]
+[-0.1245 -0.3025  0.1365 -0.2955]
+[ 0.9127  0.8098  0.9397 -0.87  ]
+[-0.5393 -0.7475 -0.506   0.9357]
+[ 0.083  -0.0801  0.2972 -0.5417]
+[ 1.2239  1.4771  1.1004 -1.0342]
+[-1.2654 -1.0589 -1.3092  1.3461]]</p></li>
+<li><p>Decimal Scaling (Fungsi Manual):
+Kolom ‘IPK’: nilai maks = 3.85, j = 1, dibagi 10
+Kolom ‘Penghasilan_OT’: nilai maks = 8000, j = 4, dibagi 10000
+Kolom ‘Nilai_UAS’: nilai maks = 92, j = 2, dibagi 100
+Kolom ‘Jarak_Kampus’: nilai maks = 40, j = 2, dibagi 100
+Nama   IPK  Penghasilan_OT  Nilai_UAS  Jarak_Kampus
+Aris 0.350            0.50       0.85          0.10
+Bagas 0.275            0.20       0.65          0.25
+Chika 0.385            0.80       0.92          0.05
+Dimas 0.240            0.15       0.55          0.40
+Elisa 0.310            0.35       0.78          0.15
+Farhan 0.360            0.60       0.88          0.08
+Gita 0.290            0.25       0.70          0.30
+Heru 0.320            0.40       0.80          0.12
+Intan 0.375            0.75       0.90          0.06
+Juna 0.255            0.18       0.60          0.35
+<code class="docutils literal notranslate"> </code> `</p></li>
+</ol>
 </section>
 
     <script type="text/x-thebe-config">
@@ -589,6 +1429,7 @@ gambar di atas merupakan visualiasi pengukuran jarak pada orange, tetapi sementa
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data Understanding</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tugas-pertama">Tugas Pertama</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-sepallength-dan-sepalwidth">Korelasi antara sepallength dan sepalwidth</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#korelasi-antara-petallengt-dan-petalwidth">Korelasi antara petallengt dan petalwidth</a></li>
@@ -614,7 +1455,47 @@ gambar di atas merupakan visualiasi pengukuran jarak pada orange, tetapi sementa
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proyek-missing-values-inputation-materi-normalisasi-data">Proyek Missing Values Inputation + Materi Normalisasi data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-data-asli-untuk-mencari-missing-values">Tabel Data Asli untuk mencari missing values</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penyelesaian-missing-values-menggunakan-wknn-manual">penyelesaian missing values menggunakan WKNN (manual)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-1-hitung-jarak-dan-kemiripan-si">Langkah 1: Hitung Jarak dan Kemiripan (si)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-jarak-euclidean-gita-ke-baris-lain">Perhitungan Jarak Euclidean (Gita ke Baris Lain)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kita-hitung-untuk-5-tetangga-terdekat-gita">Kita hitung untuk 5 tetangga terdekat Gita:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-2-hitung-estimasi-menggunakan-weighted-average">Langkah 2: Hitung Estimasi Menggunakan Weighted Average</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-akhir">Hasil Akhir</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penyelesaian-missing-values-menggunakan-wknn-code">penyelesaian missing values menggunakan WKNN (code)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-latih-ternormalisasi-min-max-baris-1-6-dan-8-10">1. Data latih (ternormalisasi Min-Max) - Baris 1-6 dan 8-10</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-target-gita-yang-dicari">2. Data target: Gita (yang dicari)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#teknik-normalisasi-data">Teknik Normalisasi Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-normalization">1. Min-Max Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan">Contoh Perhitungan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-min-max-normalization">Tabel Min-Max Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-new-custom-range">Min-Max New (Custom Range)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-normalization">2. Z-Score Normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Contoh Perhitungan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-z-score-normalization">Tabel Z-Score Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling">3. Decimal Scaling</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-perhitungan-aris">Contoh Perhitungan (Aris)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-decimal-scaling">Tabel Decimal Scaling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling-sklearn">1. Min-Max Scaling (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#z-score-standardization-sklearn">2. Z-Score / Standardization (Sklearn)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#decimal-scaling-custom-function">3. Decimal Scaling (Custom Function)</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
