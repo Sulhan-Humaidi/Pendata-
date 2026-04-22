@@ -661,7 +661,7 @@ Handling Missing Value
 - Menggunakan stratified sampling
 
 
-![Gambar2]4(g6uts.png)
+![Gambar24](g6uts.png)
 
 #### Dataset
 Dataset terdiri dari:
@@ -680,7 +680,7 @@ Distribusi kelas:
 
 #### HASIL  EVALUASI
 hasil dari matrix evaluasi 
-![Gambar25](g6uts.png)
+![Gambar25](g7uts.png)
 - Accuracy = 100%
 
 - Precision = 100%
