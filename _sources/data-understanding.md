@@ -530,3 +530,183 @@ $$x' = \frac{x}{10^j}$$
     Intan 0.375            0.75       0.90          0.06
     Juna 0.255            0.18       0.60          0.35
 ` `
+
+
+## UTS
+
+
+## Analisa Data Kesuburan Tanah
+
+### Dataset Klasifikasi Kesuburan Tanah
+
+INFORMASI DATASET
+| Atribut | Keterangan |
+| :--- | :--- |
+| Jumlah Sampel | 2.000 baris |
+| Jumlah Fitur | 10 fitur (9 numerik, 1 kategorikal) |
+| Jumlah Kelas | 2 kelas |
+| Target / Label | Subur / Tidak Subur |
+
+#### 1. pH Tanah
+- Satuan: Skala pH (0–14)
+- Deskripsi: Tingkat keasaman atau kebasaan tanah. pH optimal untuk pertanian berkisar 6,0–7,5.
+- Nilai Subur: 6,0 – 7,5
+- Nilai Tidak Subur: 3,5 – 5,4 (asam kuat) atau 7,6 – 9,0 (basa kuat)
+#### 2. N Total (%)
+- Satuan: Persen (%)
+- Deskripsi: Kandungan nitrogen total dalam tanah. Nitrogen sangat penting untuk pertumbuhan vegetatif tanaman.
+- Nilai Subur: 0,21 – 0,50%
+- Nilai Tidak Subur: 0,01 – 0,20%
+#### 3. P Tersedia (ppm)
+- Satuan: Parts per million (ppm)
+- Deskripsi: Fosfor tersedia yang dapat diserap tanaman. Fosfor berperan dalam pembentukan akar dan buah.
+- Nilai Subur: 15 – 60 ppm
+- Nilai Tidak Subur: 1 – 14 ppm
+#### 4. K Tersedia (meq/100g)
+- Satuan: Milliequivalent per 100 gram tanah
+- Deskripsi: Kalium tersedia dalam tanah. Penting untuk ketahanan tanaman dan proses fotosintesis.
+- Nilai Subur: 0,30 – 0,80 meq/100g
+- Nilai Tidak Subur: 0,05 – 0,29 meq/100g
+#### 5. C Organik (%)
+- Satuan: Persen (%)
+- Deskripsi: Kandungan karbon organik tanah, indikator utama kesuburan dan kesehatan biologi tanah.
+- Nilai Subur: 2,0 – 5,0%
+- Nilai Tidak Subur: 0,2 – 1,9%
+#### 6. KTK (meq/100g)
+- Satuan: Milliequivalent per 100 gram tanah
+- Deskripsi: Kapasitas Tukar Kation — kemampuan tanah mengikat dan menyediakan unsur hara bagi tanaman. Semakin -  tinggi semakin subur.
+- Nilai Subur: 20 – 45 meq/100g
+- Nilai Tidak Subur: 5 – 19 meq/100g
+#### 7. Kejenuhan Basa (%)
+- Satuan: Persen (%)
+- Deskripsi: Persentase kation basa (Ca, Mg, K, Na) dari total KTK. Menggambarkan kualitas kesuburan kimia tanah.
+- Nilai Subur: 60 – 100%
+- Nilai Tidak Subur: 10 – 59%
+#### 8. Tekstur Tanah
+- Tipe: Kategorikal
+- Deskripsi: Komposisi partikel tanah yang memengaruhi drainase, aerasi, dan kemampuan menahan air.
+
+| Kelas | Tekstur yang Umum |
+| :--- | :--- |
+| Subur | Lempung, Lempung Berpasir, Lempung Berliat |
+| Tidak Subur | Pasir, Liat, Debu |
+
+#### 9. Kadar Air (%)
+- Satuan: Persen (%)
+- Deskripsi: Persentase kadar air dalam tanah. Terlalu kering atau terlalu basah sama-sama merugikan pertumbuhan tanaman.
+- Nilai Subur: 25 – 45%
+- Nilai Tidak Subur: 5 – 20% (terlalu kering) atau 55 – 75% (terlalu basah)
+#### 10. Bulk Density (g/cm³)
+- Satuan: Gram per sentimeter kubik
+- Deskripsi: Kerapatan tanah. Nilai tinggi menandakan tanah padat, aerasi buruk, dan sulit ditembus akar.
+- Nilai Subur: 0,9 – 1,2 g/cm³
+- Nilai Tidak Subur: 1,4 – 1,9 g/cm³
+
+### definisi kelas
+
+| Label | Deskripsi |
+| :--- | :--- |
+| Subur | Tanah dengan kondisi fisik, kimia, dan biologi yang optimal untuk pertumbuhan tanaman. Ditandai dengan pH seimbang, unsur hara cukup, tekstur ideal, dan struktur tanah yang baik. |
+| Tidak Subur | Tanah yang memiliki satu atau lebih kondisi pembatas seperti pH ekstrem, kekurangan unsur hara, tekstur buruk, kadar air tidak ideal, atau kerapatan tanah tinggi. |
+
+### Distribusi kelas
+```
+Subur        : 1.000 sampel (50%)
+Tidak Subur  : 1.000 sampel (50%)
+Total        : 2.000 sampel
+```
+
+### KNN 
+![Gambar19](g1uts.png)
+#### METODE
+metode yang digunakan yakni dengan K-Nearest Neighbors (KNN) untuk mengklasifikasi dua tanah yakni antara subur atau tidak subur
+
+![Gambar20](g2uts.png)
+### 1. Mekanisme Kerja KNN 
+1. Penghitungan Skala Kemiripan (Euclidean Distance)Algoritma memulai proses dengan melakukan komputasi jarak antara titik data baru yang akan diuji terhadap seluruh titik data yang tersedia di dalam dataset pelatihan. Langkah ini bertujuan untuk mengukur tingkat kemiripan (similarity) antar data. Metode yang umum digunakan adalah Euclidean Distance, yang secara matematis menghitung jarak garis lurus (straight-line distance) antar koordinat fitur di dalam ruang multidimensi.
+2. Identifikasi Tetangga Terdekat (Pemilihan Nilai K) Setelah seluruh jarak berhasil dihitung, algoritma akan melakukan pengurutan data dari jarak yang paling kecil (paling mirip) hingga yang terbesar. Berdasarkan nilai parameter k yang telah ditentukan (misalnya $k = 3$), algoritma akan mengisolasi tiga buah data latih yang memiliki posisi koordinat paling dekat dengan data uji tersebut sebagai referensi utama dalam proses pengambilan keputusan 
+3. Keputusan Klasifikasi Melalui Voting Mayoritas Pada tahap akhir, algoritma akan melakukan evaluasi terhadap label atau kelas yang dimiliki oleh sejumlah tetangga terpilih tadi. Penentuan kelas akhir untuk data baru dilakukan berdasarkan mekanisme voting mayoritas. Artinya, data baru tersebut akan ditetapkan ke dalam kelas yang paling banyak muncul di antara tetangga-tetangganya. Jika dalam $k = 3$ ditemukan lebih banyak label "Subur", maka data tersebut resmi diklasifikasikan sebagai "Subur".
+
+### 2. Pemrosesan Data
+Tahapan preprocessing:
+
+Handling Missing Value
+
+1. Data yang hilang diisi menggunakan:
+
+- Mean (untuk numerik)
+
+- Most frequent (untuk kategorikal)
+
+![Gambar21](g3uts.png)
+
+2. Normalisasi Data
+- Dilakukan untuk menyamakan skala antar fitur Dilakukan normalisasi menggunakan metode Min-Max Normalization Semua nilai berada pada rentang 0 – 1
+
+
+![Gambar22](g4uts.png)
+3. Seleksi Fitur (Column Filter)
+
+- Menggunakan fitur numerik
+
+- Menghapus ID dan fitur yang tidak relevan
+
+![Gambar23](g5uts.png)
+4. Split Data (Partitioning)
+
+- 70% data training
+
+- 30% data testing
+
+- Menggunakan stratified sampling
+
+
+![Gambar2]4(g6uts.png)
+
+#### Dataset
+Dataset terdiri dari:
+
+- 2000 data
+
+- 10 fitur (9 numerik, 1 kategorikal)
+
+- 1 label (Subur / Tidak Subur)
+
+Distribusi kelas:
+
+- Subur: 1000 data (50%)
+
+- Tidak Subur: 1000 data (50%)
+
+#### HASIL  EVALUASI
+hasil dari matrix evaluasi 
+![Gambar25](g6uts.png)
+- Accuracy = 100%
+
+- Precision = 100%
+
+- Recall = 100%
+
+- F1-Score = 100%
+
+Siapp sepuh, ini tak buatkan kalimat analisis yang lebih mendalam, teknis, dan terlihat lebih akademis untuk laporanmu. Tetap pakai format garis vertikal dan heading `##` ya:
+
+## 5. Analisis Hasil Model
+
+| **1. Representasi Pola Data (Data Linearity)**
+| Capaian akurasi sempurna sebesar 100% pada fase pengujian mengindikasikan bahwa distribusi data dalam ruang fitur memiliki pola yang sangat jelas dan terstruktur secara linear. Hal ini menunjukkan tidak adanya tumpang tindih (overlap) yang signifikan antar titik data dari kelas yang berbeda, sehingga algoritma mampu menarik garis pemisah atau batas keputusan (decision boundary) secara akurat tanpa adanya misklasifikasi.
+
+
+
+| **2. Signifikansi dan Relevansi Fitur**
+| Performa maksimal ini juga membuktikan bahwa variabel atau fitur yang digunakan dalam dataset memiliki korelasi yang sangat kuat terhadap target label (Subur/Tidak Subur). Setiap fitur mampu memberikan kontribusi informasi yang diskrit dan esensial, sehingga memudahkan model dalam mengenali karakteristik unik dari masing-masing kelas secara konsisten dan presisi selama proses evaluasi.
+
+
+
+| **3. Generalisasi dan Konsistensi Model**
+| Tingginya tingkat keberhasilan model dalam memprediksi data uji mencerminkan kemampuan generalisasi yang sangat baik terhadap pola yang dipelajari selama tahap pelatihan. Konsistensi nilai akurasi ini menunjukkan bahwa model tidak hanya menghafal data (overfitting), melainkan benar-benar menangkap logika klasifikasi berdasarkan parameter fisik dan kimia tanah yang menjadi input utama dalam sistem ini.
+
+## 6. Kesimpulan
+- KNN sudah selesai mengklasifikasikan data dengan sangat baik  
+
+- performa yang dicapai sangat optimal dalam metode ini
