@@ -710,3 +710,31 @@ Siapp sepuh, ini tak buatkan kalimat analisis yang lebih mendalam, teknis, dan t
 - KNN sudah selesai mengklasifikasikan data dengan sangat baik  
 
 - performa yang dicapai sangat optimal dalam metode ini
+
+
+
+## Naive Bayes
+
+- Proyek ini  digunakan untuk membuata analisis data menggunakan Naive bayes
+- Untuk Model classifer Naive menggunakan Scripts Python (tidak menggunakan Node Knime) dengan memanfaatkan Sklearn https://scikit-learn.org/stable/api/sklearn.naive_bayes.html
+
+### Tampilan Knime
+![Gambar26](naive1.png)
+Gambar diatas mengilustrasikan alur kerja (workflow) yang telah berhasil dieksekusi secara keseluruhan pada perangkat lunak KNIME Analytics Platform. Pada bagian kiri, terdapat node CSV Reader yang berfungsi sebagai modul antarmuka input untuk membaca dan mengimpor set data mentah. Indikator lampu berwarna hijau pada bagian bawah node ini menunjukkan bahwa proses ingestasi data telah berhasil dilakukan tanpa kendala. Keberhasilan ini mencakup penyelesaian masalah konfigurasi pemisah kolom (delimiter), sehingga data yang sebelumnya tidak terstruktur kini telah terformat dengan baik ke dalam bentuk tabel tabular. Atribut-atribut penting seperti status keselamatan (Survived), usia (Age), dan jenis kelamin (Sex) telah terpisah secara presisi sesuai dengan struktur matriks yang dibutuhkan untuk tahap analisis lanjutan.
+
+Setelah proses penyiapan data pada node CSV Reader selesai, matriks data tersebut disalurkan melalui garis penghubung (data flow) menuju node Python Script yang berada di sebelah kanan. Garis penghubung ini merepresentasikan pipeline sistem yang memastikan dataset ditransfer secara utuh. Node Python Script ini bertindak sebagai modul pemrosesan utama untuk implementasi machine learning. Di dalam node tersebut, serangkaian instruksi komputasi tingkat lanjut dijalankan, yang mencakup tahap pembersihan data (data cleaning) seperti penghapusan baris dengan nilai kosong (missing values/NaN) serta transformasi variabel kategorikal menjadi format numerik (label encoding) agar memenuhi syarat pemrosesan matematis komputer.
+
+Tahapan paling krusial yang dieksekusi di dalam node Python Script adalah penerapan algoritma klasifikasi Naive Bayes. Algoritma ini mengolah dataset yang telah disiapkan untuk menghitung probabilitas matematis dari data latih (training data), yang selanjutnya digunakan untuk membangun model prediktif guna menebak status keselamatan penumpang pada data uji (testing data). Nyala lampu indikator hijau pada node Python Script mengonfirmasi bahwa seluruh sintaks pemrograman, pra-pemrosesan, hingga pembangunan model machine learning telah berjalan dengan sempurna tanpa menghasilkan error. Secara keseluruhan, workflow ini merepresentasikan integrasi yang berhasil antara kapabilitas manajemen data dari KNIME dan kemampuan analitik prediktif dari bahasa pemrograman Python, di mana hasil prediksi akhirnya telah siap untuk diekstraksi dan dievaluasi.
+
+
+### Tampilan CSV reader
+![Gambar27](naive2.png)
+diatas merupakan data yg digunakan pada percobaan kali ini
+
+### Tampilan Kode Python
+![Gambar28](naive3.png)
+Skrip pemrograman Python ini mengintegrasikan pustaka pandas dan scikit-learn untuk mengolah data tabular yang ditarik dari ekosistem KNIME. Proses diawali dengan tahap prapemrosesan krusial yang mencakup pembersihan nilai kosong (missing values) pada dataset serta transformasi variabel kategorikal menjadi representasi numerik menggunakan fungsi LabelEncoder. Setelah data tervalidasi secara komputasional, struktur matriks dipisahkan menjadi variabel fitur prediktor dan variabel target (status keselamatan), lalu dipartisi secara proporsional menjadi 80% data latih dan 20% data uji. Sistem kemudian mengimplementasikan algoritma Gaussian Naive Bayes yang dilatih menggunakan himpunan data latih untuk memetakan pola probabilitas. Pada tahap akhir, model melakukan prediksi terhadap himpunan data uji, di mana keluaran prediksinya dikompilasi berdampingan dengan nilai aktual ke dalam tabel baru untuk diekspor kembali ke antarmuka KNIME guna keperluan evaluasi lanjutan.
+
+### Tampilan Score
+![Gambar29](naive4.png)
+Gambar tersebut menampilkan matriks kebingungan (confusion matrix) yang dihasilkan oleh modul Scorer pada antarmuka KNIME sebagai representasi visual dari kinerja evaluasi model klasifikasi Naive Bayes. Matriks tabular ini mendistribusikan hasil pengujian ke dalam empat kuadran utama berdasarkan komparasi antara kelas keselamatan aktual pada bagian baris dan kelas hasil prediksi model pada bagian kolom. Berdasarkan data empiris pada matriks tersebut, algoritma telah berhasil mengklasifikasikan secara akurat 100 penumpang pada kategori tidak selamat (True Negative) dan 54 penumpang pada kategori selamat (True Positive), yang secara keseluruhan mendominasi diagonal utama matriks sebagai prediksi yang valid. Di sisi lain, model mencatatkan tingkat margin kesalahan (misclassification) yang relatif minor, di mana 5 observasi dari kelas tidak selamat keliru diprediksi sebagai kelas selamat (False Positive), dan 20 observasi dari kelas selamat keliru diidentifikasi sebagai kelas tidak selamat (False Negative). Distribusi nilai komputasional pada confusion matrix ini secara komprehensif memvalidasi kapabilitas algoritma prediktif yang dibangun, di mana proporsi keakuratan pemetaan kelas secara substansial jauh lebih besar dibandingkan dengan tingkat kesalahan prediksinya.

@@ -462,6 +462,13 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-hasil-model">5. Analisis Hasil Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">6. Kesimpulan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes">Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-knime">Tampilan Knime</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-csv-reader">Tampilan CSV reader</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-kode-python">Tampilan Kode Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-score">Tampilan Score</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -1641,6 +1648,35 @@ Juna 0.255            0.18       0.60          0.35
 <li><p>performa yang dicapai sangat optimal dalam metode ini</p></li>
 </ul>
 </section>
+<section id="naive-bayes">
+<h2>Naive Bayes<a class="headerlink" href="#naive-bayes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Proyek ini  digunakan untuk membuata analisis data menggunakan Naive bayes</p></li>
+<li><p>Untuk Model classifer Naive menggunakan Scripts Python (tidak menggunakan Node Knime) dengan memanfaatkan Sklearn <a class="reference external" href="https://scikit-learn.org/stable/api/sklearn.naive_bayes.html">https://scikit-learn.org/stable/api/sklearn.naive_bayes.html</a></p></li>
+</ul>
+<section id="tampilan-knime">
+<h3>Tampilan Knime<a class="headerlink" href="#tampilan-knime" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar26" src="_images/naive1.png" />
+Gambar diatas mengilustrasikan alur kerja (workflow) yang telah berhasil dieksekusi secara keseluruhan pada perangkat lunak KNIME Analytics Platform. Pada bagian kiri, terdapat node CSV Reader yang berfungsi sebagai modul antarmuka input untuk membaca dan mengimpor set data mentah. Indikator lampu berwarna hijau pada bagian bawah node ini menunjukkan bahwa proses ingestasi data telah berhasil dilakukan tanpa kendala. Keberhasilan ini mencakup penyelesaian masalah konfigurasi pemisah kolom (delimiter), sehingga data yang sebelumnya tidak terstruktur kini telah terformat dengan baik ke dalam bentuk tabel tabular. Atribut-atribut penting seperti status keselamatan (Survived), usia (Age), dan jenis kelamin (Sex) telah terpisah secara presisi sesuai dengan struktur matriks yang dibutuhkan untuk tahap analisis lanjutan.</p>
+<p>Setelah proses penyiapan data pada node CSV Reader selesai, matriks data tersebut disalurkan melalui garis penghubung (data flow) menuju node Python Script yang berada di sebelah kanan. Garis penghubung ini merepresentasikan pipeline sistem yang memastikan dataset ditransfer secara utuh. Node Python Script ini bertindak sebagai modul pemrosesan utama untuk implementasi machine learning. Di dalam node tersebut, serangkaian instruksi komputasi tingkat lanjut dijalankan, yang mencakup tahap pembersihan data (data cleaning) seperti penghapusan baris dengan nilai kosong (missing values/NaN) serta transformasi variabel kategorikal menjadi format numerik (label encoding) agar memenuhi syarat pemrosesan matematis komputer.</p>
+<p>Tahapan paling krusial yang dieksekusi di dalam node Python Script adalah penerapan algoritma klasifikasi Naive Bayes. Algoritma ini mengolah dataset yang telah disiapkan untuk menghitung probabilitas matematis dari data latih (training data), yang selanjutnya digunakan untuk membangun model prediktif guna menebak status keselamatan penumpang pada data uji (testing data). Nyala lampu indikator hijau pada node Python Script mengonfirmasi bahwa seluruh sintaks pemrograman, pra-pemrosesan, hingga pembangunan model machine learning telah berjalan dengan sempurna tanpa menghasilkan error. Secara keseluruhan, workflow ini merepresentasikan integrasi yang berhasil antara kapabilitas manajemen data dari KNIME dan kemampuan analitik prediktif dari bahasa pemrograman Python, di mana hasil prediksi akhirnya telah siap untuk diekstraksi dan dievaluasi.</p>
+</section>
+<section id="tampilan-csv-reader">
+<h3>Tampilan CSV reader<a class="headerlink" href="#tampilan-csv-reader" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar27" src="_images/naive2.png" />
+diatas merupakan data yg digunakan pada percobaan kali ini</p>
+</section>
+<section id="tampilan-kode-python">
+<h3>Tampilan Kode Python<a class="headerlink" href="#tampilan-kode-python" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar28" src="_images/naive3.png" />
+Skrip pemrograman Python ini mengintegrasikan pustaka pandas dan scikit-learn untuk mengolah data tabular yang ditarik dari ekosistem KNIME. Proses diawali dengan tahap prapemrosesan krusial yang mencakup pembersihan nilai kosong (missing values) pada dataset serta transformasi variabel kategorikal menjadi representasi numerik menggunakan fungsi LabelEncoder. Setelah data tervalidasi secara komputasional, struktur matriks dipisahkan menjadi variabel fitur prediktor dan variabel target (status keselamatan), lalu dipartisi secara proporsional menjadi 80% data latih dan 20% data uji. Sistem kemudian mengimplementasikan algoritma Gaussian Naive Bayes yang dilatih menggunakan himpunan data latih untuk memetakan pola probabilitas. Pada tahap akhir, model melakukan prediksi terhadap himpunan data uji, di mana keluaran prediksinya dikompilasi berdampingan dengan nilai aktual ke dalam tabel baru untuk diekspor kembali ke antarmuka KNIME guna keperluan evaluasi lanjutan.</p>
+</section>
+<section id="tampilan-score">
+<h3>Tampilan Score<a class="headerlink" href="#tampilan-score" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar29" src="_images/naive4.png" />
+Gambar tersebut menampilkan matriks kebingungan (confusion matrix) yang dihasilkan oleh modul Scorer pada antarmuka KNIME sebagai representasi visual dari kinerja evaluasi model klasifikasi Naive Bayes. Matriks tabular ini mendistribusikan hasil pengujian ke dalam empat kuadran utama berdasarkan komparasi antara kelas keselamatan aktual pada bagian baris dan kelas hasil prediksi model pada bagian kolom. Berdasarkan data empiris pada matriks tersebut, algoritma telah berhasil mengklasifikasikan secara akurat 100 penumpang pada kategori tidak selamat (True Negative) dan 54 penumpang pada kategori selamat (True Positive), yang secara keseluruhan mendominasi diagonal utama matriks sebagai prediksi yang valid. Di sisi lain, model mencatatkan tingkat margin kesalahan (misclassification) yang relatif minor, di mana 5 observasi dari kelas tidak selamat keliru diprediksi sebagai kelas selamat (False Positive), dan 20 observasi dari kelas selamat keliru diidentifikasi sebagai kelas tidak selamat (False Negative). Distribusi nilai komputasional pada confusion matrix ini secara komprehensif memvalidasi kapabilitas algoritma prediktif yang dibangun, di mana proporsi keakuratan pemetaan kelas secara substansial jauh lebih besar dibandingkan dengan tingkat kesalahan prediksinya.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1793,6 +1829,13 @@ Juna 0.255            0.18       0.60          0.35
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-hasil-model">5. Analisis Hasil Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan">6. Kesimpulan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naive-bayes">Naive Bayes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-knime">Tampilan Knime</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-csv-reader">Tampilan CSV reader</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-kode-python">Tampilan Kode Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tampilan-score">Tampilan Score</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
