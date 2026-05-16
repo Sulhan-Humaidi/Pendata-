@@ -738,3 +738,27 @@ Skrip pemrograman Python ini mengintegrasikan pustaka pandas dan scikit-learn un
 ### Tampilan Score
 ![Gambar29](naive4.png)
 Gambar tersebut menampilkan matriks kebingungan (confusion matrix) yang dihasilkan oleh modul Scorer pada antarmuka KNIME sebagai representasi visual dari kinerja evaluasi model klasifikasi Naive Bayes. Matriks tabular ini mendistribusikan hasil pengujian ke dalam empat kuadran utama berdasarkan komparasi antara kelas keselamatan aktual pada bagian baris dan kelas hasil prediksi model pada bagian kolom. Berdasarkan data empiris pada matriks tersebut, algoritma telah berhasil mengklasifikasikan secara akurat 100 penumpang pada kategori tidak selamat (True Negative) dan 54 penumpang pada kategori selamat (True Positive), yang secara keseluruhan mendominasi diagonal utama matriks sebagai prediksi yang valid. Di sisi lain, model mencatatkan tingkat margin kesalahan (misclassification) yang relatif minor, di mana 5 observasi dari kelas tidak selamat keliru diprediksi sebagai kelas selamat (False Positive), dan 20 observasi dari kelas selamat keliru diidentifikasi sebagai kelas tidak selamat (False Negative). Distribusi nilai komputasional pada confusion matrix ini secara komprehensif memvalidasi kapabilitas algoritma prediktif yang dibangun, di mana proporsi keakuratan pemetaan kelas secara substansial jauh lebih besar dibandingkan dengan tingkat kesalahan prediksinya.
+
+
+## Random Forest 
+
+### Analisa Data Menggunakan Random Forest
+
+![Gambar30](RF1.png)
+csv reader berfungsi untuk membaca dan mengimpor dataset mentah berformat csv ke dalam sistem agar datanya bisa diproses ke tahapan selanjutnya. dataset yang saya gunakan yaitu dataset titanic
+
+![Gambar31](RF2.png)
+table partitioner bertugas untuk membagi dataset menjadi dua bagian yaitu data latih dan data uji. data latih dipakai untuk mengajari mesin sedangkan data uji dipakai untuk mengetes kemampuan mesin tersebut.
+
+![Gambar32](RF3.png)
+random forest learner adalah tempat dimana model kecerdasan buatan melakukan proses belajar. bagian ini akan mengenali pola dan hubungan pada data latih menggunakan algoritma random forest agar bisa memahami cara mengklasifikasikan target.
+
+![Gambar33](RF4.png)
+random forest predictor bertugas untuk melakukan ujian berdasarkan hasil belajar sebelumnya. bagian ini menggunakan model yang sudah pintar dari tahapan learner untuk menebak kelas target pada data uji yang masih baru.
+
+
+![Gambar34](RF5.png)
+scorer adalah tahapan evaluasi untuk mengukur seberapa akurat hasil tebakan model. bagian ini membandingkan data hasil tebakan dari tahapan predictor dengan data target aslinya untuk menghasilkan tabel kebingungan atau confusion matrix beserta nilai persentase akurasinya.
+
+### Kesimpulan
+kesimpulan dari proyek ini adalah penerapan algoritma random forest pada knime untuk melakukan klasifikasi terhadap dataset titanic. alur kerja dibangun secara berurutan mulai dari pembacaan data mentah hingga tahap evaluasi. dataset dipartisi menjadi dua bagian yaitu data latih untuk proses pembelajaran mesin dan data uji untuk tahap pengujian. hasil akhir dari proyek ini adalah kemampuan model dalam memprediksi status keselamatan penumpang titanic yang dievaluasi menggunakan confusion matrix guna mengetahui tingkat akurasi dari model yang telah dibuat.
