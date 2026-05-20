@@ -474,6 +474,24 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresi-linear">Regresi linear</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-singkat-tugas">Penjelasan singkat tugas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-titik-pada-geogebra">Plot titik pada Geogebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-regresi-linear">Model regresi linear</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membentuk-matriks-x-dan-y">Membentuk Matriks X dan Y</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t">Menghitung (X^T)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-x">Menghitung (X^T X)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-x-1">Menghitung ((X^T X)^{-1})</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-y">Menghitung (X^T Y)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-koefisien-regresi-hat-beta">Menghitung Koefisien Regresi (\hat{\beta})</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#persamaan-regresi-linier">Persamaan Regresi Linier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#garis-regresi-pada-geogebra">Garis Regresi pada GeoGebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Garis regresi pada GeoGebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-python-dan-sklearn">Verifikasi dengan Python dan sklearn</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Kesimpulan</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -1702,6 +1720,135 @@ scorer adalah tahapan evaluasi untuk mengukur seberapa akurat hasil tebakan mode
 <p>kesimpulan dari proyek ini adalah penerapan algoritma random forest pada knime untuk melakukan klasifikasi terhadap dataset titanic. alur kerja dibangun secara berurutan mulai dari pembacaan data mentah hingga tahap evaluasi. dataset dipartisi menjadi dua bagian yaitu data latih untuk proses pembelajaran mesin dan data uji untuk tahap pengujian. hasil akhir dari proyek ini adalah kemampuan model dalam memprediksi status keselamatan penumpang titanic yang dievaluasi menggunakan confusion matrix guna mengetahui tingkat akurasi dari model yang telah dibuat.</p>
 </section>
 </section>
+<section id="regresi-linear">
+<h2>Regresi linear<a class="headerlink" href="#regresi-linear" title="Permalink to this heading">#</a></h2>
+<section id="penjelasan-singkat-tugas">
+<h3>Penjelasan singkat tugas<a class="headerlink" href="#penjelasan-singkat-tugas" title="Permalink to this heading">#</a></h3>
+<p>Proyek ini  digunakan untuk membuat analisis data menggunakan Regresi Linier</p>
+<ul class="simple">
+<li><p>membuat program menghitung koefisien regresi dengan  libarary dari sklearn from sklearn.linear_model import LinearRegression</p></li>
+<li><p>Menghitung secara analitik mencari koefisien regresi</p></li>
+</ul>
+<p><img alt="Gambar35" src="_images/RL1.png" />
+Regresi linier digunakan untuk mencari hubungan antara variabel bebas (x) dan variabel terikat (y).</p>
+</section>
+<section id="data">
+<h3>data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h3>
+<p>|no|x|y|
+|1|2|2|
+|2|4|3|
+|3|5|5|
+|4|3|4|
+|5|3|3|
+|6|4|5|
+|7|5|6|</p>
+</section>
+<section id="plot-titik-pada-geogebra">
+<h3>Plot titik pada Geogebra<a class="headerlink" href="#plot-titik-pada-geogebra" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar36" src="_images/RL2.png" /></p>
+</section>
+<section id="model-regresi-linear">
+<h3>Model regresi linear<a class="headerlink" href="#model-regresi-linear" title="Permalink to this heading">#</a></h3>
+<p>Bentuk umum model regresi linier sederhana adalah:
+<img alt="Gambar37" src="_images/RL3.png" />
+dengan:</p>
+<ul class="simple">
+<li><p>(\beta_0) = intersep / konstanta</p></li>
+<li><p>(\beta_1) = koefisien regresi / slope</p></li>
+</ul>
+<p>Untuk menyelesaikannya secara analitik, model ini ditulis dalam bentuk matriks:
+<img alt="Gambar38" src="_images/RL4.png" />
+dengan :
+<img alt="Gambar39" src="_images/RL5.png" /></p>
+</section>
+<section id="membentuk-matriks-x-dan-y">
+<h3>Membentuk Matriks X dan Y<a class="headerlink" href="#membentuk-matriks-x-dan-y" title="Permalink to this heading">#</a></h3>
+<p>Karena regresi linier sederhana memiliki satu variabel bebas, maka matriks (X) dibentuk dengan kolom pertama bernilai 1 dan kolom kedua berisi nilai (x).
+<img alt="Gambar40" src="_images/RL6.png" />
+Sedangkan matriks (Y) berisi nilai (y):
+<img alt="Gambar41" src="_images/RL7.png" /></p>
+</section>
+<section id="menghitung-x-t">
+<h3>Menghitung (X^T)<a class="headerlink" href="#menghitung-x-t" title="Permalink to this heading">#</a></h3>
+<p>Transpose dari matriks (X) adalah:
+<img alt="Gambar42" src="_images/RL8.png" /></p>
+</section>
+<section id="menghitung-x-t-x">
+<h3>Menghitung (X^T X)<a class="headerlink" href="#menghitung-x-t-x" title="Permalink to this heading">#</a></h3>
+<p>Perkalian matriks (X^T X):
+<img alt="Gambar43" src="_images/RL9.png" />
+hasilnya :
+<img alt="Gambar44" src="_images/RL10.png" />
+Penjelasan singkat:</p>
+<ul class="simple">
+<li><p>elemen ((1,1)) adalah jumlah data, yaitu (7)</p></li>
+<li><p>elemen ((1,2)) dan ((2,1)) adalah (\sum x = 26)</p></li>
+<li><p>elemen ((2,2)) adalah (\sum x^2 = 104)</p></li>
+</ul>
+</section>
+<section id="menghitung-x-t-x-1">
+<h3>Menghitung ((X^T X)^{-1})<a class="headerlink" href="#menghitung-x-t-x-1" title="Permalink to this heading">#</a></h3>
+<p>Rumus invers matriks (2 \times 2):
+<img alt="Gambar45" src="_images/RL11.png" /></p>
+</section>
+<section id="menghitung-x-t-y">
+<h3>Menghitung (X^T Y)<a class="headerlink" href="#menghitung-x-t-y" title="Permalink to this heading">#</a></h3>
+<p>Perkalian matriks (X^T Y):
+<img alt="Gambar46" src="_images/RL12.png" />
+Penjelasan singkat:</p>
+<ul class="simple">
+<li><p>elemen pertama adalah (\sum y = 28)</p></li>
+<li><p>elemen kedua adalah (\sum xy = 112)</p></li>
+</ul>
+</section>
+<section id="menghitung-koefisien-regresi-hat-beta">
+<h3>Menghitung Koefisien Regresi (\hat{\beta})<a class="headerlink" href="#menghitung-koefisien-regresi-hat-beta" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar47" src="_images/RL13.png" />
+<img alt="Gambar48" src="_images/RL14.png" />
+<img alt="Gambar49" src="_images/RL15.png" /></p>
+</section>
+<section id="persamaan-regresi-linier">
+<h3>Persamaan Regresi Linier<a class="headerlink" href="#persamaan-regresi-linier" title="Permalink to this heading">#</a></h3>
+<p>Dengan demikian, persamaan regresi linier yang diperoleh adalah:
+<img alt="Gambar50" src="_images/RL16.png" /></p>
+</section>
+<section id="garis-regresi-pada-geogebra">
+<h3>Garis Regresi pada GeoGebra<a class="headerlink" href="#garis-regresi-pada-geogebra" title="Permalink to this heading">#</a></h3>
+<p>Untuk menampilkan garis regresi di GeoGebra, masukkan data titik terlebih dahulu, lalu ketik perintah berikut pada kolom input:
+<img alt="Gambar51" src="_images/RL17.png" />
+Setelah itu GeoGebra akan menampilkan garis regresi secara otomatis.</p>
+</section>
+<section id="id3">
+<h3>Garis regresi pada GeoGebra<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p><img alt="Gambar52" src="_images/RL18.png" /></p>
+</section>
+<section id="verifikasi-dengan-python-dan-sklearn">
+<h3>Verifikasi dengan Python dan sklearn<a class="headerlink" href="#verifikasi-dengan-python-dan-sklearn" title="Permalink to this heading">#</a></h3>
+<p>Kode Python berikut digunakan untuk memverifikasi hasil perhitungan manual:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Intercept:&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Slope:&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>Kesimpulan<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>Berdasarkan hasil analisis regresi linier menggunakan metode matriks diperoleh nilai:
+<img alt="Gambar53" src="_images/RL19.png" />
+Nilai (\beta_0) sebagai intercept bernilai 0, yang berarti ketika nilai (x = 0), maka nilai prediksi (y) juga bernilai 0.</p>
+<p>Nilai (\beta_1 = 1.076923) menunjukkan bahwa hubungan antara variabel (x) dan (y) bersifat positif. Artinya, setiap kenaikan 1 satuan pada variabel (x) akan meningkatkan nilai variabel (y) sebesar sekitar (1.076923).</p>
+<p>Hasil perhitungan manual menggunakan metode matriks sesuai dengan hasil perhitungan menggunakan library LinearRegression dari sklearn, sehingga dapat disimpulkan bahwa perhitungan telah dilakukan dengan benar.</p>
+<p>Visualisasi data pada GeoGebra juga menunjukkan bahwa titik-titik data mengikuti pola linear positif, sehingga regresi linear cocok digunakan untuk memodelkan data tersebut.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1864,6 +2011,24 @@ scorer adalah tahapan evaluasi untuk mengukur seberapa akurat hasil tebakan mode
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest">Random Forest</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-data-menggunakan-random-forest">Analisa Data Menggunakan Random Forest</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Kesimpulan</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresi-linear">Regresi linear</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-singkat-tugas">Penjelasan singkat tugas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-titik-pada-geogebra">Plot titik pada Geogebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-regresi-linear">Model regresi linear</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#membentuk-matriks-x-dan-y">Membentuk Matriks X dan Y</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t">Menghitung (X^T)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-x">Menghitung (X^T X)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-x-1">Menghitung ((X^T X)^{-1})</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-x-t-y">Menghitung (X^T Y)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghitung-koefisien-regresi-hat-beta">Menghitung Koefisien Regresi (\hat{\beta})</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#persamaan-regresi-linier">Persamaan Regresi Linier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#garis-regresi-pada-geogebra">Garis Regresi pada GeoGebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Garis regresi pada GeoGebra</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifikasi-dengan-python-dan-sklearn">Verifikasi dengan Python dan sklearn</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Kesimpulan</a></li>
 </ul>
 </li>
 </ul>

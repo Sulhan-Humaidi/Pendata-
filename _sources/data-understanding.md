@@ -762,3 +762,117 @@ scorer adalah tahapan evaluasi untuk mengukur seberapa akurat hasil tebakan mode
 
 ### Kesimpulan
 kesimpulan dari proyek ini adalah penerapan algoritma random forest pada knime untuk melakukan klasifikasi terhadap dataset titanic. alur kerja dibangun secara berurutan mulai dari pembacaan data mentah hingga tahap evaluasi. dataset dipartisi menjadi dua bagian yaitu data latih untuk proses pembelajaran mesin dan data uji untuk tahap pengujian. hasil akhir dari proyek ini adalah kemampuan model dalam memprediksi status keselamatan penumpang titanic yang dievaluasi menggunakan confusion matrix guna mengetahui tingkat akurasi dari model yang telah dibuat.
+
+
+## Regresi linear
+
+
+### Penjelasan singkat tugas
+Proyek ini  digunakan untuk membuat analisis data menggunakan Regresi Linier  
+- membuat program menghitung koefisien regresi dengan  libarary dari sklearn from sklearn.linear_model import LinearRegression
+- Menghitung secara analitik mencari koefisien regresi
+
+![Gambar35](RL1.png)
+Regresi linier digunakan untuk mencari hubungan antara variabel bebas (x) dan variabel terikat (y).
+
+### data
+|no|x|y|
+|1|2|2|
+|2|4|3|
+|3|5|5|
+|4|3|4|
+|5|3|3|
+|6|4|5|
+|7|5|6|
+
+### Plot titik pada Geogebra
+![Gambar36](RL2.png)
+
+### Model regresi linear 
+Bentuk umum model regresi linier sederhana adalah:
+![Gambar37](RL3.png)
+dengan:
+- (\beta_0) = intersep / konstanta
+- (\beta_1) = koefisien regresi / slope
+
+
+Untuk menyelesaikannya secara analitik, model ini ditulis dalam bentuk matriks:
+![Gambar38](RL4.png)
+dengan : 
+![Gambar39](RL5.png)
+
+### Membentuk Matriks X dan Y
+Karena regresi linier sederhana memiliki satu variabel bebas, maka matriks (X) dibentuk dengan kolom pertama bernilai 1 dan kolom kedua berisi nilai (x).
+![Gambar40](RL6.png)
+Sedangkan matriks (Y) berisi nilai (y):
+![Gambar41](RL7.png)
+
+### Menghitung (X^T)
+
+Transpose dari matriks (X) adalah:
+![Gambar42](RL8.png)
+
+### Menghitung (X^T X)
+Perkalian matriks (X^T X):
+![Gambar43](RL9.png)
+hasilnya :
+![Gambar44](RL10.png)
+Penjelasan singkat:
+- elemen ((1,1)) adalah jumlah data, yaitu (7)
+- elemen ((1,2)) dan ((2,1)) adalah (\sum x = 26)
+- elemen ((2,2)) adalah (\sum x^2 = 104)
+
+### Menghitung ((X^T X)^{-1})
+Rumus invers matriks (2 \times 2):
+![Gambar45](RL11.png)
+
+### Menghitung (X^T Y)
+Perkalian matriks (X^T Y):
+![Gambar46](RL12.png)
+Penjelasan singkat:
+- elemen pertama adalah (\sum y = 28)
+- elemen kedua adalah (\sum xy = 112)
+
+### Menghitung Koefisien Regresi (\hat{\beta})
+![Gambar47](RL13.png)
+![Gambar48](RL14.png)
+![Gambar49](RL15.png)
+
+### Persamaan Regresi Linier
+Dengan demikian, persamaan regresi linier yang diperoleh adalah:
+![Gambar50](RL16.png)
+
+### Garis Regresi pada GeoGebra
+Untuk menampilkan garis regresi di GeoGebra, masukkan data titik terlebih dahulu, lalu ketik perintah berikut pada kolom input:
+![Gambar51](RL17.png)
+Setelah itu GeoGebra akan menampilkan garis regresi secara otomatis.
+
+### Garis regresi pada GeoGebra
+![Gambar52](RL18.png)
+
+### Verifikasi dengan Python dan sklearn
+Kode Python berikut digunakan untuk memverifikasi hasil perhitungan manual:
+```
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+X = np.array([2, 4, 5, 3, 3, 4, 5]).reshape(-1, 1)
+Y = np.array([2, 3, 5, 4, 3, 5, 6])
+
+model = LinearRegression()
+model.fit(X, Y)
+
+print("Intercept:", model.intercept_)
+print("Slope:", model.coef_[0])
+```
+### Kesimpulan
+Berdasarkan hasil analisis regresi linier menggunakan metode matriks diperoleh nilai:
+![Gambar53](RL19.png)
+Nilai (\beta_0) sebagai intercept bernilai 0, yang berarti ketika nilai (x = 0), maka nilai prediksi (y) juga bernilai 0.
+
+Nilai (\beta_1 = 1.076923) menunjukkan bahwa hubungan antara variabel (x) dan (y) bersifat positif. Artinya, setiap kenaikan 1 satuan pada variabel (x) akan meningkatkan nilai variabel (y) sebesar sekitar (1.076923).
+
+Hasil perhitungan manual menggunakan metode matriks sesuai dengan hasil perhitungan menggunakan library LinearRegression dari sklearn, sehingga dapat disimpulkan bahwa perhitungan telah dilakukan dengan benar.
+
+Visualisasi data pada GeoGebra juga menunjukkan bahwa titik-titik data mengikuti pola linear positif, sehingga regresi linear cocok digunakan untuk memodelkan data tersebut.
+
