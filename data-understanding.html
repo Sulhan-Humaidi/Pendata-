@@ -510,12 +510,16 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-pengecekan-missing-value-data-harian-pada-csv">d. Pengecekan Missing Value data harian pada CSV</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-deteksi-outlier-iqr">e. Deteksi Outlier IQR</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-outlier">Visualisasi outlier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier">Deteksi Outlier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-setelah-outlier-removal-dan-interpolasi">Data Setelah Outlier Removal dan Interpolasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-korelasi-lag">Analisis Korelasi Lag</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghapus-outlier-dan-interpolasi-kembali">Menghapus outlier dan interpolasi kembali</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-setelah-outlier-removal">Visualisasi setelah outlier removal</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-data-bersih">Menyimpan data bersih</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-menggunakan-knn-regression">3. Modeling Menggunakan KNN Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-prediksi-knn-regression">Hasil Prediksi KNN Regression</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-uji-korelasi-data">a. Uji Korelasi Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-korelasi">Visualisasi korelasi</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-normalisasi-data">b. Normalisasi Data</a></li>
@@ -2130,6 +2134,22 @@ connection = openeo.connect(&quot;openeo.dataspace.copernicus.eu&quot;).authenti
 </pre></div>
 </div>
 </section>
+<section id="deteksi-outlier">
+<h3>Deteksi Outlier<a class="headerlink" href="#deteksi-outlier" title="Permalink to this heading">#</a></h3>
+<p>Metode Interquartile Range (IQR) digunakan untuk mendeteksi nilai ekstrem (outlier) pada data konsentrasi NO₂.</p>
+<p><img alt="Deteksi Outlier Data NO₂" src="_images/no2-1.png" /></p>
+</section>
+<section id="data-setelah-outlier-removal-dan-interpolasi">
+<h3>Data Setelah Outlier Removal dan Interpolasi<a class="headerlink" href="#data-setelah-outlier-removal-dan-interpolasi" title="Permalink to this heading">#</a></h3>
+<p>Setelah proses deteksi outlier menggunakan metode Interquartile Range (IQR), data yang berada di luar batas normal dihapus dan diganti menggunakan interpolasi linear. Proses ini bertujuan untuk mengurangi pengaruh nilai ekstrem yang dapat menurunkan performa model prediksi. Hasil pembersihan menunjukkan bahwa pola data NO₂ menjadi lebih stabil dan siap digunakan pada tahap pemodelan KNN Regression.</p>
+<p><img alt="Data Setelah Cleaning" src="_images/no2-2.png" /></p>
+</section>
+<section id="analisis-korelasi-lag">
+<h3>Analisis Korelasi Lag<a class="headerlink" href="#analisis-korelasi-lag" title="Permalink to this heading">#</a></h3>
+<p>Sebelum proses pemodelan dilakukan, analisis korelasi digunakan untuk mengetahui pengaruh nilai NO₂ pada hari-hari sebelumnya terhadap nilai NO₂ pada hari yang akan diprediksi. Pengujian dilakukan hingga 30 lag untuk melihat hubungan antara data historis dan target prediksi.</p>
+<p>Hasil korelasi menunjukkan bahwa lag terdekat memiliki hubungan yang lebih kuat dibandingkan lag yang lebih jauh. Nilai korelasi tertinggi ditemukan pada lag 1 hingga lag 4, sehingga empat hari sebelumnya dipilih sebagai fitur input pada model KNN Regression.</p>
+<p><img alt="Korelasi Lag terhadap NO₂" src="_images/no2-3.png" /></p>
+</section>
 <section id="menghapus-outlier-dan-interpolasi-kembali">
 <h3>Menghapus outlier dan interpolasi kembali<a class="headerlink" href="#menghapus-outlier-dan-interpolasi-kembali" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tandai outlier menjadi NaN</span>
@@ -2193,6 +2213,12 @@ connection = openeo.connect(&quot;openeo.dataspace.copernicus.eu&quot;).authenti
 <section id="modeling-menggunakan-knn-regression">
 <h2>3. Modeling Menggunakan KNN Regression<a class="headerlink" href="#modeling-menggunakan-knn-regression" title="Permalink to this heading">#</a></h2>
 <p>Dengan data time series kadar NO₂ harian di daerah Pamekasan, kita akan memprediksi kadar NO₂ satu hari yang akan datang. Pada tahap ini data diubah menjadi supervised learning, lalu dilakukan uji korelasi terhadap label <code class="docutils literal notranslate"><span class="pre">t</span></code>. Fitur-fitur yang dipakai adalah data beberapa hari sebelumnya (<code class="docutils literal notranslate"><span class="pre">t-30</span></code> sampai <code class="docutils literal notranslate"><span class="pre">t-1</span></code>).</p>
+<section id="hasil-prediksi-knn-regression">
+<h3>Hasil Prediksi KNN Regression<a class="headerlink" href="#hasil-prediksi-knn-regression" title="Permalink to this heading">#</a></h3>
+<p>Model KNN Regression kemudian digunakan untuk memprediksi kadar NO₂ berdasarkan data historis empat hari sebelumnya. Hasil prediksi dibandingkan dengan data aktual untuk melihat kemampuan model dalam mengikuti pola perubahan konsentrasi NO₂ dari waktu ke waktu.</p>
+<p>Berdasarkan grafik, model mampu mengikuti tren umum data aktual meskipun masih terdapat beberapa perbedaan pada titik tertentu. Hal ini menunjukkan bahwa model dapat menangkap pola utama perubahan kadar NO₂ dan dapat digunakan sebagai pendekatan awal dalam peramalan kualitas udara.</p>
+<p><img alt="Prediksi Kadar NO₂ Pamekasan" src="_images/no2-4.png" /></p>
+</section>
 <section id="a-uji-korelasi-data">
 <h3>a. Uji Korelasi Data<a class="headerlink" href="#a-uji-korelasi-data" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
@@ -2559,12 +2585,16 @@ connection = openeo.connect(&quot;openeo.dataspace.copernicus.eu&quot;).authenti
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-pengecekan-missing-value-data-harian-pada-csv">d. Pengecekan Missing Value data harian pada CSV</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-deteksi-outlier-iqr">e. Deteksi Outlier IQR</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-outlier">Visualisasi outlier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier">Deteksi Outlier</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-setelah-outlier-removal-dan-interpolasi">Data Setelah Outlier Removal dan Interpolasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-korelasi-lag">Analisis Korelasi Lag</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menghapus-outlier-dan-interpolasi-kembali">Menghapus outlier dan interpolasi kembali</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-setelah-outlier-removal">Visualisasi setelah outlier removal</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-data-bersih">Menyimpan data bersih</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modeling-menggunakan-knn-regression">3. Modeling Menggunakan KNN Regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-prediksi-knn-regression">Hasil Prediksi KNN Regression</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-uji-korelasi-data">a. Uji Korelasi Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-korelasi">Visualisasi korelasi</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-normalisasi-data">b. Normalisasi Data</a></li>

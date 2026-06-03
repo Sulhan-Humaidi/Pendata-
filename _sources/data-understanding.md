@@ -1126,6 +1126,28 @@ plt.xticks(
 )
 plt.show()
 ```
+### Deteksi Outlier
+
+Metode Interquartile Range (IQR) digunakan untuk mendeteksi nilai ekstrem (outlier) pada data konsentrasi NO₂.
+
+![Deteksi Outlier Data NO₂](no2-1.png)
+
+### Data Setelah Outlier Removal dan Interpolasi
+
+Setelah proses deteksi outlier menggunakan metode Interquartile Range (IQR), data yang berada di luar batas normal dihapus dan diganti menggunakan interpolasi linear. Proses ini bertujuan untuk mengurangi pengaruh nilai ekstrem yang dapat menurunkan performa model prediksi. Hasil pembersihan menunjukkan bahwa pola data NO₂ menjadi lebih stabil dan siap digunakan pada tahap pemodelan KNN Regression.
+
+![Data Setelah Cleaning](no2-2.png)
+
+### Analisis Korelasi Lag
+
+Sebelum proses pemodelan dilakukan, analisis korelasi digunakan untuk mengetahui pengaruh nilai NO₂ pada hari-hari sebelumnya terhadap nilai NO₂ pada hari yang akan diprediksi. Pengujian dilakukan hingga 30 lag untuk melihat hubungan antara data historis dan target prediksi.
+
+Hasil korelasi menunjukkan bahwa lag terdekat memiliki hubungan yang lebih kuat dibandingkan lag yang lebih jauh. Nilai korelasi tertinggi ditemukan pada lag 1 hingga lag 4, sehingga empat hari sebelumnya dipilih sebagai fitur input pada model KNN Regression.
+
+![Korelasi Lag terhadap NO₂](no2-3.png)
+
+
+
 
 ### Menghapus outlier dan interpolasi kembali
 
@@ -1190,6 +1212,14 @@ df_final.head()
 ## 3. Modeling Menggunakan KNN Regression
 
 Dengan data time series kadar NO₂ harian di daerah Pamekasan, kita akan memprediksi kadar NO₂ satu hari yang akan datang. Pada tahap ini data diubah menjadi supervised learning, lalu dilakukan uji korelasi terhadap label `t`. Fitur-fitur yang dipakai adalah data beberapa hari sebelumnya (`t-30` sampai `t-1`).
+
+### Hasil Prediksi KNN Regression
+
+Model KNN Regression kemudian digunakan untuk memprediksi kadar NO₂ berdasarkan data historis empat hari sebelumnya. Hasil prediksi dibandingkan dengan data aktual untuk melihat kemampuan model dalam mengikuti pola perubahan konsentrasi NO₂ dari waktu ke waktu.
+
+Berdasarkan grafik, model mampu mengikuti tren umum data aktual meskipun masih terdapat beberapa perbedaan pada titik tertentu. Hal ini menunjukkan bahwa model dapat menangkap pola utama perubahan kadar NO₂ dan dapat digunakan sebagai pendekatan awal dalam peramalan kualitas udara.
+
+![Prediksi Kadar NO₂ Pamekasan](no2-4.png)
 
 ### a. Uji Korelasi Data
 
