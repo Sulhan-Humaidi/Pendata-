@@ -876,3 +876,468 @@ Hasil perhitungan manual menggunakan metode matriks sesuai dengan hasil perhitun
 
 Visualisasi data pada GeoGebra juga menunjukkan bahwa titik-titik data mengikuti pola linear positif, sehingga regresi linear cocok digunakan untuk memodelkan data tersebut.
 
+
+# Peramalan Kadar NO₂ di Daerah Pamekasan Madura
+
+## Latar Belakang
+
+Peningkatan aktivitas industri, transportasi, serta pertumbuhan populasi yang pesat telah menyebabkan peningkatan signifikan terhadap tingkat pencemaran udara di berbagai wilayah. Salah satu polutan udara utama yang menjadi perhatian adalah Nitrogen Dioksida (NO₂), yaitu gas beracun yang dihasilkan terutama dari proses pembakaran bahan bakar fosil seperti kendaraan bermotor, pembangkit listrik, dan kegiatan industri. NO₂ memiliki dampak serius terhadap kesehatan manusia, seperti gangguan pernapasan, iritasi paru-paru, serta memperburuk penyakit asma dan bronkitis. Selain itu, NO₂ juga berkontribusi terhadap pembentukan hujan asam dan penurunan kualitas lingkungan secara keseluruhan.
+
+---
+
+## 1. Pengumpulan Data
+
+Pertama kita akan mengumpulkan data time series harian kadar NO₂ di daerah Pamekasan. Pengumpulan data dilakukan dari sumber website Copernicus Data Space. Sebelum mengambil data, pastikan akun Copernicus sudah tersedia.
+
+```python
+!pip install openeo
+import openeo
+connection = openeo.connect("openeo.dataspace.copernicus.eu").authenticate_oidc()
+```
+
+### Menentukan area penelitian
+
+```python
+aoi = {
+    "type": "Polygon",
+    "coordinates": [
+        [
+            [113.55, -7.13],
+            [113.57, -7.13],
+            [113.57, -7.15],
+            [113.55, -7.15],
+            [113.55, -7.13],
+        ]
+    ]
+}
+```
+
+### Mengambil data NO₂
+
+```python
+s5post = connection.load_collection(
+    "SENTINEL_5P_L2",
+    temporal_extent=["2026-01-01", "2026-03-01"],
+    spatial_extent={
+        "west": 113.55,
+        "south": -7.15,
+        "east": 113.57,
+        "north": -7.13
+    },
+    bands=["NO2"],
+)
+
+# Aggregate per hari agar tidak ada banyak data per hari
+s5p_no2_daily = s5post.aggregate_temporal_period(reducer="mean", period="day")
+
+# Aggregate spasial untuk mendapatkan mean timeseries
+s5p_no2_aoi = s5p_no2_daily.aggregate_spatial(reducer="mean", geometries=aoi)
+
+job = s5post.execute_batch(title="NO2 in Pamekasan", outputfile="NO2Pamekasan.nc")
+```
+
+Setelah proses selesai, file hasil unduhan disimpan dalam format `.nc`.
+
+---
+
+## 2. Preprocessing Data
+
+Setelah data diambil, file `.nc` dibaca menggunakan `netCDF4`. Pada data ini terdapat variabel `t`, `x`, `y`, `crs`, dan `NO2`.
+
+```python
+import netCDF4
+
+file_path = "openEO.nc"
+ds = netCDF4.Dataset(file_path)
+
+print("📦 Variabel dalam file:")
+print(ds.variables.keys())
+
+# Ambil NO2
+no2 = ds.variables["NO2"][:]
+
+# Ambil Time
+time = ds.variables["t"][:]
+
+# Konversi waktu ke format tanggal jika punya atribut 'units'
+try:
+    time_units = ds.variables["t"].units
+    dates = netCDF4.num2date(time, units=time_units)
+except Exception:
+    dates = time
+
+print(type(no2))
+print(len(no2))
+print(len(no2[0]))
+print(len(no2[0][0]))
+print(no2[0][0][0])
+
+print("Contoh data pertama:")
+for i in range(0,10):
+    print(no2[i])
+```
+
+### a. Mengatasi Missing Value menggunakan Interpolasi Linear
+
+```python
+import numpy as np
+import pandas as pd
+
+# Interpolasi Linear
+no2_filled = np.zeros_like(no2)
+
+# Untuk jaga-jaga jika terdapat '--' tidak berubah menjadi 0
+no2_filled = no2_filled.filled(0)
+
+# loop tiap grid (y,x)
+for i in range(no2.shape[1]):
+    for j in range(no2.shape[2]):
+        series = pd.Series(no2[:, i, j])
+        no2_filled[:, i, j] = series.interpolate(method='linear', limit_direction='both')
+```
+
+### b. Rata-rata Data dan Ubah Datetime
+
+```python
+new_dates = []
+new_no2 = []
+
+for i in range(len(dates)):
+    # ubah format datetime
+    new_date = dates[i].strftime('%Y-%m-%d')
+    new_dates.append(new_date)
+    new_no2.append(np.mean(no2_filled[i]))
+```
+
+### c. Simpan data dalam bentuk CSV
+
+```python
+df = pd.DataFrame({
+    "date": new_dates,
+    "NO2": new_no2
+})
+
+df.to_csv(
+    "NO2_Pamekasan_timeseries.csv",
+    index=False
+)
+
+df.head()
+```
+
+### d. Pengecekan Missing Value data harian pada CSV
+
+```python
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("NO2_Pamekasan_timeseries.csv")
+
+# Pastikan kolom 'date' bertipe datetime
+df['date'] = pd.to_datetime(df['date'])
+
+# Ambil tanggal awal dan akhir dari data
+start_date = df['date'].min()
+end_date = df['date'].max()
+
+print("Tanggal Awal :", start_date)
+print("Tanggal Akhir :", end_date)
+
+# Buat rentang tanggal lengkap
+full_range = pd.date_range(start=start_date, end=end_date, freq='D')
+
+# Cek tanggal yang hilang
+missing_dates = full_range.difference(df['date'])
+print(f"Jumlah hari missing: {len(missing_dates)}")
+print("Daftar tanggal missing:")
+print(missing_dates)
+```
+
+Pada data ini terdapat 7 hari missing value.
+
+### e. Deteksi Outlier IQR
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("NO2_Pamekasan_timeseries.csv")
+df['date'] = pd.to_datetime(df['date'])
+
+# Hitung IQR
+Q1 = df['NO2'].quantile(0.25)
+Q3 = df['NO2'].quantile(0.75)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Filter outlier
+outliers_iqr = df[(df['NO2'] < lower_bound) | (df['NO2'] > upper_bound)]
+
+print("Jumlah Outlier (IQR):", len(outliers_iqr))
+print(outliers_iqr[['date','NO2']].head())
+```
+
+Hasil pengecekan menunjukkan terdapat 28 outlier.
+
+### Visualisasi outlier
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(15,5))
+plt.plot(df['date'], df['NO2'], label="NO2", linewidth=1)
+
+# Titik Outlier
+plt.scatter(
+    outliers_iqr['date'],
+    outliers_iqr['NO2'],
+    color='red',
+    marker='o',
+    label="Outliers"
+)
+
+# Garis batas atas & bawah
+plt.axhline(
+    upper_bound,
+    color='orange',
+    linestyle='dashed',
+    label="Upper Bound (IQR)"
+)
+plt.axhline(
+    lower_bound,
+    color='blue',
+    linestyle='dashed',
+    label="Lower Bound (IQR)"
+)
+
+plt.title("Deteksi Outlier Data NO2 (Metode IQR)")
+plt.xlabel("Tanggal")
+plt.ylabel("Kadar NO2")
+plt.legend()
+plt.tight_layout()
+plt.xticks(
+    ticks=[df['date'].iloc[0], df['date'].iloc[-1]],
+    labels=[
+        df['date'].iloc[0].strftime('%Y-%m-%d'),
+        df['date'].iloc[-1].strftime('%Y-%m-%d')
+    ]
+)
+plt.show()
+```
+
+### Menghapus outlier dan interpolasi kembali
+
+```python
+# Tandai outlier menjadi NaN
+df['NO2_cleaned'] = df['NO2'].mask(
+    (df['NO2'] < lower_bound) |
+    (df['NO2'] > upper_bound)
+)
+
+print("Jumlah nilai yang dinyatakan sebagai outlier:", df['NO2_cleaned'].isna().sum())
+
+# Interpolasi linear untuk mengisi kembali nilai outlier
+df['NO2_filled'] = df['NO2_cleaned'].interpolate(method='linear')
+
+# Jika masih tersisa NaN di ujung data
+df['NO2_filled'] = df['NO2_filled'].bfill().ffill()
+
+print("Jumlah missing setelah interpolasi:", df['NO2_filled'].isna().sum())
+```
+
+### Visualisasi setelah outlier removal
+
+```python
+plt.figure(figsize=(15,5))
+plt.plot(df['date'], df['NO2_filled'], label="NO2 (Interpolated)", linewidth=1)
+
+plt.xticks(
+    ticks=[df['date'].iloc[0], df['date'].iloc[-1]],
+    labels=[
+        df['date'].iloc[0].strftime('%Y-%m-%d'),
+        df['date'].iloc[-1].strftime('%Y-%m-%d')
+    ]
+)
+
+plt.title("Plot Data NO2 Setelah Outlier Removal & Interpolasi")
+plt.xlabel("Tanggal")
+plt.ylabel("Kadar NO2")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+### Menyimpan data bersih
+
+```python
+df_final = pd.DataFrame({
+    "date": df['date'],
+    "NO2": df['NO2_filled']
+})
+
+df_final.to_csv(
+    "NO2_Pamekasan_Clean.csv",
+    index=False
+)
+
+df_final.head()
+```
+
+---
+
+## 3. Modeling Menggunakan KNN Regression
+
+Dengan data time series kadar NO₂ harian di daerah Pamekasan, kita akan memprediksi kadar NO₂ satu hari yang akan datang. Pada tahap ini data diubah menjadi supervised learning, lalu dilakukan uji korelasi terhadap label `t`. Fitur-fitur yang dipakai adalah data beberapa hari sebelumnya (`t-30` sampai `t-1`).
+
+### a. Uji Korelasi Data
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+df['NO2_scaled'] = scaler.fit_transform(df[['NO2']])
+
+def create_supervised(data, n_lag):
+    df_supervised = pd.DataFrame()
+    for i in range(n_lag, 0, -1):
+        df_supervised[f'NO2(t-{i})'] = data.shift(i)
+    df_supervised['NO2(t)'] = data
+    df_supervised.dropna(inplace=True)
+    return df_supervised
+
+supervised_df30 = create_supervised(df['NO2_scaled'], n_lag=30)
+
+lag_cols = supervised_df30.drop(columns="NO2(t)").columns
+correlations = supervised_df30[lag_cols].corrwith(supervised_df30['NO2(t)'])
+print(correlations)
+```
+
+### Visualisasi korelasi
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12,5))
+correlations.plot(kind='bar')
+plt.title('Korelasi Lag terhadap NO2(t)')
+plt.xlabel('Lag')
+plt.ylabel('Correlation')
+plt.show()
+```
+
+Hasil korelasi menunjukkan bahwa lag `t-1` sampai `t-4` memiliki hubungan yang lebih baik terhadap target dibanding lag lainnya.
+
+### b. Normalisasi Data
+
+```python
+from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
+
+scaler = MinMaxScaler()
+df['NO2_scaled'] = scaler.fit_transform(df[['NO2']])
+
+df.head()
+```
+
+### c. Mengubah Data
+
+Data dibentuk menjadi 4 hari sebelumnya, lalu dibuat juga versi 10 hari dan 30 hari sebelumnya untuk perbandingan.
+
+```python
+supervised_df4 = create_supervised(df['NO2_scaled'], n_lag=4)
+supervised_df10 = create_supervised(df['NO2_scaled'], n_lag=10)
+supervised_df30 = create_supervised(df['NO2_scaled'], n_lag=30)
+```
+
+Contoh bentuk data 4 hari sebelumnya:
+
+```python
+supervised_df4.head()
+```
+
+### d. Modeling dan Evaluation
+
+```python
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+def MAPE(y_true, y_pred):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    nonzero = y_true != 0
+    return np.mean(np.abs((y_true[nonzero] - y_pred[nonzero]) / y_true[nonzero])) * 100
+
+def evaluate_knn(df_supervised):
+    X = df_supervised.drop(columns=['NO2(t)'])
+    y = df_supervised['NO2(t)']
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, shuffle=False
+    )
+
+    knn = KNeighborsRegressor(n_neighbors=5)
+    knn.fit(X_train, y_train)
+
+    y_pred = knn.predict(X_test)
+
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+    r2 = r2_score(y_test, y_pred)
+    mape = MAPE(y_test, y_pred)
+
+    return rmse, r2, mape, y_test, y_pred
+
+rmse4, r24, mape4, y_test_4, y_pred_4 = evaluate_knn(supervised_df4)
+rmse10, r210, mape10, y_test_10, y_pred_10 = evaluate_knn(supervised_df10)
+rmse30, r230, mape30, y_test_30, y_pred_30 = evaluate_knn(supervised_df30)
+```
+
+### Tabel hasil evaluasi
+
+```python
+hasil = pd.DataFrame({
+    'Lag': ['4 Hari', '10 Hari', '30 Hari'],
+    'RMSE': [rmse4, rmse10, rmse30],
+    'R2': [r24, r210, r230],
+    'MAPE': [mape4, mape10, mape30]
+})
+
+hasil
+```
+
+Hasil evaluasi model:
+
+| Lag | RMSE | R2 | MAPE |
+|---|---:|---:|---:|
+| 4 Hari | 0.152081 | 0.309269 | 33.854853 |
+| 10 Hari | 0.154900 | 0.277805 | 35.368379 |
+| 30 Hari | 0.167583 | 0.161098 | 37.817830 |
+
+### Plot hasil prediksi
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.figure(figsize=(12,5))
+plt.plot(np.arange(len(y_test_4)), y_test_4, label='Actual')
+plt.plot(np.arange(len(y_pred_4)), y_pred_4, label='Predicted')
+plt.title('Prediksi Kadar NO2 Pamekasan - 4 Hari Sebelumnya')
+plt.xlabel('Sample')
+plt.ylabel('NO2')
+plt.legend()
+plt.show()
+```
+
+### Kesimpulan Modeling
+
+Berdasarkan hasil evaluasi, model dengan 4 hari sebelumnya memberikan performa terbaik dibandingkan 10 hari dan 30 hari sebelumnya. Hal ini ditunjukkan oleh nilai RMSE yang paling kecil, R² yang paling tinggi, dan MAPE yang paling rendah. Dengan demikian, model KNN Regression dapat digunakan untuk memprediksi kadar NO₂ harian di daerah Pamekasan, meskipun masih terdapat selisih antara nilai prediksi dan nilai aktual.
+
+---
+
+## Kesimpulan Akhir
+
+Secara keseluruhan, tahapan penelitian berhasil dilakukan mulai dari pengumpulan data, preprocessing, hingga modeling. Data NO₂ yang diambil dari Copernicus Data Space kemudian dibersihkan dari missing value dan outlier sebelum digunakan untuk prediksi. Pada tahap modeling, KNN Regression menghasilkan performa terbaik pada skenario 4 hari sebelumnya. Hasil ini menunjukkan bahwa pola historis jangka pendek lebih relevan dalam memprediksi kadar NO₂ harian di daerah Pamekasan.
