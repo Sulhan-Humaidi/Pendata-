@@ -179,6 +179,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
 
+
 <li class="toctree-l1"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modelling.html">Modelling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
@@ -531,6 +532,29 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-akhir">Kesimpulan Akhir</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-data">Analisa Data</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-prediksi-tentang-apa">1. Analisa Prediksi Tentang Apa?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-bentuk-data-trainingnya-input-dan-output">2. Bagaimana Bentuk Data Trainingnya (Input dan Output)?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-x">Input (X)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-y">Output (y)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-data-training">Contoh Data Training</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-lag">3. Apa Itu Lag?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jelaskan-proses-analisis-yang-dilakukan">4. Jelaskan Proses Analisis yang Dilakukan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-analisis">Hasil Analisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance">Feature Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-analysis">SHAP Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-dependence-plot">SHAP Dependence Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation-importance">Permutation Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-dependence-plot-pdp">Partial Dependence Plot (PDP)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature">Temperature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lag-1">lag_1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Kesimpulan</a></li>
 </ul>
 </li>
 </ul>
@@ -2387,6 +2411,293 @@ connection = openeo.connect(&quot;openeo.dataspace.copernicus.eu&quot;).authenti
 <p>Secara keseluruhan, tahapan penelitian berhasil dilakukan mulai dari pengumpulan data, preprocessing, hingga modeling. Data NO₂ yang diambil dari Copernicus Data Space kemudian dibersihkan dari missing value dan outlier sebelum digunakan untuk prediksi. Pada tahap modeling, KNN Regression menghasilkan performa terbaik pada skenario 4 hari sebelumnya. Hasil ini menunjukkan bahwa pola historis jangka pendek lebih relevan dalam memprediksi kadar NO₂ harian di daerah Pamekasan.</p>
 </section>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="analisa-data">
+<h1>Analisa Data<a class="headerlink" href="#analisa-data" title="Permalink to this heading">#</a></h1>
+<section id="analisa-prediksi-tentang-apa">
+<h2>1. Analisa Prediksi Tentang Apa?<a class="headerlink" href="#analisa-prediksi-tentang-apa" title="Permalink to this heading">#</a></h2>
+<p>Analisis prediksi dilakukan untuk memperkirakan <strong>permintaan listrik (Demand)</strong> di wilayah Victoria, Australia.</p>
+<p>Prediksi dilakukan menggunakan metode <strong>time series forecasting</strong> dengan memanfaatkan data historis permintaan listrik serta data suhu (<strong>Temperature</strong>) sebagai variabel eksternal (<strong>exogenous variable</strong>).</p>
+<p>Model yang digunakan adalah <strong>LightGBM Regressor (LGBMRegressor)</strong> yang diimplementasikan melalui <strong>ForecasterRecursive</strong> dari library <strong>Skforecast</strong>.</p>
+</section>
+<hr class="docutils" />
+<section id="bagaimana-bentuk-data-trainingnya-input-dan-output">
+<h2>2. Bagaimana Bentuk Data Trainingnya (Input dan Output)?<a class="headerlink" href="#bagaimana-bentuk-data-trainingnya-input-dan-output" title="Permalink to this heading">#</a></h2>
+<section id="input-x">
+<h3>Input (X)<a class="headerlink" href="#input-x" title="Permalink to this heading">#</a></h3>
+<p>Data masukan (<em>input features</em>) terdiri dari:</p>
+<ul class="simple">
+<li><p><strong>lag_1</strong> : nilai Demand 1 hari sebelumnya</p></li>
+<li><p><strong>lag_2</strong> : nilai Demand 2 hari sebelumnya</p></li>
+<li><p><strong>lag_3</strong> : nilai Demand 3 hari sebelumnya</p></li>
+<li><p><strong>lag_4</strong> : nilai Demand 4 hari sebelumnya</p></li>
+<li><p><strong>lag_5</strong> : nilai Demand 5 hari sebelumnya</p></li>
+<li><p><strong>lag_6</strong> : nilai Demand 6 hari sebelumnya</p></li>
+<li><p><strong>lag_7</strong> : nilai Demand 7 hari sebelumnya</p></li>
+<li><p><strong>Temperature</strong> : suhu rata-rata harian</p></li>
+</ul>
+</section>
+<section id="output-y">
+<h3>Output (y)<a class="headerlink" href="#output-y" title="Permalink to this heading">#</a></h3>
+<p>Data keluaran (<em>target variable</em>) adalah:</p>
+<ul class="simple">
+<li><p><strong>Demand</strong> pada hari yang akan diprediksi.</p></li>
+</ul>
+<p>Dengan demikian, model mempelajari hubungan antara nilai permintaan listrik pada beberapa hari sebelumnya dan suhu terhadap permintaan listrik pada hari berikutnya.</p>
+</section>
+<section id="contoh-data-training">
+<h3>Contoh Data Training<a class="headerlink" href="#contoh-data-training" title="Permalink to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Time</p></th>
+<th class="head"><p>lag_1</p></th>
+<th class="head"><p>lag_2</p></th>
+<th class="head"><p>lag_3</p></th>
+<th class="head"><p>lag_4</p></th>
+<th class="head"><p>lag_5</p></th>
+<th class="head"><p>lag_6</p></th>
+<th class="head"><p>lag_7</p></th>
+<th class="head"><p>Temperature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2012-01-07</p></td>
+<td><p>205338.71</p></td>
+<td><p>211056.43</p></td>
+<td><p>213792.38</p></td>
+<td><p>258955.33</p></td>
+<td><p>275490.99</p></td>
+<td><p>227778.26</p></td>
+<td><p>82531.75</p></td>
+<td><p>24.10</p></td>
+</tr>
+<tr class="row-odd"><td><p>2012-01-08</p></td>
+<td><p>200693.27</p></td>
+<td><p>205338.71</p></td>
+<td><p>211056.43</p></td>
+<td><p>213792.38</p></td>
+<td><p>258955.33</p></td>
+<td><p>275490.99</p></td>
+<td><p>227778.26</p></td>
+<td><p>20.22</p></td>
+</tr>
+<tr class="row-even"><td><p>2012-01-09</p></td>
+<td><p>200051.61</p></td>
+<td><p>200693.27</p></td>
+<td><p>205338.71</p></td>
+<td><p>211056.43</p></td>
+<td><p>213792.38</p></td>
+<td><p>258955.33</p></td>
+<td><p>275490.99</p></td>
+<td><p>19.16</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Target:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Time</p></th>
+<th class="head"><p>y</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2012-01-07</p></td>
+<td><p>200693.27</p></td>
+</tr>
+<tr class="row-odd"><td><p>2012-01-08</p></td>
+<td><p>200051.61</p></td>
+</tr>
+<tr class="row-even"><td><p>2012-01-09</p></td>
+<td><p>216201.84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="apa-itu-lag">
+<h2>3. Apa Itu Lag?<a class="headerlink" href="#apa-itu-lag" title="Permalink to this heading">#</a></h2>
+<p><strong>Lag</strong> adalah nilai historis dari suatu variabel pada periode sebelumnya yang digunakan sebagai fitur dalam proses prediksi.</p>
+<p>Contoh:</p>
+<ul class="simple">
+<li><p><strong>lag_1</strong> menunjukkan nilai Demand satu hari sebelumnya.</p></li>
+<li><p><strong>lag_2</strong> menunjukkan nilai Demand dua hari sebelumnya.</p></li>
+<li><p><strong>lag_7</strong> menunjukkan nilai Demand tujuh hari sebelumnya.</p></li>
+</ul>
+<p>Penggunaan lag bertujuan untuk membantu model mengenali pola dan ketergantungan waktu (<em>temporal dependency</em>) pada data deret waktu (<em>time series</em>).</p>
+</section>
+<hr class="docutils" />
+<section id="jelaskan-proses-analisis-yang-dilakukan">
+<h2>4. Jelaskan Proses Analisis yang Dilakukan<a class="headerlink" href="#jelaskan-proses-analisis-yang-dilakukan" title="Permalink to this heading">#</a></h2>
+<p>Tahapan analisis yang dilakukan adalah sebagai berikut:</p>
+<ol class="arabic simple">
+<li><p>Mengambil dataset <strong>vic_electricity</strong> yang berisi data permintaan listrik dan suhu di Victoria, Australia.</p></li>
+<li><p>Melakukan agregasi data menjadi frekuensi harian (<em>daily frequency</em>).</p></li>
+<li><p>Membagi data menjadi data latih (<em>training set</em>) dan data uji (<em>testing set</em>).</p></li>
+<li><p>Membuat fitur lag sebanyak 7 periode (<strong>lag_1</strong> sampai <strong>lag_7</strong>).</p></li>
+<li><p>Menambahkan variabel suhu (<strong>Temperature</strong>) sebagai variabel eksternal.</p></li>
+<li><p>Melatih model menggunakan <strong>LGBMRegressor</strong> dengan metode <strong>ForecasterRecursive</strong>.</p></li>
+<li><p>Menghitung <strong>Feature Importance</strong> untuk mengetahui fitur yang paling berpengaruh terhadap prediksi.</p></li>
+<li><p>Melakukan analisis <strong>SHAP (SHapley Additive exPlanations)</strong> untuk menjelaskan kontribusi masing-masing fitur terhadap hasil prediksi.</p></li>
+<li><p>Membuat <strong>SHAP Dependence Plot</strong> untuk melihat hubungan antara nilai fitur dan kontribusinya terhadap prediksi.</p></li>
+<li><p>Menghitung <strong>Permutation Importance</strong> sebagai metode alternatif untuk mengukur pentingnya fitur.</p></li>
+<li><p>Membuat <strong>Partial Dependence Plot (PDP)</strong> untuk memahami pengaruh perubahan suatu fitur terhadap hasil prediksi.</p></li>
+<li><p>Melakukan prediksi permintaan listrik untuk beberapa periode ke depan.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="hasil-analisis">
+<h2>Hasil Analisis<a class="headerlink" href="#hasil-analisis" title="Permalink to this heading">#</a></h2>
+<p>Berdasarkan hasil <strong>Feature Importance</strong>, <strong>Permutation Importance</strong>, dan <strong>SHAP Analysis</strong>, diperoleh beberapa temuan sebagai berikut:</p>
+<ol class="arabic simple">
+<li><p>Fitur <strong>lag_1</strong> merupakan fitur yang memiliki pengaruh paling besar terhadap hasil prediksi.</p></li>
+<li><p>Variabel <strong>Temperature</strong> menjadi faktor kedua yang paling berpengaruh dalam menentukan nilai permintaan listrik.</p></li>
+<li><p>Fitur <strong>lag_7</strong> juga memberikan kontribusi yang cukup signifikan terhadap model.</p></li>
+<li><p>Nilai permintaan listrik pada hari sebelumnya memiliki hubungan positif terhadap hasil prediksi permintaan listrik pada hari berikutnya.</p></li>
+<li><p>Hubungan antara suhu dan permintaan listrik bersifat non-linear, yang terlihat dari grafik <strong>SHAP Dependence Plot</strong> dan <strong>Partial Dependence Plot</strong>.</p></li>
+<li><p>Model mampu memanfaatkan informasi historis serta faktor suhu untuk menghasilkan prediksi permintaan listrik yang lebih akurat.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="feature-importance">
+<h2>Feature Importance<a class="headerlink" href="#feature-importance" title="Permalink to this heading">#</a></h2>
+<p>Urutan fitur berdasarkan tingkat kepentingannya terhadap model:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ranking</p></th>
+<th class="head"><p>Feature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>lag_1</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Temperature</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>lag_7</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>lag_2</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>lag_6</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>lag_3</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>lag_5</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>lag_4</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Hasil ini menunjukkan bahwa informasi permintaan listrik pada hari sebelumnya merupakan faktor utama yang digunakan model dalam membuat prediksi.</p>
+</section>
+<hr class="docutils" />
+<section id="shap-analysis">
+<h2>SHAP Analysis<a class="headerlink" href="#shap-analysis" title="Permalink to this heading">#</a></h2>
+<p>Analisis SHAP digunakan untuk menjelaskan bagaimana setiap fitur berkontribusi terhadap hasil prediksi model.</p>
+<p>Temuan utama:</p>
+<ul class="simple">
+<li><p><strong>lag_1</strong> memiliki kontribusi terbesar terhadap output model.</p></li>
+<li><p><strong>Temperature</strong> memiliki pengaruh yang kuat dan bersifat non-linear.</p></li>
+<li><p>Nilai fitur yang tinggi pada <strong>lag_1</strong> cenderung meningkatkan hasil prediksi.</p></li>
+<li><p>Pengaruh suhu tidak selalu linear; pada rentang suhu tertentu kontribusinya dapat berubah secara signifikan.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="shap-dependence-plot">
+<h2>SHAP Dependence Plot<a class="headerlink" href="#shap-dependence-plot" title="Permalink to this heading">#</a></h2>
+<p>SHAP Dependence Plot menunjukkan hubungan antara nilai fitur dan dampaknya terhadap prediksi.</p>
+<p>Hasil yang terlihat:</p>
+<ul class="simple">
+<li><p>Pada suhu rendah hingga sedang, kontribusi terhadap permintaan listrik cenderung menurun.</p></li>
+<li><p>Pada suhu tinggi, kontribusi meningkat secara signifikan.</p></li>
+<li><p>Hal ini menunjukkan adanya hubungan non-linear antara suhu dan konsumsi listrik.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="permutation-importance">
+<h2>Permutation Importance<a class="headerlink" href="#permutation-importance" title="Permalink to this heading">#</a></h2>
+<p>Permutation Importance digunakan sebagai metode validasi untuk mengukur seberapa penting suatu fitur terhadap performa model.</p>
+<p>Urutan hasil yang diperoleh:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Mean Importance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>lag_1</p></td>
+<td><p>Tertinggi</p></td>
+</tr>
+<tr class="row-odd"><td><p>Temperature</p></td>
+<td><p>Tinggi</p></td>
+</tr>
+<tr class="row-even"><td><p>lag_7</p></td>
+<td><p>Tinggi</p></td>
+</tr>
+<tr class="row-odd"><td><p>lag_2</p></td>
+<td><p>Sedang</p></td>
+</tr>
+<tr class="row-even"><td><p>lag_6</p></td>
+<td><p>Sedang</p></td>
+</tr>
+<tr class="row-odd"><td><p>lag_3</p></td>
+<td><p>Rendah</p></td>
+</tr>
+<tr class="row-even"><td><p>lag_5</p></td>
+<td><p>Rendah</p></td>
+</tr>
+<tr class="row-odd"><td><p>lag_4</p></td>
+<td><p>Rendah</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Hasil ini konsisten dengan analisis Feature Importance dan SHAP.</p>
+</section>
+<hr class="docutils" />
+<section id="partial-dependence-plot-pdp">
+<h2>Partial Dependence Plot (PDP)<a class="headerlink" href="#partial-dependence-plot-pdp" title="Permalink to this heading">#</a></h2>
+<p>Partial Dependence Plot digunakan untuk memahami perubahan rata-rata prediksi model ketika suatu fitur berubah.</p>
+<p>Temuan:</p>
+<section id="temperature">
+<h3>Temperature<a class="headerlink" href="#temperature" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Hubungan suhu dengan permintaan listrik bersifat non-linear.</p></li>
+<li><p>Pada suhu tertentu permintaan listrik cenderung menurun.</p></li>
+<li><p>Pada suhu yang lebih tinggi permintaan listrik meningkat secara signifikan.</p></li>
+</ul>
+</section>
+<section id="lag-1">
+<h3>lag_1<a class="headerlink" href="#lag-1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Semakin tinggi nilai permintaan listrik pada hari sebelumnya, semakin tinggi pula prediksi permintaan listrik pada hari berikutnya.</p></li>
+<li><p>Menunjukkan adanya ketergantungan temporal yang kuat dalam data.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h2>Kesimpulan<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<p>Model <strong>time series forecasting</strong> yang dibangun menggunakan <strong>LGBMRegressor</strong> dan <strong>ForecasterRecursive</strong> berhasil memprediksi permintaan listrik berdasarkan data historis dan suhu.</p>
+<p>Hasil analisis menunjukkan bahwa:</p>
+<ul class="simple">
+<li><p>Nilai permintaan listrik pada periode sebelumnya (<strong>lag features</strong>) merupakan faktor utama yang memengaruhi prediksi.</p></li>
+<li><p>Variabel <strong>Temperature</strong> memberikan kontribusi signifikan sebagai faktor eksternal.</p></li>
+<li><p>Hubungan antara suhu dan permintaan listrik bersifat non-linear.</p></li>
+<li><p>Kombinasi fitur historis dan suhu menghasilkan model yang mampu memberikan prediksi permintaan listrik dengan baik.</p></li>
+</ul>
+<p>Dengan demikian, model dapat digunakan untuk memperkirakan kebutuhan listrik pada periode mendatang secara lebih akurat.</p>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -2606,6 +2917,29 @@ connection = openeo.connect(&quot;openeo.dataspace.copernicus.eu&quot;).authenti
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-akhir">Kesimpulan Akhir</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-data">Analisa Data</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisa-prediksi-tentang-apa">1. Analisa Prediksi Tentang Apa?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bagaimana-bentuk-data-trainingnya-input-dan-output">2. Bagaimana Bentuk Data Trainingnya (Input dan Output)?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#input-x">Input (X)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-y">Output (y)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contoh-data-training">Contoh Data Training</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apa-itu-lag">3. Apa Itu Lag?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jelaskan-proses-analisis-yang-dilakukan">4. Jelaskan Proses Analisis yang Dilakukan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-analisis">Hasil Analisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance">Feature Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-analysis">SHAP Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-dependence-plot">SHAP Dependence Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation-importance">Permutation Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-dependence-plot-pdp">Partial Dependence Plot (PDP)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature">Temperature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lag-1">lag_1</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Kesimpulan</a></li>
 </ul>
 </li>
 </ul>
